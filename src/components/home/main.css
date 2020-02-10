@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap");
+
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    /* --secondary-color: #43bccd; */
+    --primary-color: #12a2f9;
+}
+
+body {
+    font-family: Raleway, sans-serif;
+    font-size: 1.2rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+div.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: var(--primary-color);
+    clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
+}
+
+img.logo {
+    height: 140px;
+    width: 140px;
+}
+
+.logo-container {
+    margin-bottom: 115px;
+}
+
+a {
+    color: white;
+    transition: all 0.4s;
+}
+
+a:hover {
+    color: #95caf7;
+    text-decoration: none;
+}
+
+div#main-content {
+    height: 184px;
+}
+
+div.get-started {
+    position: absolute;
+    z-index: 1;
+    margin-top: 80px;
+    margin-left: 435px;
+}
+
+div.get-started button {
+    /* TODO: Color might change */
+    border: 1px solid var(--primary-color);
+}
+
+div.overlay .row img {
+    width: 400px;
+    height: 400px;
+}
+
+div.content h1 {
+    font-family: "Permanent Marker", sans-serif;
+}
+
+div.content p {
+    width: 500px;
+}
+
+div.content button {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 20px;
+}
