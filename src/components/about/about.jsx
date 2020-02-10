@@ -1,6 +1,5 @@
 import React from "react";
 import logo from "../../images/tabib-logo.png";
-import Navbar from "../home/navbar";
 import { Link } from "react-router-dom";
 import "./about.css";
 

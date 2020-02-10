@@ -3,8 +3,9 @@ import Logo from "../common/logo";
 import ContentSlider from "./contentSlider";
 import Navbar from "./navbar";
 import IconSlider from "./iconSlider";
+import { Link } from "react-router-dom";
 
-function HomePg() {
+const HomePg = () => {
   return (
     <React.Fragment>
       <div className="container">
@@ -13,7 +14,9 @@ function HomePg() {
 
         <div className="get-started">
           <button className="btn bg-white btn-lg text-upper py-2">
-            Get Started
+            <Link to="/signup" style={{ color: "#222222" }}>
+              Get Started
+            </Link>
           </button>
         </div>
       </div>
@@ -26,6 +29,6 @@ function HomePg() {
       </div>
     </React.Fragment>
   );
-}
+};
 
 export default HomePg;
