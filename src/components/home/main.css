@@ -93,7 +93,8 @@ div.content button {
 .full-width {
     top: 0;
     left: 0;
-    min-height: 100vh;
+    /*The additional 4vh here is to account for the negative margin given to the 'Tabib' logo in the logo.jsx component*/
+    min-height: 104vh;
     min-width: 100%;
     background: url("../../images/background.png") repeat;
     background-size: 40px;
@@ -101,8 +102,9 @@ div.content button {
 
 .reg-box {
     position: absolute;
-    top: 18%;
-    left: 30%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -43%);
     height: 480px;
     width: 500px;
     background: #f8f8f8;
@@ -213,7 +215,6 @@ div.content button {
     padding: 0;
     width: 1200px;
     height: 500px;
-    left: 6%;
     border-radius: 30px;
 }
 
