@@ -141,6 +141,11 @@ div.content button {
     color: white;
 }
 
+small.input-info {
+    font-size: 0.7rem !important;
+    margin-left: 37px;
+}
+
 .signup-btn {
     padding: 10px 20px;
     color: white;

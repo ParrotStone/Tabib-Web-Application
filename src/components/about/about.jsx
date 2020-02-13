@@ -33,7 +33,7 @@ const AboutContent = () => {
                 className="btn btn-sm ml-3"
                 style={{ background: "#12a2f9" }}
               >
-                <Link className="mx-3" to="/signup">
+                <Link className="nav-header-link mx-3" to="/signup">
                   Register
                 </Link>
               </button>

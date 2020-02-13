@@ -1,10 +1,5 @@
 import React from "react";
 import "date-fns";
-// import { makeStyles } from "@material-ui/core/styles";
-// import Input from "@material-ui/core/Input";
-// import InputLabel from "@material-ui/core/InputLabel";
-// import InputAdornment from "@material-ui/core/InputAdornment";
-// import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Grid from "@material-ui/core/Grid";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -46,7 +41,7 @@ class PersonalInfoForm extends React.Component {
               direction="row"
               alignItems="center"
               className="mt-4"
-              style={{ width: "390px" }}
+              style={{ width: "400px" }}
             >
               <RadioGroup
                 aria-label="gender"

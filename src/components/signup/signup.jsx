@@ -3,22 +3,25 @@ import BtnGroup from "../common/button-group";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import PersonalInfoForm from "./formPersonalInfo";
+import HealthInfo from "./formHealthInfo";
+import EmailInfo from "./emailInfo";
 
 class SignupBox extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      step: 1,
+      step: 3,
       name: "",
       gender: "",
       birthdate: this.getDateFormat(new Date()),
       phoneNum: "",
-      oldDiseases: "",
+      prevDiseases: "",
       smokingCheckBox: false,
       weight: "",
       email: "",
       password: "",
+      showPassword: false,
       confirmPassword: ""
     };
   }
@@ -46,6 +49,12 @@ class SignupBox extends React.Component {
       return;
     }
 
+    // Check if the event raised was from an type checkbox w/ checked property
+    if (event.target.checked !== undefined) {
+      this.setState({ smokingCheckBox: event.target.checked });
+      return;
+    }
+
     event.persist();
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -56,7 +65,7 @@ class SignupBox extends React.Component {
       gender,
       birthdate,
       phoneNum,
-      oldDiseases,
+      prevDiseases,
       smokingCheckBox,
       weight,
       email,
@@ -69,7 +78,7 @@ class SignupBox extends React.Component {
       gender,
       birthdate,
       phoneNum,
-      oldDiseases,
+      prevDiseases,
       smokingCheckBox,
       weight,
       email,
@@ -87,9 +96,23 @@ class SignupBox extends React.Component {
           />
         );
       case 2:
-        return <h1>Next step2</h1>;
+        return (
+          <HealthInfo
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={inputFields}
+            handleChange={this.handleChange}
+          />
+        );
       case 3:
-        return <h1>Next step3</h1>;
+        return (
+          <EmailInfo
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={inputFields}
+            handleChange={this.handleChange}
+          />
+        );
       default:
         return;
     }
