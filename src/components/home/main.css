@@ -37,6 +37,11 @@ img.logo {
 }
 
 a {
+    color: #222222;
+    transition: all 0.4s;
+}
+
+a.nav-header-link {
     color: white;
     transition: all 0.4s;
 }
@@ -65,6 +70,10 @@ div.get-started button {
 div.overlay .row img {
     width: 400px;
     height: 400px;
+}
+
+.primary-color {
+    color: var(--primary-color);
 }
 
 div.content h1 {
@@ -100,6 +109,7 @@ div.content button {
     padding: 20px;
     border: 2px solid #dddddd;
     border-radius: 10px;
+    box-shadow: 6px 6px 4px 2px #cccccc, -4px -4px 4px 2px #cccccc;
 }
 
 .btn-group-custom {
@@ -119,9 +129,19 @@ div.content button {
 }
 
 .btn-selected {
-    color: white;
     background: var(--primary-color);
     font-weight: bold;
+    border-radius: 30px;
+}
+
+.btn-selected > a {
+    color: white;
+}
+
+.signup-btn {
+    padding: 10px 20px;
+    color: white;
+    background: var(--primary-color);
     border-radius: 30px;
 }
 

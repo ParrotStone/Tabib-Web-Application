@@ -5,13 +5,13 @@ const Navbar = props => {
   return (
     <div className="row mt-4 text-right">
       <div className="col-5 offset-7">
-        <Link to="/" className="text-upper mr-4">
+        <Link to="/" className="text-upper mr-4 nav-header-link">
           Home
         </Link>
-        <Link to="/about" className="text-upper mr-4">
+        <Link to="/about" className="text-upper mr-4 nav-header-link">
           About
         </Link>
-        <Link to="/login" className="text-upper mr-4">
+        <Link to="/login" className="text-upper mr-4 nav-header-link">
           Sign In
         </Link>
         <Link to="/signup" className="btn bg-white text-upper mr-4">

@@ -11,15 +11,15 @@ class UserArea extends React.Component {
         <div className="container user-area-wrapper d-flex flex-column">
           <div className="emu-pic mt-4 align-self-center"></div>
           <div className="mt-5">
-            <Link to="account" className="d-block  my-2">
+            <Link to="account" className="d-block my-2 nav-header-link">
               <PersonIcon className="text-light mx-3" />
               Account
             </Link>
-            <Link to="not-found" className="d-block  my-2">
+            <Link to="not-found" className="d-block my-2 nav-header-link">
               <AccessAlarmsIcon className="text-light mx-3" />
               Drug Alarm
             </Link>
-            <Link to="/logout" className="d-block  my-2">
+            <Link to="/logout" className="d-block my-2 nav-header-link">
               <ExitToAppIcon className="text-light mx-3" />
               Sign out
             </Link>

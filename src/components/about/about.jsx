@@ -20,13 +20,13 @@ const AboutContent = () => {
               />
             </div>
             <div className="col mr-5 text-right" style={{ marginTop: "55px" }}>
-              <Link className="mx-3" to="/">
+              <Link className="mx-3 nav-header-link" to="/">
                 Home
               </Link>
-              <Link className="mx-3" to="/about">
+              <Link className="mx-3 nav-header-link" to="/about">
                 About
               </Link>
-              <Link className="mx-3" to="/login">
+              <Link className="mx-3 nav-header-link" to="/login">
                 Sign In
               </Link>
               <button

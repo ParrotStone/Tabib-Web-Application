@@ -9,7 +9,8 @@ class SignupBox extends React.Component {
   state = {
     step: 1,
     name: "",
-    birthdate: {},
+    gender: "",
+    birthdate: "",
     phoneNum: "",
     oldDiseases: "",
     smokingCheckBox: false,
@@ -19,14 +20,17 @@ class SignupBox extends React.Component {
     confirmPassword: ""
   };
 
-  prevStep = () => {
+  // Proceed to the next step
+  nextStep = () => {
     this.setState({ step: this.state + 1 });
   };
 
+  // Go back to previous step
   prevStep = () => {
     this.setState({ step: this.state - 1 });
   };
 
+  // Handle fields change
   handleChange = input => e => {
     this.setState({ [input]: e.target.value });
   };
@@ -56,7 +60,7 @@ class SignupBox extends React.Component {
       <ThemeProvider theme={theme}>
         <div className="reg-box">
           <div className="container d-flex justify-content-center">
-            <BtnGroup />
+            <BtnGroup signupSelected={true} signinSelected={false} />
           </div>
           {this.getMarkup()}
         </div>
