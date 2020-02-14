@@ -9,6 +9,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
+import FormControl from "@material-ui/core/FormControl";
 
 class EmailInfo extends React.Component {
   render() {
@@ -18,6 +19,8 @@ class EmailInfo extends React.Component {
       showPassword,
       confirmPassword
     } = this.props.values;
+
+    const { handleChange, handlePasswordVis } = this.props;
 
     return (
       <React.Fragment>
@@ -32,7 +35,7 @@ class EmailInfo extends React.Component {
                 label="Email"
                 name="email"
                 fullWidth
-                onChange={this.props.handleChange}
+                onChange={handleChange}
                 defaultValue={email}
                 type="email"
               />
@@ -45,48 +48,64 @@ class EmailInfo extends React.Component {
             <Grid item>
               <LockIcon color="primary" />
             </Grid>
-            <Grid item style={{ width: "400px" }}>
-              <TextField
-                id="password"
-                type={showPassword ? "text" : "password"}
-                defaultValue={password}
-                label="Password"
-                fullWidth
-                onChange={this.props.handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={this.props.handleChange}
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
+            <Grid item>
+              <FormControl style={{ width: "390px" }}>
+                <InputLabel htmlFor="standard-adornment-password">
+                  Password
+                </InputLabel>
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  defaultValue={password}
+                  label="Password"
+                  name="password"
+                  fullWidth
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handlePasswordVis}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
             </Grid>
           </Grid>
           <Grid container spacing={1} alignItems="flex-end" className="mt-4">
             <Grid item>
               <LockIcon color="primary" />
             </Grid>
-            <Grid item style={{ width: "400px" }}>
-              <TextField
-                id="confirm-password"
-                type={showPassword ? "text" : "password"}
-                defaultValue={confirmPassword}
-                label="Confirm Password"
-                fullWidth
-                onChange={this.props.handleChange}
-              />
+            <Grid item>
+              <FormControl style={{ width: "390px" }}>
+                <InputLabel htmlFor="standard-adornment-password">
+                  Confirm Password
+                </InputLabel>
+                <Input
+                  id="confirm-password"
+                  name="confirmPassword"
+                  type={showPassword ? "text" : "password"}
+                  defaultValue={confirmPassword}
+                  label="Confirm Password"
+                  fullWidth
+                  onChange={handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handlePasswordVis}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
             </Grid>
           </Grid>
-          <button
-            className="btn signup-btn d-block mt-4 mx-auto"
-            onClick={() => this.props.nextStep()}
-          >
-            Sign up
-          </button>
         </div>
       </React.Fragment>
     );

@@ -19,7 +19,7 @@ class PersonalInfoForm extends React.Component {
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div className="container-fluid d-flex flex-column align-items-center mt-4">
+          <div className="container-fluid d-flex flex-column align-items-center mt-3">
             <Grid container spacing={1} alignItems="flex-end">
               <Grid item>
                 <AccountCircle color="primary" />
@@ -41,14 +41,14 @@ class PersonalInfoForm extends React.Component {
               direction="row"
               alignItems="center"
               className="mt-4"
-              style={{ width: "400px" }}
+              style={{ width: "440px" }}
             >
               <RadioGroup
                 aria-label="gender"
                 name="gender"
                 value={gender}
                 onChange={this.props.handleChange}
-                className="d-flex flex-row justify-content-between w-100 ml-4"
+                className="d-flex flex-row justify-content-between w-100 ml-3"
               >
                 <FormControlLabel
                   value="male"
@@ -101,12 +101,6 @@ class PersonalInfoForm extends React.Component {
                 />
               </Grid>
             </Grid>
-            <button
-              className="btn signup-btn d-block mt-4 mx-auto"
-              onClick={() => this.props.nextStep()}
-            >
-              Sign up
-            </button>
           </div>
         </MuiPickersUtilsProvider>
       </React.Fragment>

@@ -5,13 +5,15 @@ import { ThemeProvider } from "@material-ui/styles";
 import PersonalInfoForm from "./formPersonalInfo";
 import HealthInfo from "./formHealthInfo";
 import EmailInfo from "./emailInfo";
+import ProgressBar from "../common/progressBar";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 class SignupBox extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      step: 3,
+      step: 1,
       name: "",
       gender: "",
       birthdate: this.getDateFormat(new Date()),
@@ -29,6 +31,23 @@ class SignupBox extends React.Component {
   getDateFormat(timeDate) {
     return timeDate.toISOString().split("T")[0];
   }
+
+  // Handle the progress bar change
+  handleProgressChange = ev => {
+    // Getting the last num of the id to identify the steps
+    const desiredStep = Number(ev.target.id);
+    this.setState({ step: desiredStep });
+  };
+
+  handleSubmit = () => {
+    if (this.state.step < 3) {
+      this.nextStep();
+      return;
+    }
+
+    // Call the back end and re-direct towards the homie
+    console.log("Here's the date");
+  };
 
   // Proceed to the next step
   nextStep = () => {
@@ -50,13 +69,18 @@ class SignupBox extends React.Component {
     }
 
     // Check if the event raised was from an type checkbox w/ checked property
-    if (event.target.checked !== undefined) {
+    if (event.target.type === "checkbox") {
       this.setState({ smokingCheckBox: event.target.checked });
       return;
     }
 
     event.persist();
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  // Handle the password visibility icon
+  handlePasswordVis = event => {
+    this.setState({ showPassword: !this.state.showPassword });
   };
 
   getMarkup = () => {
@@ -70,7 +94,8 @@ class SignupBox extends React.Component {
       weight,
       email,
       password,
-      confirmPassword
+      confirmPassword,
+      showPassword
     } = this.state;
 
     const inputFields = {
@@ -83,7 +108,8 @@ class SignupBox extends React.Component {
       weight,
       email,
       password,
-      confirmPassword
+      confirmPassword,
+      showPassword
     };
 
     switch (this.state.step) {
@@ -111,6 +137,7 @@ class SignupBox extends React.Component {
             prevStep={this.prevStep}
             values={inputFields}
             handleChange={this.handleChange}
+            handlePasswordVis={this.handlePasswordVis}
           />
         );
       default:
@@ -134,7 +161,31 @@ class SignupBox extends React.Component {
           <div className="container d-flex justify-content-center">
             <BtnGroup signupSelected={true} signinSelected={false} />
           </div>
-          {this.getMarkup()}
+          <TransitionGroup component={null}>
+            <CSSTransition
+              key={this.state.step}
+              in={true}
+              timeout={500}
+              appear={true}
+              classNames="slide"
+            >
+              {this.getMarkup()}
+            </CSSTransition>
+          </TransitionGroup>
+          <div className="submit-wrapper">
+            <div className="container mt-4">
+              <ProgressBar
+                currentStep={this.state.step}
+                handleProgressChange={this.handleProgressChange}
+              />
+            </div>
+            <button
+              className="btn signup-btn d-block mt-3 mx-auto"
+              onClick={this.handleSubmit}
+            >
+              Sign up
+            </button>
+          </div>
         </div>
       </ThemeProvider>
     );

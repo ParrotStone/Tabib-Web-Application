@@ -14,7 +14,8 @@ body {
     font-family: Raleway, sans-serif;
     font-size: 1.2rem;
     position: relative;
-    overflow-x: hidden;
+    /*Y axis to hide the scroll bar on animating the signup steps*/
+    overflow: hidden;
 }
 
 div.overlay {
@@ -105,7 +106,7 @@ div.content button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -43%);
-    height: 480px;
+    height: 500px;
     width: 500px;
     background: #f8f8f8;
     padding: 20px;
@@ -153,66 +154,49 @@ small.input-info {
     border-radius: 30px;
 }
 
-.progress-wrapper > span {
-    width: 5px;
-    height: 5px;
-    background: var(--primary-color);
-    border-radius: 50%;
+div.progress-wrapper {
+    height: 30px;
+    width: 200px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
 }
 
-/*HERE*/
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    /*CSS counters to number the steps*/
-    counter-reset: step;
-}
-
-#progressbar li {
-    list-style-type: none;
-    width: 33.33%;
+div.progress-wrapper > span.progress-span {
+    cursor: pointer;
+    align-self: center;
+    width: 10px;
     height: 10px;
+    padding: 7px;
+    border: 3px solid var(--primary-color);
     border-radius: 50%;
-    float: left;
-    position: relative;
+    margin-left: 15px;
+    margin-right: 15px;
+    transition: 0.5s ease;
 }
 
-#progressbar li:before {
+div.progress-wrapper > span::after {
     content: "";
-    counter-increment: step;
-    width: 20px;
-    line-height: 20px;
     display: block;
-    font-size: 10px;
-    color: var(--primary-color);
-    background: white;
-    border-radius: 3px;
-    margin: 0 auto 5px auto;
+    height: 3px;
+    padding-right: 10px;
+    border-right: 33px solid var(--primary-color);
 }
 
-/*progressbar connectors*/
-#progressbar li:after {
-    content: "";
-    width: 100%;
-    height: 2px;
-    background: white;
-    position: absolute;
-    left: -50%;
-    top: 9px;
-    z-index: -1; /*put it behind the numbers*/
+div.progress-wrapper > span:last-child::after {
+    border: none;
 }
 
-#progressbar li:first-child:after {
-    /*connector not needed before the first step*/
-    content: none;
-}
-
-/*marking active/completed steps green*/
-/*The number of the step and the connector before it = green*/
-#progressbar li.active:before,
-#progressbar li.active:after {
+.current-step {
     background: var(--primary-color);
-    color: white;
+}
+
+div.submit-wrapper {
+    position: absolute;
+    top: 72%;
+    /*Centering it at the middle horizontally*/
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /*The main diagnosis area styles*/
@@ -262,4 +246,47 @@ small.input-info {
 
 .btn-action > button {
     border-radius: 30px !important;
+}
+
+/*------------------------------------------------*/
+/*----------------Animation Styles----------------*/
+/*------------------------------------------------*/
+
+/*Appear state*/
+/*When the element first mounted into the DOM*/
+/*.slide-appear {
+    opacity: 0;
+}
+
+.slide-appear-active {
+    opacity: 1;
+    transition: all 1s linear;
+}
+*/
+/*Enter state*/
+.slide-enter {
+    opacity: 0;
+    transform: scale(0.97) translateY(5px);
+}
+
+.slide-enter-active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition: all 0.5s linear;
+}
+
+/*Leave state*/
+.slide-exit {
+    opacity: 0;
+    transform: scale(1) translateY(0);
+}
+
+.slide-exit-active {
+    opacity: 0;
+    transform: scale(0.97) translateY(5px);
+    transition: all 0.5s linear;
+}
+
+.slide-exit-done {
+    opacity: 0;
 }

@@ -5,7 +5,6 @@ import AddIcon from "@material-ui/icons/Add";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
-
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 class HealthInfo extends React.Component {
@@ -42,7 +41,7 @@ class HealthInfo extends React.Component {
             <FormControlLabel
               control={<Checkbox color="primary" />}
               label="Smoking"
-              value={smokingCheckBox}
+              checked={smokingCheckBox}
               onChange={this.props.handleChange}
               labelPlacement="end"
             />
@@ -72,12 +71,6 @@ class HealthInfo extends React.Component {
               Type in your weight in Kilos(kg) OR Pounds(lbs)
             </small>
           </Grid>
-          <button
-            className="btn signup-btn d-block mt-4 mx-auto"
-            onClick={() => this.props.nextStep()}
-          >
-            Sign up
-          </button>
         </div>
       </React.Fragment>
     );
