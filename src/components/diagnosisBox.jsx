@@ -4,10 +4,10 @@ import Swal from "sweetalert2";
 import ImgUpload from "../images/img-upload.png";
 
 class DiagnosisBox extends React.Component {
-  // TODO: Either custom modal/bootstrap-modal(css)/styled-component(bootstrap-version)/custom-one(hand crafted) ->> Another solution would be to figure out the whole upload button icon thing out
+  // TODO: Remember also to check the packages installed and remove the ones un-necessary especially to (sweetalert thingie) and any un-needed ones in general, also separate the devDependencies from the required ones
 
   // The asynchronous part is to wait for the user until it uploads an image
-  async handleSkinClick() {
+  handleSkinClick = async () => {
     const { value: file } = await Swal.fire({
       title: "Select image",
       input: "file",
@@ -50,7 +50,7 @@ class DiagnosisBox extends React.Component {
 
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   render() {
     return (

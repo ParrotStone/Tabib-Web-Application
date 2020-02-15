@@ -60,16 +60,13 @@ class HealthInfo extends React.Component {
                 defaultValue={weight}
                 type="number"
                 InputProps={{
-                  inputProps: { min: 1, max: 300 },
+                  inputProps: { min: 1, max: 130 },
                   endAdornment: (
                     <InputAdornment position="end">Kg</InputAdornment>
                   )
                 }}
               />
             </Grid>
-            <small className="form-text text-muted input-info">
-              Type in your weight in Kilos(kg) OR Pounds(lbs)
-            </small>
           </Grid>
         </div>
       </React.Fragment>

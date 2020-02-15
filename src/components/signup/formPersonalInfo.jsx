@@ -15,7 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class PersonalInfoForm extends React.Component {
   render() {
-    const { name, gender, birthdate, phoneNum } = this.props.values;
+    const { username, gender, birthdate, phoneNum } = this.props.values;
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -26,12 +26,12 @@ class PersonalInfoForm extends React.Component {
               </Grid>
               <Grid item style={{ width: "400px" }}>
                 <TextField
-                  id="name"
-                  label="Name"
-                  name="name"
+                  id="username"
+                  label="Username"
+                  name="username"
                   fullWidth
                   onChange={this.props.handleChange}
-                  defaultValue={name}
+                  defaultValue={username}
                 />
               </Grid>
             </Grid>

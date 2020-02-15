@@ -2,7 +2,7 @@ import React from "react";
 
 const ProgressBar = ({ currentStep, handleProgressChange }) => {
   // Represents the number of the steps
-  const steps = [1, 2, 3];
+  const steps = [1, 2, 3, 4];
 
   return (
     <React.Fragment>

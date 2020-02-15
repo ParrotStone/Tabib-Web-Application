@@ -124,7 +124,7 @@ div.content button {
     padding: 20px;
     border: 1px solid #dddddd;
     border-radius: 10px;
-    box-shadow: 6px 6px 4px 2px #cccccc, -4px -4px 4px 2px #cccccc;
+    box-shadow: 8px 8px 6px 3px #cccccc;
 }
 
 .btn-group-custom {
@@ -215,7 +215,7 @@ div.submit-wrapper {
 /*The main diagnosis area styles*/
 .main-diag {
     padding: 0;
-    width: 1200px;
+    width: 1150px;
     height: 500px;
     border-radius: 30px;
 }

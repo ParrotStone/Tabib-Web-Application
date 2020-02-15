@@ -4,9 +4,14 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import PersonalInfoForm from "./formPersonalInfo";
 import HealthInfo from "./formHealthInfo";
+import DemographicsInfo from "./formDemographics";
 import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+
+import http from "../../services/httpService";
+import config from "../../config.json";
+import { ToastContainer } from "react-toastify";
 
 class SignupBox extends React.Component {
   constructor(props) {
@@ -14,17 +19,22 @@ class SignupBox extends React.Component {
 
     this.state = {
       step: 1,
-      name: "",
-      gender: "",
-      birthdate: this.getDateFormat(new Date()),
-      phoneNum: "",
-      prevDiseases: "",
-      smokingCheckBox: false,
-      weight: "",
       email: "",
+      username: "",
       password: "",
+      confirmPassword: "",
       showPassword: false,
-      confirmPassword: ""
+      profile: {
+        gender: "",
+        birthdate: this.getDateFormat(new Date()),
+        phoneNum: "",
+        prevDiseases: "",
+        smokingCheckBox: false,
+        weight: "",
+        height: "",
+        country: "",
+        city: ""
+      }
     };
   }
 
@@ -39,14 +49,52 @@ class SignupBox extends React.Component {
     this.setState({ step: desiredStep });
   };
 
-  handleSubmit = () => {
-    if (this.state.step < 3) {
+  handleSubmit = async () => {
+    if (this.state.step < 4) {
       this.nextStep();
       return;
     }
 
+    const {
+      email,
+      username,
+      password,
+      confirmPassword,
+      showPassword,
+      profile: {
+        gender,
+        birthdate,
+        phoneNum,
+        prevDiseases,
+        smokingCheckBox,
+        weight,
+        height,
+        country,
+        city
+      }
+    } = this.state;
+
+    const inputFields = {
+      email,
+      username,
+      password,
+      confirmPassword,
+      showPassword,
+      gender,
+      birthdate,
+      phoneNum,
+      prevDiseases,
+      smokingCheckBox,
+      weight,
+      height,
+      country,
+      city
+    };
+
+    const endPoint = `${config.apiEndpoint}/accounts/register`;
     // Call the back end and re-direct towards the homie
-    console.log("Here's the data");
+    const { data: response } = await http.post(endPoint, inputFields);
+    console.log(response);
   };
 
   // Proceed to the next step
@@ -62,20 +110,35 @@ class SignupBox extends React.Component {
   // Handle fields change
   handleChange = event => {
     // The date picker return the a date obj when a change event fires off
-    // The condition down here is to deal w/ this specific case and get the date separate from the time
+    // The condition down here is put to deal w/ this specific case and get the date separate from the time
     if (!event.target) {
-      this.setState({ birthdate: this.getDateFormat(event) });
+      const profile = { ...this.state.profile };
+      profile["birthdate"] = this.getDateFormat(event);
+      this.setState({ profile });
       return;
     }
 
     // Check if the event raised was from an type checkbox w/ checked property
     if (event.target.type === "checkbox") {
-      this.setState({ smokingCheckBox: event.target.checked });
+      const profile = { ...this.state.profile };
+      profile["smokingCheckBox"] = event.target.checked;
+      this.setState({ profile });
       return;
     }
 
     event.persist();
-    this.setState({ [event.target.name]: event.target.value });
+
+    const propertyName = event.target.name;
+    const value = event.target.value;
+
+    // Check if the property is part of the profile data
+    if (this.state.profile.hasOwnProperty([propertyName])) {
+      const profile = { ...this.state.profile };
+      profile[propertyName] = value;
+      this.setState({ profile });
+    } else {
+      this.setState({ [propertyName]: value });
+    }
   };
 
   // Handle the password visibility icon
@@ -85,31 +148,39 @@ class SignupBox extends React.Component {
 
   getMarkup = () => {
     const {
-      name,
-      gender,
-      birthdate,
-      phoneNum,
-      prevDiseases,
-      smokingCheckBox,
-      weight,
       email,
+      username,
       password,
       confirmPassword,
-      showPassword
+      showPassword,
+      profile: {
+        gender,
+        birthdate,
+        phoneNum,
+        prevDiseases,
+        smokingCheckBox,
+        weight,
+        height,
+        country,
+        city
+      }
     } = this.state;
 
     const inputFields = {
-      name,
+      email,
+      username,
+      password,
+      confirmPassword,
+      showPassword,
       gender,
       birthdate,
       phoneNum,
       prevDiseases,
       smokingCheckBox,
       weight,
-      email,
-      password,
-      confirmPassword,
-      showPassword
+      height,
+      country,
+      city
     };
 
     switch (this.state.step) {
@@ -132,6 +203,15 @@ class SignupBox extends React.Component {
         );
       case 3:
         return (
+          <DemographicsInfo
+            nextStep={this.nextStep}
+            prevStep={this.prevStep}
+            values={inputFields}
+            handleChange={this.handleChange}
+          />
+        );
+      case 4:
+        return (
           <EmailInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
@@ -141,12 +221,7 @@ class SignupBox extends React.Component {
           />
         );
       default:
-        return (
-          <h1>
-            Some random step in case you didn't handle the damn submission w/
-            Ajax to the back-end
-          </h1>
-        );
+        return;
     }
   };
 

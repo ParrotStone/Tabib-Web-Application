@@ -13,7 +13,7 @@ const BtnGroup = ({ signupSelected, signinSelected }) => {
           <button className={classesSignin}>Sign In</button>
         </Link>
         <Link to="/signup">
-          <button className={classesSignup}>Sign In</button>
+          <button className={classesSignup}>Sign Up</button>
         </Link>
       </div>
     </React.Fragment>
