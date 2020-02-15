@@ -4,7 +4,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import PersonalInfoForm from "./formPersonalInfo";
 import HealthInfo from "./formHealthInfo";
-import EmailInfo from "./emailInfo";
+import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -46,7 +46,7 @@ class SignupBox extends React.Component {
     }
 
     // Call the back end and re-direct towards the homie
-    console.log("Here's the date");
+    console.log("Here's the data");
   };
 
   // Proceed to the next step
@@ -141,7 +141,12 @@ class SignupBox extends React.Component {
           />
         );
       default:
-        return;
+        return (
+          <h1>
+            Some random step in case you didn't handle the damn submission w/
+            Ajax to the back-end
+          </h1>
+        );
     }
   };
 

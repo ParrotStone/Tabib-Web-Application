@@ -11,7 +11,6 @@ const HomePg = () => {
       <div className="container">
         <Logo />
         <ContentSlider />
-
         <div className="get-started">
           <button className="btn bg-white btn-lg text-upper py-2">
             <Link to="/signup" style={{ color: "#222222" }}>

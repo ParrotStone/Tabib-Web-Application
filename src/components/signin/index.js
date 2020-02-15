@@ -1,14 +1,14 @@
 import React from "react";
 import Background from "../common/background";
-import SignupBox from "./signup";
+import SigninBox from "./signin";
 
-const Signup = () => {
+const Signin = () => {
   return (
     <React.Fragment>
       <Background />
-      <SignupBox />
+      <SigninBox />
     </React.Fragment>
   );
 };
 
-export default Signup;
+export default Signin;

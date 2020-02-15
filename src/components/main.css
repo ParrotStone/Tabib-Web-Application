@@ -11,11 +11,18 @@
 }
 
 body {
-    font-family: Raleway, sans-serif;
+    font-family: Raleway, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
     font-size: 1.2rem;
     position: relative;
-    /*Y axis to hide the scroll bar on animating the signup steps*/
+    /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
     overflow: hidden;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
 }
 
 div.overlay {
@@ -45,6 +52,11 @@ a {
 a.nav-header-link {
     color: white;
     transition: all 0.4s;
+}
+
+a.pass-reset-link {
+    color: var(--primary-color);
+    font-size: 1rem;
 }
 
 a:hover {
@@ -97,7 +109,7 @@ div.content button {
     /*The additional 4vh here is to account for the negative margin given to the 'Tabib' logo in the logo.jsx component*/
     min-height: 104vh;
     min-width: 100%;
-    background: url("../../images/background.png") repeat;
+    background: url("../images/background.png") repeat;
     background-size: 40px;
 }
 
@@ -136,6 +148,7 @@ div.content button {
     background: var(--primary-color);
     font-weight: bold;
     border-radius: 30px;
+    color: white !important;
 }
 
 .btn-selected > a {
@@ -290,3 +303,5 @@ div.submit-wrapper {
 .slide-exit-done {
     opacity: 0;
 }
+
+/*------------------------------------------------------------------*/

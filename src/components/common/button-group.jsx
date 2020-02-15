@@ -9,12 +9,12 @@ const BtnGroup = ({ signupSelected, signinSelected }) => {
   return (
     <React.Fragment>
       <div className="btn-group-custom">
-        <button className={classesSignin}>
-          <Link to="/login">Sign In</Link>
-        </button>
-        <button className={classesSignup}>
-          <Link to="/signup">Sign Up</Link>
-        </button>
+        <Link to="/login">
+          <button className={classesSignin}>Sign In</button>
+        </Link>
+        <Link to="/signup">
+          <button className={classesSignup}>Sign In</button>
+        </Link>
       </div>
     </React.Fragment>
   );

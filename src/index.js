@@ -5,9 +5,9 @@ import "bootstrap/dist/css/bootstrap.css";
 import "jquery";
 import "popper.js";
 import "bootstrap/dist/js/bootstrap.js";
-import "./index.css";
 import App from "./App";
-import "./components/home/main.css";
+import "./components/custom.scss";
+import "./components/main.css";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
