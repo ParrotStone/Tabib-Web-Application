@@ -15,7 +15,12 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class PersonalInfoForm extends React.Component {
   render() {
-    const { username, gender, birthdate, phoneNum } = this.props.values;
+    const {
+      username,
+      profile: { gender, birthdate, phoneNum },
+      errors: { username: usernameErrMsg, phoneNum: phoneNumErrMsg }
+    } = this.props.values;
+
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -30,6 +35,9 @@ class PersonalInfoForm extends React.Component {
                   label="Username"
                   name="username"
                   fullWidth
+                  autoFocus
+                  error={usernameErrMsg && true}
+                  helperText={usernameErrMsg}
                   onChange={this.props.handleChange}
                   defaultValue={username}
                 />
@@ -70,7 +78,7 @@ class PersonalInfoForm extends React.Component {
             >
               <Grid item>
                 <KeyboardDatePicker
-                  className="mt-4 ml-2"
+                  className="mt-3 ml-2"
                   format="MM/dd/yyyy"
                   margin="normal"
                   fullWidth={true}
@@ -95,6 +103,8 @@ class PersonalInfoForm extends React.Component {
                   label="Phone Number"
                   name="phoneNum"
                   value={phoneNum}
+                  error={phoneNumErrMsg && true}
+                  helperText={phoneNumErrMsg}
                   onChange={this.props.handleChange}
                   type="tel"
                   fullWidth

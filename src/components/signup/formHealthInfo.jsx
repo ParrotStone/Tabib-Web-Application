@@ -9,7 +9,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 class HealthInfo extends React.Component {
   render() {
-    const { prevDiseases, smokingCheckBox, weight } = this.props.values;
+    const {
+      profile: { prevDiseases, smokingCheckBox, weight }
+    } = this.props.values;
 
     return (
       <React.Fragment>

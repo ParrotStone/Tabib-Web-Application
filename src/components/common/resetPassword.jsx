@@ -99,7 +99,7 @@ class ResetPassword extends React.Component {
                 <Grid item>
                   <FormControl style={{ width: "390px" }}>
                     <InputLabel htmlFor="standard-adornment-password">
-                      Password
+                      New Password
                     </InputLabel>
                     <Input
                       id="password"
@@ -135,7 +135,7 @@ class ResetPassword extends React.Component {
                 <Grid item>
                   <FormControl style={{ width: "390px" }}>
                     <InputLabel htmlFor="standard-adornment-password">
-                      Password
+                      Confirm Password
                     </InputLabel>
                     <Input
                       id="confirm-password"

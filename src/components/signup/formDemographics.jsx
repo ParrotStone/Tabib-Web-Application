@@ -8,7 +8,10 @@ import LocationCityIcon from "@material-ui/icons/LocationCity";
 
 class DemographicsInfo extends React.Component {
   render() {
-    const { height, country, city } = this.props.values;
+    const {
+      profile: { height, country, city },
+      errors: { country: countryErrMsg, city: cityErrMsg }
+    } = this.props.values;
 
     return (
       <React.Fragment>
@@ -46,6 +49,8 @@ class DemographicsInfo extends React.Component {
                 label="Country"
                 name="country"
                 fullWidth
+                error={countryErrMsg && true}
+                helperText={countryErrMsg}
                 onChange={this.props.handleChange}
                 defaultValue={country}
                 type="text"
@@ -67,6 +72,8 @@ class DemographicsInfo extends React.Component {
                   label="City"
                   name="city"
                   fullWidth
+                  error={cityErrMsg && true}
+                  helperText={cityErrMsg}
                   onChange={this.props.handleChange}
                   defaultValue={city}
                   type="text"

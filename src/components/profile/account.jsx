@@ -19,7 +19,7 @@ class Account extends React.Component {
       <React.Fragment>
         <ThemeProvider theme={theme}>
           <Background />
-          <div className="reg-box mt-3 main-diag">
+          <div className="reg-box mt-2 main-diag">
             <Link to="/homie">
               <ArrowBackIcon
                 color="primary"

@@ -118,7 +118,7 @@ div.content button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -43%);
-    height: 500px;
+    height: 520px;
     width: 500px;
     background: #f8f8f8;
     padding: 20px;
@@ -206,7 +206,7 @@ div.progress-wrapper > span:last-child::after {
 
 div.submit-wrapper {
     position: absolute;
-    top: 72%;
+    top: 74%;
     /*Centering it at the middle horizontally*/
     left: 50%;
     transform: translateX(-50%);

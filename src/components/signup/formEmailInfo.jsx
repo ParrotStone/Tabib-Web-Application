@@ -5,6 +5,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,7 +18,12 @@ class EmailInfo extends React.Component {
       email,
       password,
       showPassword,
-      confirmPassword
+      confirmPassword,
+      errors: {
+        email: emailErrMsg,
+        password: passwordErrMsg,
+        confirmPassword: confirmPassErrMsg
+      }
     } = this.props.values;
 
     const { handleChange, handlePasswordVis } = this.props;
@@ -35,21 +41,28 @@ class EmailInfo extends React.Component {
                 label="Email"
                 name="email"
                 fullWidth
+                error={emailErrMsg && true}
+                helperText={emailErrMsg}
                 onChange={handleChange}
                 defaultValue={email}
                 type="email"
               />
             </Grid>
-            <small className="form-text text-muted input-info">
-              We'll never share your email with anyone else
-            </small>
+            {!emailErrMsg && (
+              <small className="form-text text-muted input-info">
+                We'll never share your email with anyone else
+              </small>
+            )}
           </Grid>
           <Grid container spacing={1} alignItems="flex-end" className="mt-4">
             <Grid item>
               <LockIcon color="primary" />
             </Grid>
             <Grid item>
-              <FormControl style={{ width: "390px" }}>
+              <FormControl
+                error={passwordErrMsg && true}
+                style={{ width: "390px" }}
+              >
                 <InputLabel htmlFor="standard-adornment-password">
                   Password
                 </InputLabel>
@@ -72,6 +85,9 @@ class EmailInfo extends React.Component {
                     </InputAdornment>
                   }
                 />
+                <FormHelperText id="password-text">
+                  {passwordErrMsg}
+                </FormHelperText>
               </FormControl>
             </Grid>
           </Grid>
@@ -80,7 +96,10 @@ class EmailInfo extends React.Component {
               <LockIcon color="primary" />
             </Grid>
             <Grid item>
-              <FormControl style={{ width: "390px" }}>
+              <FormControl
+                error={confirmPassErrMsg && true}
+                style={{ width: "390px" }}
+              >
                 <InputLabel htmlFor="standard-adornment-password">
                   Confirm Password
                 </InputLabel>
@@ -103,6 +122,9 @@ class EmailInfo extends React.Component {
                     </InputAdornment>
                   }
                 />
+                <FormHelperText id="confirm-password-text">
+                  {confirmPassErrMsg}
+                </FormHelperText>
               </FormControl>
             </Grid>
           </Grid>

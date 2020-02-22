@@ -8,10 +8,11 @@ import DemographicsInfo from "./formDemographics";
 import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Joi from "@hapi/joi";
 
 import http from "../../services/httpService";
 import config from "../../config.json";
-import { ToastContainer } from "react-toastify";
+// import { ToastContainer } from "react-toastify";
 
 class SignupBox extends React.Component {
   constructor(props) {
@@ -34,15 +35,75 @@ class SignupBox extends React.Component {
         height: "",
         country: "",
         city: ""
-      }
+      },
+      errors: {}
     };
+
+    // The only current(at the time) valid way of extracting the keys of the schema object since relying on the internals of Joi is hacky and can result in future errors -- this way is safer
+    this.validators = {
+      email: Joi.string()
+        .email({
+          minDomainSegments: 2,
+          tlds: {
+            allow: [
+              "com",
+              "net",
+              "io",
+              "info",
+              "gov",
+              "edu",
+              "us",
+              "uk",
+              "org",
+              "info",
+              "tech",
+              "dev"
+            ]
+          }
+        })
+        .required()
+        .label("Email"),
+      username: Joi.string()
+        .alphanum()
+        .min(4)
+        .max(150)
+        .required()
+        .label("Username"),
+      // A regex that matches passwords w/ at least one letter, symbol, and digit, between (8-128) characters
+      password: Joi.string()
+        .pattern(
+          new RegExp(
+            "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#? ]{8,128}$"
+          )
+        )
+        .required()
+        .label("Password"),
+      confirmPassword: Joi.ref("password"),
+      phoneNum: Joi.string()
+        // A regex that would matches regular phone number along w/ country codes as well
+        .pattern(
+          new RegExp(
+            "^(\\(?\\+\\d{2}\\)?)?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4,}$"
+          )
+        )
+        .required()
+        .label("Phone Number"),
+      country: Joi.string()
+        .required()
+        .label("Country"),
+      city: Joi.string()
+        .required()
+        .label("City")
+    };
+
+    this.schema = Joi.object(this.validators);
   }
 
   getDateFormat(timeDate) {
     return timeDate.toISOString().split("T")[0];
   }
 
-  // Handle the progress bar change
+  // Handle the progress bar change event
   handleProgressChange = ev => {
     // Getting the last num of the id to identify the steps
     const desiredStep = Number(ev.target.id);
@@ -55,45 +116,11 @@ class SignupBox extends React.Component {
       return;
     }
 
-    const {
-      email,
-      username,
-      password,
-      confirmPassword,
-      showPassword,
-      profile: {
-        gender,
-        birthdate,
-        phoneNum,
-        prevDiseases,
-        smokingCheckBox,
-        weight,
-        height,
-        country,
-        city
-      }
-    } = this.state;
-
-    const inputFields = {
-      email,
-      username,
-      password,
-      confirmPassword,
-      showPassword,
-      gender,
-      birthdate,
-      phoneNum,
-      prevDiseases,
-      smokingCheckBox,
-      weight,
-      height,
-      country,
-      city
-    };
+    if (this.validate()) return;
 
     const endPoint = `${config.apiEndpoint}/accounts/register`;
     // Call the back end and re-direct towards the homie
-    const { data: response } = await http.post(endPoint, inputFields);
+    const { data: response } = await http.post(endPoint, this.inputFields);
     console.log(response);
   };
 
@@ -107,9 +134,61 @@ class SignupBox extends React.Component {
     this.setState({ step: this.state - 1 });
   };
 
+  validate = () => {
+    const {
+      email,
+      username,
+      password,
+      confirmPassword,
+      profile: { phoneNum, country, city }
+    } = this.state;
+
+    const {
+      error: { details }
+    } = this.schema.validate(
+      { email, username, password, confirmPassword, phoneNum, country, city },
+      { abortEarly: false }
+    );
+
+    const errors = { ...this.state.errors };
+    details.forEach(error => {
+      errors[error.path[0]] = error.message;
+    });
+
+    this.setState({ errors });
+
+    return Object.keys(errors).length;
+  };
+
+  validatePropertyInput = element => {
+    const validationOpts = { abortEarly: true };
+    const schema = Joi.object({
+      [element.name]: this.validators[element.name]
+    });
+
+    const { error } = schema.validate(
+      { [element.name]: element.value },
+      validationOpts
+    );
+
+    return !error ? undefined : error.details[0];
+  };
+
   // Handle fields change
   handleChange = event => {
-    // The date picker return the a date obj when a change event fires off
+    // Validation goes here...
+    if (event.target) {
+      const target = event.target;
+      const errors = { ...this.state.errors };
+      const error = this.validatePropertyInput(target);
+
+      if (error) errors[target.name] = error.message;
+      else delete errors[target.name];
+
+      this.setState({ errors });
+    }
+
+    // The date picker return the a date obj when a change event fires off(At least that what the Material Date Picker does)
     // The condition down here is put to deal w/ this specific case and get the date separate from the time
     if (!event.target) {
       const profile = { ...this.state.profile };
@@ -126,10 +205,10 @@ class SignupBox extends React.Component {
       return;
     }
 
-    event.persist();
-
     const propertyName = event.target.name;
     const value = event.target.value;
+
+    event.persist();
 
     // Check if the property is part of the profile data
     if (this.state.profile.hasOwnProperty([propertyName])) {
@@ -147,49 +226,13 @@ class SignupBox extends React.Component {
   };
 
   getMarkup = () => {
-    const {
-      email,
-      username,
-      password,
-      confirmPassword,
-      showPassword,
-      profile: {
-        gender,
-        birthdate,
-        phoneNum,
-        prevDiseases,
-        smokingCheckBox,
-        weight,
-        height,
-        country,
-        city
-      }
-    } = this.state;
-
-    const inputFields = {
-      email,
-      username,
-      password,
-      confirmPassword,
-      showPassword,
-      gender,
-      birthdate,
-      phoneNum,
-      prevDiseases,
-      smokingCheckBox,
-      weight,
-      height,
-      country,
-      city
-    };
-
     switch (this.state.step) {
       case 1:
         return (
           <PersonalInfoForm
             nextStep={this.nextStep}
             handleChange={this.handleChange}
-            values={inputFields}
+            values={this.state}
           />
         );
       case 2:
@@ -197,7 +240,7 @@ class SignupBox extends React.Component {
           <HealthInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
-            values={inputFields}
+            values={this.state}
             handleChange={this.handleChange}
           />
         );
@@ -206,7 +249,7 @@ class SignupBox extends React.Component {
           <DemographicsInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
-            values={inputFields}
+            values={this.state}
             handleChange={this.handleChange}
           />
         );
@@ -215,7 +258,7 @@ class SignupBox extends React.Component {
           <EmailInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
-            values={inputFields}
+            values={this.state}
             handleChange={this.handleChange}
             handlePasswordVis={this.handlePasswordVis}
           />
