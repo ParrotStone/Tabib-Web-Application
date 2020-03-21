@@ -2,263 +2,272 @@
 @import url("https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap");
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 :root {
-    /* --secondary-color: #43bccd; */
-    --primary-color: #12a2f9;
+  /* --secondary-color: #43bccd; */
+  --primary-color: #12a2f9;
 }
 
 body {
-    font-family: Raleway, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-        "Helvetica Neue", sans-serif;
-    font-size: 1.2rem;
-    position: relative;
-    /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
-    overflow: hidden;
+  font-family: Raleway, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 1.2rem;
+
+  height: 100vh;
+  width: 100%;
+
+  position: relative;
+  /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
+  overflow: hidden;
 }
 
 code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 div.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    background: var(--primary-color);
-    clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: var(--primary-color);
+  clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
 }
 
 img.logo {
-    height: 140px;
-    width: 140px;
+  height: 140px;
+  width: 140px;
 }
 
-.logo-container {
-    margin-bottom: 115px;
-}
-
-a {
-    color: #222222;
-    transition: all 0.4s;
-}
-
-a.nav-header-link {
-    color: white;
-    transition: all 0.4s;
-}
-
-a.pass-reset-link {
-    color: var(--primary-color);
-    font-size: 1rem;
-}
-
-a:hover {
-    color: #95caf7;
-    text-decoration: none;
+div#full-pg {
+  height: 100vh;
 }
 
 div#main-content {
-    height: 184px;
+}
+
+a {
+  color: #222222;
+  transition: all 0.4s;
+}
+
+a.nav-header-link {
+  color: white;
+  transition: all 0.4s;
+}
+
+a.pass-reset-link {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+a:hover {
+  color: #95caf7;
+  text-decoration: none;
 }
 
 div.get-started {
-    position: absolute;
-    z-index: 1;
-    margin-top: 80px;
-    margin-left: 435px;
+  /* position: absolute; */
+  /* z-index: 1; */
+  /* margin-top: 80px; */
+  /* margin-left: 435px; */
+  position: relative;
+  width: 100%;
+  margin: 50px auto;
+  text-align: center;
+  z-index: 1;
 }
 
 div.get-started button {
-    /* TODO: Color might change */
-    border: 1px solid var(--primary-color);
+  /* TODO: Color might change */
+  border: 1px solid var(--primary-color);
 }
 
 div.overlay .row img {
-    width: 400px;
-    height: 400px;
+  width: 400px;
+  height: 400px;
 }
 
 .primary-color {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
-div.content h1 {
-    font-family: "Permanent Marker", sans-serif;
+.content h1 {
+  font-family: "Permanent Marker", sans-serif;
 }
 
-div.content p {
-    width: 500px;
+.content p {
+  width: 500px;
 }
 
-div.content button {
-    background: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 20px;
+.content button {
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 20px;
 }
 
+/* Background styles(Drug Capsules) */
 .full-width {
-    top: 0;
-    left: 0;
-    /*The additional 4vh here is to account for the negative margin given to the 'Tabib' logo in the logo.jsx component*/
-    min-height: 104vh;
-    min-width: 100%;
-    background: url("../images/background.png") repeat;
-    background-size: 40px;
+  top: 0;
+  left: 0;
+  /*The additional 4vh here is to account for the negative margin given to the 'Tabib' logo in the logo.jsx component*/
+  min-height: 104vh;
+  min-width: 100%;
+  background: url("../images/background.png") repeat;
+  background-size: 40px;
 }
 
 .reg-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -43%);
-    height: 520px;
-    width: 500px;
-    background: #f8f8f8;
-    padding: 20px;
-    border: 1px solid #dddddd;
-    border-radius: 10px;
-    box-shadow: 8px 8px 6px 3px #cccccc;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -43%);
+  height: 520px;
+  width: 500px;
+  background: #f8f8f8;
+  padding: 20px;
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+  box-shadow: 8px 8px 6px 3px #cccccc;
 }
 
 .btn-group-custom {
-    text-align: center;
-    padding: 5px;
-    background: white;
-    color: var(--primary-color);
-    border-radius: 30px;
-    width: 55%;
-    margin: auto;
-    box-shadow: 6px 6px 4px 1px #cccccc, -6px -6px 4px 1px #cccccc;
+  text-align: center;
+  padding: 5px;
+  background: white;
+  color: var(--primary-color);
+  border-radius: 30px;
+  width: 55%;
+  margin: auto;
+  box-shadow: 6px 6px 4px 1px #cccccc, -6px -6px 4px 1px #cccccc;
 }
 
 .btn-group-custom button {
-    margin-right: 5px;
-    width: 105px;
-    border-radius: 30px;
+  margin-right: 5px;
+  width: 105px;
+  border-radius: 30px;
 }
 
 .btn-selected {
-    background: var(--primary-color);
-    font-weight: bold;
-    border-radius: 30px;
-    color: white !important;
+  background: var(--primary-color);
+  font-weight: bold;
+  border-radius: 30px;
+  color: white !important;
 }
 
 .btn-selected > a {
-    color: white;
+  color: white;
 }
 
 small.input-info {
-    font-size: 0.7rem !important;
-    margin-left: 37px;
+  font-size: 0.7rem !important;
+  margin-left: 37px;
 }
 
 .signup-btn {
-    padding: 10px 20px;
-    color: white;
-    background: var(--primary-color);
-    border-radius: 30px;
+  padding: 10px 20px;
+  color: white;
+  background: var(--primary-color);
+  border-radius: 30px;
 }
 
 div.progress-wrapper {
-    height: 30px;
-    width: 200px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
+  height: 30px;
+  width: 200px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
 }
 
 div.progress-wrapper > span.progress-span {
-    cursor: pointer;
-    align-self: center;
-    width: 10px;
-    height: 10px;
-    padding: 7px;
-    border: 3px solid var(--primary-color);
-    border-radius: 50%;
-    margin-left: 15px;
-    margin-right: 15px;
-    transition: 0.5s ease;
+  cursor: pointer;
+  align-self: center;
+  width: 10px;
+  height: 10px;
+  padding: 7px;
+  border: 3px solid var(--primary-color);
+  border-radius: 50%;
+  margin-left: 15px;
+  margin-right: 15px;
+  transition: 0.5s ease;
 }
 
 div.progress-wrapper > span::after {
-    content: "";
-    display: block;
-    height: 3px;
-    padding-right: 10px;
-    border-right: 33px solid var(--primary-color);
+  content: "";
+  display: block;
+  height: 3px;
+  padding-right: 10px;
+  border-right: 33px solid var(--primary-color);
 }
 
 div.progress-wrapper > span:last-child::after {
-    border: none;
+  border: none;
 }
 
 .current-step {
-    background: var(--primary-color);
+  background: var(--primary-color);
 }
 
 div.submit-wrapper {
-    position: absolute;
-    top: 74%;
-    /*Centering it at the middle horizontally*/
-    left: 50%;
-    transform: translateX(-50%);
+  position: absolute;
+  top: 74%;
+  /*Centering it at the middle horizontally*/
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /*The main diagnosis area styles*/
 .main-diag {
-    padding: 0;
-    width: 1150px;
-    height: 500px;
-    border-radius: 30px;
+  padding: 0;
+  width: 1150px;
+  height: 500px;
+  border-radius: 30px;
 }
 
 .user-area-wrapper {
-    background: var(--primary-color);
-    width: 400px;
-    height: 500px;
-    padding: 20px;
-    float: left;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
+  background: var(--primary-color);
+  width: 400px;
+  height: 500px;
+  padding: 20px;
+  float: left;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
 }
 
 .emu-pic {
-    width: 200px;
-    height: 200px;
-    background: white;
-    border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  background: white;
+  border-radius: 50%;
 }
 
 .message-box {
-    background: var(--primary-color);
-    padding: 10px;
-    font-size: 1rem;
-    font-weight: bold;
-    width: 220px;
-    border-radius: 30px;
-    border-top-left-radius: 0;
-    position: absolute;
-    top: 40px;
-    left: 37%;
-    color: white;
+  background: var(--primary-color);
+  padding: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 220px;
+  border-radius: 30px;
+  border-top-left-radius: 0;
+  position: absolute;
+  top: 40px;
+  left: 37%;
+  color: white;
 }
 
 .btn-action {
-    position: absolute;
-    top: 77%;
-    right: 3%;
+  position: absolute;
+  top: 77%;
+  right: 3%;
 }
 
 .btn-action > button {
-    border-radius: 30px !important;
+  border-radius: 30px !important;
 }
 
 /*------------------------------------------------*/
@@ -278,30 +287,30 @@ div.submit-wrapper {
 */
 /*Enter state*/
 .slide-enter {
-    opacity: 0;
-    transform: scale(0.97) translateY(5px);
+  opacity: 0;
+  transform: scale(0.97) translateY(5px);
 }
 
 .slide-enter-active {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    transition: all 0.5s linear;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: all 0.5s linear;
 }
 
 /*Leave state*/
 .slide-exit {
-    opacity: 0;
-    transform: scale(1) translateY(0);
+  opacity: 0;
+  transform: scale(1) translateY(0);
 }
 
 .slide-exit-active {
-    opacity: 0;
-    transform: scale(0.97) translateY(5px);
-    transition: all 0.5s linear;
+  opacity: 0;
+  transform: scale(0.97) translateY(5px);
+  transition: all 0.5s linear;
 }
 
 .slide-exit-done {
-    opacity: 0;
+  opacity: 0;
 }
 
 /*------------------------------------------------------------------*/

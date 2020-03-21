@@ -40,6 +40,7 @@ class SignupBox extends React.Component {
     };
 
     // The only current(at the time) valid way of extracting the keys of the schema object since relying on the internals of Joi is hacky and can result in future errors -- this way is safer
+    // The original TLDs are not included w/ Joi for the browser build, thus, this is a custom common TLDs
     this.validators = {
       email: Joi.string()
         .email({
@@ -69,7 +70,7 @@ class SignupBox extends React.Component {
         .max(150)
         .required()
         .label("Username"),
-      // A regex that matches passwords w/ at least one letter, symbol, and digit, between (8-128) characters
+      // A regex that matches passwords w/ at least one letter, symbol, and a digit, between (8-128) character length
       password: Joi.string()
         .pattern(
           new RegExp(
@@ -176,8 +177,8 @@ class SignupBox extends React.Component {
 
   // Handle fields change
   handleChange = event => {
-    // Validation goes here...
-    if (event.target) {
+    // Validating input and updating the state in realtime
+    if (event.target && this.validators.hasOwnProperty(event.target.name)) {
       const target = event.target;
       const errors = { ...this.state.errors };
       const error = this.validatePropertyInput(target);
