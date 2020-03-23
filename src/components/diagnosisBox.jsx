@@ -2,6 +2,8 @@ import React from "react";
 import MessageBox from "./common/messageBox";
 import Swal from "sweetalert2";
 import ImgUpload from "../images/img-upload.png";
+import http from "../services/httpService";
+import config from "../config.json";
 
 class DiagnosisBox extends React.Component {
   // TODO: Remember also to check the packages installed and remove the ones un-necessary especially to (sweetalert thingie) and any un-needed ones in general, also separate the devDependencies from the required ones
@@ -34,7 +36,7 @@ class DiagnosisBox extends React.Component {
           scrollbarPadding: false,
           imageUrl: e.target.result,
           imageAlt: "The uploaded picture"
-        }).then(result => {
+        }).then(async result => {
           if (result) {
             Swal.fire({
               scrollbarPadding: false,
@@ -44,6 +46,13 @@ class DiagnosisBox extends React.Component {
             });
 
             // Do here the AJAX call to the back-end for image diagnosis
+            // const endPoint = `${config.apiEndpoint}upload/`;
+            // const { data: response } = await http.post(
+            //   endPoint,
+            //   reader.readAsDataURL(file)
+            // );
+
+            // console.log(response);
           }
         });
       };

@@ -31,7 +31,11 @@ class EmailInfo extends React.Component {
     return (
       <React.Fragment>
         <div className="container-fluid mt-5">
-          <Grid container spacing={1} alignItems="flex-end">
+          <Grid
+            container
+            spacing={1}
+            alignItems={emailErrMsg ? "center" : "flex-end"}
+          >
             <Grid item>
               <EmailIcon color="primary" />
             </Grid>
@@ -54,7 +58,12 @@ class EmailInfo extends React.Component {
               </small>
             )}
           </Grid>
-          <Grid container spacing={1} alignItems="flex-end" className="mt-4">
+          <Grid
+            container
+            spacing={1}
+            alignItems={passwordErrMsg ? "center" : "flex-end"}
+            className="mt-4"
+          >
             <Grid item>
               <LockIcon color="primary" />
             </Grid>
@@ -91,7 +100,12 @@ class EmailInfo extends React.Component {
               </FormControl>
             </Grid>
           </Grid>
-          <Grid container spacing={1} alignItems="flex-end" className="mt-4">
+          <Grid
+            container
+            spacing={1}
+            alignItems={confirmPassErrMsg ? "center" : "flex-end"}
+            className="mt-4"
+          >
             <Grid item>
               <LockIcon color="primary" />
             </Grid>

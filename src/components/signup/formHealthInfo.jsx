@@ -59,7 +59,7 @@ class HealthInfo extends React.Component {
                 name="weight"
                 fullWidth
                 onChange={this.props.handleChange}
-                defaultValue={weight}
+                defaultValue={weight ? weight : ""}
                 type="number"
                 InputProps={{
                   inputProps: { min: 1, max: 130 },

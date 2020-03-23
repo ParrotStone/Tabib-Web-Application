@@ -31,8 +31,8 @@ class SignupBox extends React.Component {
         phoneNum: "",
         prevDiseases: "",
         smokingCheckBox: false,
-        weight: "",
-        height: "",
+        weight: 0,
+        height: 0,
         country: "",
         city: ""
       },
@@ -73,9 +73,10 @@ class SignupBox extends React.Component {
       // A regex that matches passwords w/ at least one letter, symbol, and a digit, between (8-128) character length
       password: Joi.string()
         .pattern(
-          new RegExp(
-            "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#? ]{8,128}$"
-          )
+          // new RegExp(
+          //   "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#? ]{8,128}$"
+          // )
+          new RegExp("^[A-z0-9]{8,128}$")
         )
         .required()
         .label("Password"),
@@ -89,6 +90,10 @@ class SignupBox extends React.Component {
         )
         .required()
         .label("Phone Number"),
+      height: Joi.number()
+        .integer()
+        .required()
+        .label("Height"),
       country: Joi.string()
         .required()
         .label("Country"),
@@ -119,10 +124,73 @@ class SignupBox extends React.Component {
 
     if (this.validate()) return;
 
-    const endPoint = `${config.apiEndpoint}/accounts/register`;
+    /*
+    this.state = {
+      step: 1,
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+      showPassword: false,
+      profile: {
+        gender: "",
+        birthdate: this.getDateFormat(new Date()),
+        phoneNum: "",
+        prevDiseases: "",
+        smokingCheckBox: false,
+        weight: "",
+        height: "",
+        country: "",
+        city: ""
+      },
+      errors: {}
+    };
+    */
+
+    const {
+      email,
+      username: name,
+      password,
+      confirmPassword: conffPassword,
+      profile: {
+        gender,
+        birthdate: dateOfBirth,
+        phoneNum: phone,
+        prevDiseases,
+        smokingCheckBox: smoking,
+        weight,
+        height,
+        country,
+        city
+      }
+    } = this.state;
+
+    this.inputFields = {
+      email,
+      name,
+      password,
+      conffPassword,
+      profile: {
+        gender,
+        dateOfBirth,
+        phone,
+        prevDiseases,
+        smoking,
+        weight,
+        height,
+        country,
+        city
+      }
+    };
+
+    const endPoint = `${config.apiEndpoint}api/accounts/register/`;
     // Call the back end and re-direct towards the homie
-    const { data: response } = await http.post(endPoint, this.inputFields);
-    console.log(response);
+    try {
+      const { data: response } = await http.post(endPoint, this.inputFields);
+      console.log(response);
+    } catch (ex) {
+      console.log(ex.response);
+    }
   };
 
   // Proceed to the next step
@@ -144,12 +212,15 @@ class SignupBox extends React.Component {
       profile: { phoneNum, country, city }
     } = this.state;
 
-    const {
-      error: { details }
-    } = this.schema.validate(
+    const { error } = this.schema.validate(
       { email, username, password, confirmPassword, phoneNum, country, city },
       { abortEarly: false }
     );
+
+    // Signifies that there're no errors w/ the validation
+    if (!error) return undefined;
+
+    const details = error.details;
 
     const errors = { ...this.state.errors };
     details.forEach(error => {
@@ -162,22 +233,22 @@ class SignupBox extends React.Component {
   };
 
   validatePropertyInput = element => {
-    const validationOpts = { abortEarly: true };
+    const options = { abortEarly: true };
     const schema = Joi.object({
       [element.name]: this.validators[element.name]
     });
 
     const { error } = schema.validate(
       { [element.name]: element.value },
-      validationOpts
+      options
     );
 
-    return !error ? undefined : error.details[0];
+    return error ? error.details[0] : undefined;
   };
 
   // Handle fields change
   handleChange = event => {
-    // Validating input and updating the state in realtime
+    // Validating input and updating the state in real-time
     if (event.target && this.validators.hasOwnProperty(event.target.name)) {
       const target = event.target;
       const errors = { ...this.state.errors };

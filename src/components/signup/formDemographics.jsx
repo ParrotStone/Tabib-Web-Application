@@ -10,13 +10,17 @@ class DemographicsInfo extends React.Component {
   render() {
     const {
       profile: { height, country, city },
-      errors: { country: countryErrMsg, city: cityErrMsg }
+      errors: { height: heightErrMsg, country: countryErrMsg, city: cityErrMsg }
     } = this.props.values;
 
     return (
       <React.Fragment>
         <div className="container-fluid mt-5">
-          <Grid container spacing={1} alignItems="flex-end">
+          <Grid
+            container
+            spacing={1}
+            alignItems={heightErrMsg ? "center" : "flex-end"}
+          >
             <Grid item>
               <HeightIcon color="primary" />
             </Grid>
@@ -26,8 +30,10 @@ class DemographicsInfo extends React.Component {
                 label="Height"
                 name="height"
                 fullWidth
+                error={heightErrMsg && true}
+                helperText={heightErrMsg}
                 onChange={this.props.handleChange}
-                defaultValue={height}
+                defaultValue={height ? height : ""}
                 type="number"
                 InputProps={{
                   inputProps: { min: 40, max: 220 },
@@ -39,7 +45,12 @@ class DemographicsInfo extends React.Component {
             </Grid>
           </Grid>
 
-          <Grid container spacing={1} alignItems="flex-end" className="mt-3">
+          <Grid
+            container
+            spacing={1}
+            alignItems={countryErrMsg ? "center" : "flex-end"}
+            className="mt-3"
+          >
             <Grid item>
               <LocationOnIcon color="primary" />
             </Grid>
@@ -60,7 +71,7 @@ class DemographicsInfo extends React.Component {
             <Grid
               container
               spacing={1}
-              alignItems="flex-end"
+              alignItems={cityErrMsg ? "center" : "flex-end"}
               className="ml-1 mt-3"
             >
               <Grid item>

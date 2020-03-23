@@ -24,8 +24,12 @@ class PersonalInfoForm extends React.Component {
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div className="container-fluid d-flex flex-column align-items-center mt-3">
-            <Grid container spacing={1} alignItems="flex-end">
+          <div className="container-fluid d-flex flex-column align-items-center mt-4">
+            <Grid
+              container
+              spacing={1}
+              alignItems={usernameErrMsg ? "center" : "flex-end"}
+            >
               <Grid item>
                 <AccountCircle color="primary" />
               </Grid>
@@ -35,7 +39,6 @@ class PersonalInfoForm extends React.Component {
                   label="Username"
                   name="username"
                   fullWidth
-                  autoFocus
                   error={usernameErrMsg && true}
                   helperText={usernameErrMsg}
                   onChange={this.props.handleChange}
@@ -78,7 +81,7 @@ class PersonalInfoForm extends React.Component {
             >
               <Grid item>
                 <KeyboardDatePicker
-                  className="mt-3 ml-2"
+                  className="mt-2 ml-2"
                   format="MM/dd/yyyy"
                   margin="normal"
                   fullWidth={true}
@@ -93,7 +96,12 @@ class PersonalInfoForm extends React.Component {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="flex-end" className="mt-3">
+            <Grid
+              container
+              spacing={1}
+              className="mt-2"
+              alignItems={phoneNumErrMsg ? "center" : "flex-end"}
+            >
               <Grid item>
                 <PhoneIcon color="primary" />
               </Grid>
