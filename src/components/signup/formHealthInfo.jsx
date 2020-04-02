@@ -1,5 +1,5 @@
 import React from "react";
-import TextField from "@material-ui/core/TextField";
+import { TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -10,28 +10,37 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 class HealthInfo extends React.Component {
   render() {
     const {
-      profile: { prevDiseases, smokingCheckBox, weight }
+      profile: { prevDiseases, smokingCheckBox, weight },
     } = this.props.values;
 
     return (
       <React.Fragment>
         <div className="container-fluid mt-5">
           <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <AddIcon color="primary" />
-            </Grid>
-            <Grid item style={{ width: "400px" }}>
-              <TextField
+            <Grid item className="w-100">
+              <TextValidator
                 id="old-diseases"
                 label="Previous Diseases"
                 name="prevDiseases"
                 fullWidth
+                validators={["required", "isString"]}
+                errorMessages={[
+                  "This field is required",
+                  "Input must be a valid text",
+                ]}
                 onChange={this.props.handleChange}
-                defaultValue={prevDiseases}
+                value={prevDiseases}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AddIcon color="primary" />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
-            <small className="form-text text-muted input-info">
-              Add here previous diseases separated with commas
+            <small className="form-text text-muted input-info ml-2 w-100 text-left">
+              Add here previous diseases separated by commas
             </small>
           </Grid>
           <Grid
@@ -49,23 +58,37 @@ class HealthInfo extends React.Component {
             />
           </Grid>
           <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <FitnessCenterIcon color="primary" />
-            </Grid>
-            <Grid item style={{ width: "400px" }}>
-              <TextField
+            <Grid item className="w-100 mt-4">
+              <TextValidator
                 id="weight"
                 label="Weight"
                 name="weight"
                 fullWidth
+                validators={[
+                  "required",
+                  "isNumber",
+                  "minNumber:1",
+                  "maxNumber:130",
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "Input must be a valid number",
+                  "Weight must be larger than 1Kg",
+                  "Weight must be less than 130Kg",
+                ]}
                 onChange={this.props.handleChange}
-                defaultValue={weight ? weight : ""}
+                value={weight ? weight : ""}
                 type="number"
                 InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FitnessCenterIcon color="primary" />
+                    </InputAdornment>
+                  ),
                   inputProps: { min: 1, max: 130 },
                   endAdornment: (
                     <InputAdornment position="end">Kg</InputAdornment>
-                  )
+                  ),
                 }}
               />
             </Grid>

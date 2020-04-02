@@ -23,7 +23,6 @@ class ResetPassword extends React.Component {
     this.state = {
       email: "",
       password: "",
-      confirmPassword: "",
       showPassword: false
     };
   }
@@ -45,7 +44,7 @@ class ResetPassword extends React.Component {
   };
 
   render() {
-    const { email, password, confirmPassword, showPassword } = this.state;
+    const { email, password, showPassword } = this.state;
 
     // Customize the colors of the form
     const theme = createMuiTheme({
@@ -60,7 +59,7 @@ class ResetPassword extends React.Component {
       <React.Fragment>
         <Background />
         <ThemeProvider theme={theme}>
-          <div className="reg-box">
+          <div className="box">
             <Link to="/login">
               <ArrowBackIcon
                 color="primary"
@@ -70,7 +69,10 @@ class ResetPassword extends React.Component {
                 }}
               />
             </Link>
-            <div className="container-fluid" style={{ marginTop: "60px" }}>
+            <div
+              className="container-fluid d-flex flex-column justify-content-center align-items-center"
+              style={{ height: "85%" }}
+            >
               <Grid container spacing={1} alignItems="flex-end">
                 <Grid item>
                   <EmailIcon color="primary" />
@@ -91,7 +93,7 @@ class ResetPassword extends React.Component {
                 container
                 spacing={1}
                 alignItems="flex-end"
-                className="mt-4"
+                className="mt-5"
               >
                 <Grid item>
                   <LockIcon color="primary" />
@@ -99,7 +101,7 @@ class ResetPassword extends React.Component {
                 <Grid item>
                   <FormControl style={{ width: "390px" }}>
                     <InputLabel htmlFor="standard-adornment-password">
-                      New Password
+                      Password
                     </InputLabel>
                     <Input
                       id="password"
@@ -123,49 +125,13 @@ class ResetPassword extends React.Component {
                   </FormControl>
                 </Grid>
               </Grid>
-              <Grid
-                container
-                spacing={1}
-                alignItems="flex-end"
-                className="mt-4"
+              <button
+                className="btn signup-btn d-block mt-5 mx-auto"
+                onClick={this.handleSubmit}
               >
-                <Grid item>
-                  <LockIcon color="primary" />
-                </Grid>
-                <Grid item>
-                  <FormControl style={{ width: "390px" }}>
-                    <InputLabel htmlFor="standard-adornment-password">
-                      Confirm Password
-                    </InputLabel>
-                    <Input
-                      id="confirm-password"
-                      type={showPassword ? "text" : "password"}
-                      defaultValue={confirmPassword}
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      fullWidth
-                      onChange={this.handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={this.handlePasswordVis}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
+                Reset Password
+              </button>
             </div>
-            <button
-              className="btn signup-btn d-block mt-5 mx-auto"
-              onClick={this.handleSubmit}
-            >
-              Reset Password
-            </button>
           </div>
         </ThemeProvider>
       </React.Fragment>

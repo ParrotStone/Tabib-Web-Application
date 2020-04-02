@@ -1,12 +1,13 @@
 import React from "react";
 import "date-fns";
-import TextField from "@material-ui/core/TextField";
+import { TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker
+  KeyboardDatePicker,
 } from "@material-ui/pickers";
 import PhoneIcon from "@material-ui/icons/Phone";
 import Radio from "@material-ui/core/Radio";
@@ -18,31 +19,34 @@ class PersonalInfoForm extends React.Component {
     const {
       username,
       profile: { gender, birthdate, phoneNum },
-      errors: { username: usernameErrMsg, phoneNum: phoneNumErrMsg }
     } = this.props.values;
 
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div className="container-fluid d-flex flex-column align-items-center mt-4">
-            <Grid
-              container
-              spacing={1}
-              alignItems={usernameErrMsg ? "center" : "flex-end"}
-            >
-              <Grid item>
-                <AccountCircle color="primary" />
-              </Grid>
-              <Grid item style={{ width: "400px" }}>
-                <TextField
+          <div className="container-fluid d-flex flex-column align-items-center mt-3">
+            <Grid container spacing={1} alignItems="center">
+              <Grid item className="w-100">
+                <TextValidator
                   id="username"
                   label="Username"
                   name="username"
                   fullWidth
-                  error={usernameErrMsg && true}
-                  helperText={usernameErrMsg}
+                  validators={["required", "isString", "minStringLength:4"]}
+                  errorMessages={[
+                    "This field is required",
+                    "Username must be a valid text",
+                    "Username length must be a minimum of 4 characters",
+                  ]}
                   onChange={this.props.handleChange}
-                  defaultValue={username}
+                  value={username}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountCircle color="primary" />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>
@@ -52,14 +56,13 @@ class PersonalInfoForm extends React.Component {
               direction="row"
               alignItems="center"
               className="mt-4"
-              style={{ width: "440px" }}
             >
               <RadioGroup
                 aria-label="gender"
                 name="gender"
                 value={gender}
                 onChange={this.props.handleChange}
-                className="d-flex flex-row justify-content-between w-100 ml-3"
+                className="d-flex flex-row justify-content-between w-100 ml-2"
               >
                 <FormControlLabel
                   value="male"
@@ -73,49 +76,56 @@ class PersonalInfoForm extends React.Component {
                 />
               </RadioGroup>
             </Grid>
-            <Grid
-              container
-              spacing={1}
-              direction="column"
-              style={{ width: "420px" }}
-            >
-              <Grid item>
+            <Grid container spacing={1} direction="column">
+              <Grid item className="w-100">
                 <KeyboardDatePicker
-                  className="mt-2 ml-2"
+                  className="mt-3"
                   format="MM/dd/yyyy"
                   margin="normal"
-                  fullWidth={true}
+                  fullWidth
+                  disableFuture
+                  maxDateMessage={`Date cannot exceed ${new Date().getFullYear()}`}
                   id="date-picker-dialog"
                   label="Birthdate"
                   name="birthdate"
                   value={birthdate}
-                  onChange={this.props.handleChange}
+                  onChange={this.props.handleDateChange}
                   KeyboardButtonProps={{
-                    "aria-label": "change date"
+                    "aria-label": "change date",
                   }}
                 />
               </Grid>
             </Grid>
-            <Grid
-              container
-              spacing={1}
-              className="mt-2"
-              alignItems={phoneNumErrMsg ? "center" : "flex-end"}
-            >
-              <Grid item>
-                <PhoneIcon color="primary" />
-              </Grid>
-              <Grid item style={{ width: "400px" }}>
-                <TextField
+            <Grid container spacing={1} className="mt-4" alignItems="center">
+              <Grid item className="w-100">
+                <TextValidator
                   id="phoneNum"
                   label="Phone Number"
                   name="phoneNum"
                   value={phoneNum}
-                  error={phoneNumErrMsg && true}
-                  helperText={phoneNumErrMsg}
                   onChange={this.props.handleChange}
                   type="tel"
+                  validators={[
+                    "required",
+                    "isNumber",
+                    "matchRegexp:^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+                  ]}
+                  errorMessages={[
+                    "This field is required",
+                    "Invalid input format",
+                    "Phone number must be in (xxx-xxx-xxxx) format",
+                  ]}
                   fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PhoneIcon color="primary" />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="start">(+20)</InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>

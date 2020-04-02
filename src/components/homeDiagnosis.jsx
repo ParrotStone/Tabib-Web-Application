@@ -8,7 +8,7 @@ class HomeDiagnosis extends React.Component {
     return (
       <React.Fragment>
         <Background />
-        <div className="reg-box mt-2 main-diag">
+        <div className="box mt-2 main-diag">
           <UserArea />
           <DiagnosisBox />
         </div>

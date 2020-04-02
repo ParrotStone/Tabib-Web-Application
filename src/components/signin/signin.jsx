@@ -46,6 +46,7 @@ class SigninBox extends React.Component {
     const { email, password, showPassword } = this.state;
 
     // Customize the colors of the form
+    // Trying to assemble the theme customization in one place for more maintainbility(in the index.js(the root file))
     const theme = createMuiTheme({
       palette: {
         primary: {
@@ -56,11 +57,14 @@ class SigninBox extends React.Component {
 
     return (
       <ThemeProvider theme={theme}>
-        <div className="reg-box">
+        <div className="box">
           <div className="container d-flex justify-content-center">
             <BtnGroup signupSelected={false} signinSelected={true} />
           </div>
-          <div className="container-fluid" style={{ marginTop: "70px" }}>
+          <div
+            className="container-fluid d-flex flex-column justify-content-center align-items-center"
+            style={{ height: "90%" }}
+          >
             <Grid container spacing={1} alignItems="flex-end">
               <Grid item>
                 <EmailIcon color="primary" />
@@ -77,7 +81,7 @@ class SigninBox extends React.Component {
                 />
               </Grid>
             </Grid>
-            <Grid container spacing={1} alignItems="flex-end" className="mt-4">
+            <Grid container spacing={1} alignItems="flex-end" className="mt-5">
               <Grid item>
                 <LockIcon color="primary" />
               </Grid>
@@ -108,19 +112,21 @@ class SigninBox extends React.Component {
                 </FormControl>
               </Grid>
             </Grid>
+            <Grid>
+              <button
+                className="btn signup-btn d-block mt-5 mx-auto"
+                onClick={this.handleSubmit}
+              >
+                Log in
+              </button>
+              <Link
+                className="d-block mx-auto mt-3 text-center pass-reset-link"
+                to="reset-password"
+              >
+                Forgot Password?
+              </Link>
+            </Grid>
           </div>
-          <button
-            className="btn signup-btn d-block mt-5 mx-auto"
-            onClick={this.handleSubmit}
-          >
-            Sign up
-          </button>
-          <Link
-            className="d-block mx-auto mt-3 text-center pass-reset-link"
-            to="reset-password"
-          >
-            Forgot Password?
-          </Link>
         </div>
       </ThemeProvider>
     );

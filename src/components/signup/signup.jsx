@@ -2,152 +2,87 @@ import React from "react";
 import BtnGroup from "../common/button-group";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+import { ValidatorForm } from "react-material-ui-form-validator";
 import PersonalInfoForm from "./formPersonalInfo";
 import HealthInfo from "./formHealthInfo";
 import DemographicsInfo from "./formDemographics";
 import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import Joi from "@hapi/joi";
 
 import http from "../../services/httpService";
 import config from "../../config.json";
-// import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 class SignupBox extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      step: 1,
+      step: 4,
       email: "",
       username: "",
       password: "",
       confirmPassword: "",
       showPassword: false,
       profile: {
-        gender: "",
-        birthdate: this.getDateFormat(new Date()),
+        gender: "male",
+        birthdate: new Date(),
         phoneNum: "",
         prevDiseases: "",
         smokingCheckBox: false,
         weight: 0,
         height: 0,
         country: "",
-        city: ""
+        city: "",
       },
-      errors: {}
+      errors: {},
     };
-
-    // The only current(at the time) valid way of extracting the keys of the schema object since relying on the internals of Joi is hacky and can result in future errors -- this way is safer
-    // The original TLDs are not included w/ Joi for the browser build, thus, this is a custom common TLDs
-    this.validators = {
-      email: Joi.string()
-        .email({
-          minDomainSegments: 2,
-          tlds: {
-            allow: [
-              "com",
-              "net",
-              "io",
-              "info",
-              "gov",
-              "edu",
-              "us",
-              "uk",
-              "org",
-              "info",
-              "tech",
-              "dev"
-            ]
-          }
-        })
-        .required()
-        .label("Email"),
-      username: Joi.string()
-        .alphanum()
-        .min(4)
-        .max(150)
-        .required()
-        .label("Username"),
-      // A regex that matches passwords w/ at least one letter, symbol, and a digit, between (8-128) character length
-      password: Joi.string()
-        .pattern(
-          // new RegExp(
-          //   "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#? ]{8,128}$"
-          // )
-          new RegExp("^[A-z0-9]{8,128}$")
-        )
-        .required()
-        .label("Password"),
-      confirmPassword: Joi.ref("password"),
-      phoneNum: Joi.string()
-        // A regex that would matches regular phone number along w/ country codes as well
-        .pattern(
-          new RegExp(
-            "^(\\(?\\+\\d{2}\\)?)?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4,}$"
-          )
-        )
-        .required()
-        .label("Phone Number"),
-      height: Joi.number()
-        .integer()
-        .required()
-        .label("Height"),
-      country: Joi.string()
-        .required()
-        .label("Country"),
-      city: Joi.string()
-        .required()
-        .label("City")
-    };
-
-    this.schema = Joi.object(this.validators);
   }
 
-  getDateFormat(timeDate) {
-    return timeDate.toISOString().split("T")[0];
+  getDateFormat(timedate) {
+    return timedate.toISOString().split("T")[0];
   }
+
+  // Notification Method -> Extract it later into utils JS file
+  notify = (notificationType, msg) => {
+    // Notification alert for the user
+    toast[notificationType](msg, {
+      position: toast.POSITION.TOP_RIGHT,
+      autoClose: 5000,
+      closeOnClick: false,
+      hideProgressBar: true,
+      pauseOnHover: false,
+    });
+  };
 
   // Handle the progress bar change event
-  handleProgressChange = ev => {
+  handleProgressChange = (ev) => {
+    if (!this.validate()) {
+      this.notify("info", "Please check your input again!");
+      return;
+    }
+
     // Getting the last num of the id to identify the steps
     const desiredStep = Number(ev.target.id);
     this.setState({ step: desiredStep });
   };
 
-  handleSubmit = async () => {
+  handleSubmit = async (ev) => {
+    // Prevent proceeding to the next step --- unless there're no errors whatsoever in the current step
+    if (!this.validate()) {
+      ev.preventDefault();
+      this.notify("info", "Please check your input again!");
+      return;
+    }
+
     if (this.state.step < 4) {
       this.nextStep();
       return;
     }
 
-    if (this.validate()) return;
-
-    /*
-    this.state = {
-      step: 1,
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-      showPassword: false,
-      profile: {
-        gender: "",
-        birthdate: this.getDateFormat(new Date()),
-        phoneNum: "",
-        prevDiseases: "",
-        smokingCheckBox: false,
-        weight: "",
-        height: "",
-        country: "",
-        city: ""
-      },
-      errors: {}
-    };
-    */
-
-    const {
+    let {
       email,
       username: name,
       password,
@@ -161,11 +96,13 @@ class SignupBox extends React.Component {
         weight,
         height,
         country,
-        city
-      }
+        city,
+      },
     } = this.state;
 
-    this.inputFields = {
+    dateOfBirth = this.getDateFormat(dateOfBirth);
+
+    const data = {
       email,
       name,
       password,
@@ -179,14 +116,15 @@ class SignupBox extends React.Component {
         weight,
         height,
         country,
-        city
-      }
+        city,
+      },
     };
 
     const endPoint = `${config.apiEndpoint}api/accounts/register/`;
+    // Register a user here, and then redirect him to the damn (homie OR the login page)
     // Call the back end and re-direct towards the homie
     try {
-      const { data: response } = await http.post(endPoint, this.inputFields);
+      const { data: response } = await http.post(endPoint, data);
       console.log(response);
     } catch (ex) {
       console.log(ex.response);
@@ -204,72 +142,40 @@ class SignupBox extends React.Component {
   };
 
   validate = () => {
-    const {
-      email,
-      username,
-      password,
-      confirmPassword,
-      profile: { phoneNum, country, city }
-    } = this.state;
+    const data = this.state;
+    const { profile: profileData } = data;
 
-    const { error } = this.schema.validate(
-      { email, username, password, confirmPassword, phoneNum, country, city },
-      { abortEarly: false }
-    );
-
-    // Signifies that there're no errors w/ the validation
-    if (!error) return undefined;
-
-    const details = error.details;
-
-    const errors = { ...this.state.errors };
-    details.forEach(error => {
-      errors[error.path[0]] = error.message;
-    });
-
-    this.setState({ errors });
-
-    return Object.keys(errors).length;
-  };
-
-  validatePropertyInput = element => {
-    const options = { abortEarly: true };
-    const schema = Joi.object({
-      [element.name]: this.validators[element.name]
-    });
-
-    const { error } = schema.validate(
-      { [element.name]: element.value },
-      options
-    );
-
-    return error ? error.details[0] : undefined;
-  };
-
-  // Handle fields change
-  handleChange = event => {
-    // Validating input and updating the state in real-time
-    if (event.target && this.validators.hasOwnProperty(event.target.name)) {
-      const target = event.target;
-      const errors = { ...this.state.errors };
-      const error = this.validatePropertyInput(target);
-
-      if (error) errors[target.name] = error.message;
-      else delete errors[target.name];
-
+    // Check if it's a valid date object
+    if (
+      !profileData["birthdate"] ||
+      isNaN(profileData["birthdate"].getFullYear()) ||
+      profileData["birthdate"].getFullYear() > new Date().getFullYear()
+    ) {
+      this.setState({ errors: { birthdate: true } });
+    } else {
+      const errors = this.state.errors;
+      delete errors["birthdate"];
       this.setState({ errors });
     }
 
-    // The date picker return the a date obj when a change event fires off(At least that what the Material Date Picker does)
-    // The condition down here is put to deal w/ this specific case and get the date separate from the time
-    if (!event.target) {
-      const profile = { ...this.state.profile };
-      profile["birthdate"] = this.getDateFormat(event);
-      this.setState({ profile });
-      return;
-    }
+    // => false -> there are errors
+    // => true -> there are NO errors
+    return !Object.keys(this.state.errors).length;
+  };
 
-    // Check if the event raised was from an type checkbox w/ checked property
+  handleDateChange = (date) => {
+    // The date picker return the a date obj when a change event fires off(that what the Material Date Picker does, 3rd party library)
+    // Sets it in the full format(time & date), and only extracts the date components when submitting the form to the back-end API
+    const profile = { ...this.state.profile };
+    profile["birthdate"] = date;
+    this.setState({ profile });
+  };
+
+  // When the user clicks on the next step except the current one(before it) OR the submit button(sign-up button in this case)
+  // Check if the custom inputs(date in this case) is validated --- Do the same w/ other inputs as well
+
+  // Handle fields change
+  handleChange = (event) => {
     if (event.target.type === "checkbox") {
       const profile = { ...this.state.profile };
       profile["smokingCheckBox"] = event.target.checked;
@@ -279,8 +185,6 @@ class SignupBox extends React.Component {
 
     const propertyName = event.target.name;
     const value = event.target.value;
-
-    event.persist();
 
     // Check if the property is part of the profile data
     if (this.state.profile.hasOwnProperty([propertyName])) {
@@ -293,17 +197,18 @@ class SignupBox extends React.Component {
   };
 
   // Handle the password visibility icon
-  handlePasswordVis = event => {
+  handlePasswordVis = (event) => {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
-  getMarkup = () => {
+  renderStep = () => {
     switch (this.state.step) {
       case 1:
         return (
           <PersonalInfoForm
             nextStep={this.nextStep}
             handleChange={this.handleChange}
+            handleDateChange={this.handleDateChange}
             values={this.state}
           />
         );
@@ -345,42 +250,44 @@ class SignupBox extends React.Component {
     const theme = createMuiTheme({
       palette: {
         primary: {
-          main: "#12a2f9"
-        }
-      }
+          main: "#12a2f9",
+        },
+      },
     });
 
     return (
       <ThemeProvider theme={theme}>
-        <div className="reg-box">
+        <div className="box">
           <div className="container d-flex justify-content-center">
             <BtnGroup signupSelected={true} signinSelected={false} />
           </div>
-          <TransitionGroup component={null}>
-            <CSSTransition
-              key={this.state.step}
-              in={true}
-              timeout={500}
-              appear={true}
-              classNames="slide"
-            >
-              {this.getMarkup()}
-            </CSSTransition>
-          </TransitionGroup>
-          <div className="submit-wrapper">
-            <div className="container mt-4">
-              <ProgressBar
-                currentStep={this.state.step}
-                handleProgressChange={this.handleProgressChange}
-              />
+          <ValidatorForm instantValidate onSubmit={this.handleSubmit}>
+            <TransitionGroup component={null}>
+              <CSSTransition
+                key={this.state.step}
+                in={true}
+                timeout={500}
+                appear={true}
+                classNames="slide"
+              >
+                {this.renderStep()}
+              </CSSTransition>
+            </TransitionGroup>
+            <div className="submit-wrapper">
+              <div className="container mt-4">
+                <ProgressBar
+                  currentStep={this.state.step}
+                  handleProgressChange={this.handleProgressChange}
+                />
+              </div>
+              <button
+                className="btn signup-btn d-block mt-3 mx-auto"
+                type="submit"
+              >
+                Sign up
+              </button>
             </div>
-            <button
-              className="btn signup-btn d-block mt-3 mx-auto"
-              onClick={this.handleSubmit}
-            >
-              Sign up
-            </button>
-          </div>
+          </ValidatorForm>
         </div>
       </ThemeProvider>
     );

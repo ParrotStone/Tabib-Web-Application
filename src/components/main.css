@@ -1,12 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Permanent+Marker&display=swap");
 
 * {
   box-sizing: border-box;
 }
 
 :root {
-  /* --secondary-color: #43bccd; */
   --primary-color: #12a2f9;
 }
 
@@ -98,7 +96,7 @@ div.overlay .row img {
 }
 
 .content h1 {
-  font-family: "Permanent Marker", sans-serif;
+  font-family: "JF Flat", Raleway, sans-serif;
 }
 
 .content p {
@@ -122,18 +120,18 @@ div.overlay .row img {
   background-size: 40px;
 }
 
-.reg-box {
+.box {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -43%);
-  height: 520px;
+  height: 530px;
   width: 500px;
   background: #f8f8f8;
-  padding: 20px;
+  padding: 10px 20px;
   border: 1px solid #dddddd;
   border-radius: 10px;
-  box-shadow: 8px 8px 6px 3px #cccccc;
+  box-shadow: 6px 6px 6px 3px #cccccc;
 }
 
 .btn-group-custom {
@@ -141,10 +139,11 @@ div.overlay .row img {
   padding: 5px;
   background: white;
   color: var(--primary-color);
+  border: 1px solid #dddddd;
   border-radius: 30px;
   width: 55%;
   margin: auto;
-  box-shadow: 6px 6px 4px 1px #cccccc, -6px -6px 4px 1px #cccccc;
+  box-shadow: 4px 4px 4px 1px #cccccc;
 }
 
 .btn-group-custom button {

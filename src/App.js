@@ -1,6 +1,7 @@
 import React from "react";
-import "./App.css";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { toast } from "react-toastify";
+import "./App.css";
 import HomePg from "./components/home/index";
 import AboutContent from "./components/about/about";
 import NotFound from "./components/common/notfound";
@@ -11,6 +12,11 @@ import ResetPassword from "./components/common/resetPassword";
 import HomeDiagnosis from "./components/homeDiagnosis";
 
 function App() {
+  // Mount ToastContainer if none is mounted
+  toast.configure({
+    style: { fontSize: "1.1rem" },
+  });
+
   return (
     <React.Fragment>
       <Switch>
