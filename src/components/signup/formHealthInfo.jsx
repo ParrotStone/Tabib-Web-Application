@@ -23,11 +23,8 @@ class HealthInfo extends React.Component {
                 label="Previous Diseases"
                 name="prevDiseases"
                 fullWidth
-                validators={["required", "isString"]}
-                errorMessages={[
-                  "This field is required",
-                  "Input must be a valid text",
-                ]}
+                validators={["isString"]}
+                errorMessages={["Input must be a valid text"]}
                 onChange={this.props.handleChange}
                 value={prevDiseases}
                 InputProps={{

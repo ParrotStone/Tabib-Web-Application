@@ -65,12 +65,12 @@ class PersonalInfoForm extends React.Component {
                 className="d-flex flex-row justify-content-between w-100 ml-2"
               >
                 <FormControlLabel
-                  value="male"
+                  value="M"
                   control={<Radio color="primary" />}
                   label="Male"
                 />
                 <FormControlLabel
-                  value="female"
+                  value="F"
                   control={<Radio color="primary" />}
                   label="Female"
                 />

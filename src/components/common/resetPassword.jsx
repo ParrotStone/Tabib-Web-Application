@@ -4,17 +4,10 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { Link } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import EmailIcon from "@material-ui/icons/Email";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import IconButton from "@material-ui/core/IconButton";
-import LockIcon from "@material-ui/icons/Lock";
-import FormControl from "@material-ui/core/FormControl";
 
 class ResetPassword extends React.Component {
   constructor(props) {
@@ -23,23 +16,24 @@ class ResetPassword extends React.Component {
     this.state = {
       email: "",
       password: "",
-      showPassword: false
+      showPassword: false,
     };
   }
 
   handleSubmit = () => {
     // Call the back end and re-direct towards the login(to log in w/ the new password)
-    console.log("Here's the data");
+    const data = this.state;
+    console.log(data);
   };
 
   // Handle fields change
-  handleChange = event => {
+  handleChange = (event) => {
     event.persist();
     this.setState({ [event.target.name]: event.target.value });
   };
 
   // Handle the password visibility icon
-  handlePasswordVis = event => {
+  handlePasswordVis = (event) => {
     this.setState({ showPassword: !this.state.showPassword });
   };
 
@@ -50,9 +44,9 @@ class ResetPassword extends React.Component {
     const theme = createMuiTheme({
       palette: {
         primary: {
-          main: "#12a2f9"
-        }
-      }
+          main: "#12a2f9",
+        },
+      },
     });
 
     return (
@@ -65,7 +59,7 @@ class ResetPassword extends React.Component {
                 color="primary"
                 style={{
                   fontSize: "35px",
-                  marginTop: "10px"
+                  marginTop: "10px",
                 }}
               />
             </Link>
@@ -73,64 +67,43 @@ class ResetPassword extends React.Component {
               className="container-fluid d-flex flex-column justify-content-center align-items-center"
               style={{ height: "85%" }}
             >
-              <Grid container spacing={1} alignItems="flex-end">
-                <Grid item>
-                  <EmailIcon color="primary" />
-                </Grid>
-                <Grid item style={{ width: "400px" }}>
-                  <TextField
-                    id="email"
-                    label="Email"
-                    name="email"
-                    fullWidth
-                    onChange={this.handleChange}
-                    defaultValue={email}
-                    type="email"
-                  />
-                </Grid>
-              </Grid>
-              <Grid
-                container
-                spacing={1}
-                alignItems="flex-end"
-                className="mt-5"
+              <ValidatorForm
+                instantValidate
+                onSubmit={this.handleSubmit}
+                className="w-100"
               >
-                <Grid item>
-                  <LockIcon color="primary" />
-                </Grid>
-                <Grid item>
-                  <FormControl style={{ width: "390px" }}>
-                    <InputLabel htmlFor="standard-adornment-password">
-                      Password
-                    </InputLabel>
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      defaultValue={password}
-                      label="Password"
-                      name="password"
+                <Grid container spacing={1} alignItems="flex-end">
+                  <Grid item className="w-100">
+                    <TextValidator
+                      id="email"
+                      label="Email"
+                      name="email"
                       fullWidth
                       onChange={this.handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={this.handlePasswordVis}
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
+                      value={email}
+                      type="email"
+                      validators={["required", "isEmail"]}
+                      errorMessages={[
+                        "This field is required",
+                        "Please enter a valid email",
+                      ]}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon color="primary" />
+                          </InputAdornment>
+                        ),
+                      }}
                     />
-                  </FormControl>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <button
-                className="btn signup-btn d-block mt-5 mx-auto"
-                onClick={this.handleSubmit}
-              >
-                Reset Password
-              </button>
+                <button
+                  className="btn signup-btn d-block mt-5 mx-auto"
+                  type="submit"
+                >
+                  Reset Password
+                </button>
+              </ValidatorForm>
             </div>
           </div>
         </ThemeProvider>

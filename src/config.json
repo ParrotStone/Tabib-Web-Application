@@ -1,3 +1,8 @@
 {
-  "apiEndpoint": "http://localhost:8000/"
+  "apiURL": "http://localhost:8000/",
+  "apiSignupURL": "http://localhost:8000/api/accounts/register/",
+  "apiLoginURL": "http://localhost:8000/api/accounts/login/",
+  "apiImgPred": "http://localhost:8000/upload/",
+  "apiUpdateProfileImg": "http://localhost:8000/api/accounts/profile-picture/",
+  "apiPasswordReset": "http://localhost:8000/api/accounts/password/reset/"
 }

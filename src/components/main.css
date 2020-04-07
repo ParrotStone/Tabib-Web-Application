@@ -127,6 +127,7 @@ div.overlay .row img {
   transform: translate(-50%, -43%);
   height: 530px;
   width: 500px;
+  margin-top: 15px;
   background: #f8f8f8;
   padding: 10px 20px;
   border: 1px solid #dddddd;

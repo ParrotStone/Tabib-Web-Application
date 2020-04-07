@@ -6,9 +6,13 @@ import "jquery";
 import "popper.js";
 import "bootstrap/dist/js/bootstrap.js";
 import App from "./App";
+// import logger from "./services/logService";
 import "./components/custom.scss";
 import "./components/main.css";
 import * as serviceWorker from "./serviceWorker";
+
+// Un-comment upon deploying
+// logger.init();
 
 ReactDOM.render(
   <BrowserRouter>

@@ -1,33 +1,33 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import BtnGroup from "../common/button-group";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { ValidatorForm } from "react-material-ui-form-validator";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PersonalInfoForm from "./formPersonalInfo";
 import HealthInfo from "./formHealthInfo";
 import DemographicsInfo from "./formDemographics";
 import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 
+import userService from "../../services/userService";
 import http from "../../services/httpService";
 import config from "../../config.json";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.min.css";
+import utils from "../../utils.js";
 
 class SignupBox extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      step: 4,
+      step: 1,
       email: "",
       username: "",
       password: "",
-      confirmPassword: "",
       showPassword: false,
       profile: {
-        gender: "male",
+        gender: "M",
         birthdate: new Date(),
         phoneNum: "",
         prevDiseases: "",
@@ -41,26 +41,16 @@ class SignupBox extends React.Component {
     };
   }
 
-  getDateFormat(timedate) {
-    return timedate.toISOString().split("T")[0];
-  }
-
-  // Notification Method -> Extract it later into utils JS file
-  notify = (notificationType, msg) => {
-    // Notification alert for the user
-    toast[notificationType](msg, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 5000,
-      closeOnClick: false,
-      hideProgressBar: true,
-      pauseOnHover: false,
-    });
-  };
-
   // Handle the progress bar change event
   handleProgressChange = (ev) => {
-    if (!this.validate()) {
-      this.notify("info", "Please check your input again!");
+    // If the form is invalid show info msg and not proceed to the next step
+    // The handleSubmit method will handle the next step(not previous step)
+    if (ev.target.id > this.state.step) {
+      // Dispatching an event
+      // Hacky way to dispatch the event(changing its type since React relies on Synthetic events and not native events)
+      // Replace below code w/ a more robust one later -- The event dispatched/passed here is not really a form submission one and thus, this code is kinda obselete -- Figure it out quickly before release
+      ev.type = "submit";
+      this.form.submit(ev);
       return;
     }
 
@@ -69,29 +59,15 @@ class SignupBox extends React.Component {
     this.setState({ step: desiredStep });
   };
 
-  handleSubmit = async (ev) => {
-    // Prevent proceeding to the next step --- unless there're no errors whatsoever in the current step
-    if (!this.validate()) {
-      ev.preventDefault();
-      this.notify("info", "Please check your input again!");
-      return;
-    }
-
-    if (this.state.step < 4) {
-      this.nextStep();
-      return;
-    }
-
+  formatUserData = () => {
     let {
       email,
       username: name,
       password,
-      confirmPassword: conffPassword,
       profile: {
         gender,
         birthdate: dateOfBirth,
         phoneNum: phone,
-        prevDiseases,
         smokingCheckBox: smoking,
         weight,
         height,
@@ -100,18 +76,19 @@ class SignupBox extends React.Component {
       },
     } = this.state;
 
-    dateOfBirth = this.getDateFormat(dateOfBirth);
+    dateOfBirth = utils.getDateFormat(dateOfBirth);
+    // Adding the Egypt country code for the phone number
+    phone = "20" + phone;
 
-    const data = {
+    return {
       email,
       name,
       password,
-      conffPassword,
+      conffPassword: password,
       profile: {
         gender,
         dateOfBirth,
         phone,
-        prevDiseases,
         smoking,
         weight,
         height,
@@ -119,16 +96,55 @@ class SignupBox extends React.Component {
         city,
       },
     };
+  };
 
-    const endPoint = `${config.apiEndpoint}api/accounts/register/`;
+  handleSubmit = async (ev) => {
+    ev.preventDefault();
+
+    // Prevent proceeding to the next step -- unless there're no errors whatsoever in the current step
+    if (this.validateDate()) {
+      utils.notify("info", "Please check your inputs again!");
+      return;
+    }
+
+    if (this.state.step < 4) {
+      this.nextStep();
+      return;
+    }
+
+    const userData = this.formatUserData();
+
     // Register a user here, and then redirect him to the damn (homie OR the login page)
-    // Call the back end and re-direct towards the homie
     try {
-      const { data: response } = await http.post(endPoint, data);
+      const response = await userService.register(userData);
+      utils.notify("success", "Registered Successfully!");
       console.log(response);
     } catch (ex) {
-      console.log(ex.response);
+      if (ex.response && ex.response.status === 400) {
+        const errors = ex.response.data;
+        const errorsMsg = this.extractErrors(errors);
+        utils.notify("error", errorsMsg);
+      }
     }
+  };
+
+  // Extract errors from response obj(given it's an expected error)
+  // In case of multiple errors, it's configured to report either (profile/other-data) errors -- and so, it doesn't show all the errors at once, for UX convenience...Nothing more or less.
+  // Extract this function later
+  extractErrors = (errors) => {
+    let errorsMsg = "";
+    if (errors["profile"]) {
+      const { profile } = errors;
+      for (const key in profile) {
+        errorsMsg += `${profile[key][0]}\n`;
+      }
+    } else {
+      for (const key in errors) {
+        errorsMsg += `${errors[key][0]}\n`;
+      }
+    }
+
+    return errorsMsg;
   };
 
   // Proceed to the next step
@@ -141,26 +157,27 @@ class SignupBox extends React.Component {
     this.setState({ step: this.state - 1 });
   };
 
-  validate = () => {
-    const data = this.state;
-    const { profile: profileData } = data;
+  validateDate = () => {
+    const {
+      profile: { birthdate },
+    } = this.state;
 
-    // Check if it's a valid date object
+    const errors = this.state.errors;
+
+    // Check if it's a valid date object -- Modify this condition w/ a newer better validation later
     if (
-      !profileData["birthdate"] ||
-      isNaN(profileData["birthdate"].getFullYear()) ||
-      profileData["birthdate"].getFullYear() > new Date().getFullYear()
+      !birthdate ||
+      isNaN(birthdate.getFullYear()) ||
+      birthdate.getFullYear() > new Date().getFullYear()
     ) {
-      this.setState({ errors: { birthdate: true } });
+      errors["birthdate"] = true;
+      this.setState({ errors });
     } else {
-      const errors = this.state.errors;
       delete errors["birthdate"];
       this.setState({ errors });
     }
 
-    // => false -> there are errors
-    // => true -> there are NO errors
-    return !Object.keys(this.state.errors).length;
+    return errors["birthdate"];
   };
 
   handleDateChange = (date) => {
@@ -172,7 +189,6 @@ class SignupBox extends React.Component {
   };
 
   // When the user clicks on the next step except the current one(before it) OR the submit button(sign-up button in this case)
-  // Check if the custom inputs(date in this case) is validated --- Do the same w/ other inputs as well
 
   // Handle fields change
   handleChange = (event) => {
@@ -261,7 +277,12 @@ class SignupBox extends React.Component {
           <div className="container d-flex justify-content-center">
             <BtnGroup signupSelected={true} signinSelected={false} />
           </div>
-          <ValidatorForm instantValidate onSubmit={this.handleSubmit}>
+          <ValidatorForm
+            instantValidate
+            onSubmit={this.handleSubmit}
+            ref={(ele) => (this.form = ele)}
+            autoComplete="on"
+          >
             <TransitionGroup component={null}>
               <CSSTransition
                 key={this.state.step}
