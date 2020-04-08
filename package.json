@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "date-fns": "^2.10.0",
+    "esri-loader": "^2.13.0",
     "jquery": "^3.4.1",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
