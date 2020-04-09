@@ -61,60 +61,6 @@ class Map3 extends React.Component {
         content: "Infected Cases: {infected_cases}",
       };
 
-      //  var popupOpenspaces = {
-      //   "title": "{PARK_NAME}",
-      //   "content": [{
-      //     "type": "fields",
-      //     "fieldInfos": [
-      //       {
-      //         "fieldName": "AGNCY_NAME",
-      //         "label": "Agency",
-      //         "isEditable": true,
-      //         "tooltip": "",
-      //         "visible": true,
-      //         "format": null,
-      //         "stringFieldOption": "text-box"
-      //       },
-      //       {
-      //         "fieldName": "TYPE",
-      //         "label": "Type",
-      //         "isEditable": true,
-      //         "tooltip": "",
-      //         "visible": true,
-      //         "format": null,
-      //         "stringFieldOption": "text-box"
-      //       },
-      //       {
-      //         "fieldName": "ACCESS_TYP",
-      //         "label": "Access",
-      //         "isEditable": true,
-      //         "tooltip": "",
-      //         "visible": true,
-      //         "format": null,
-      //         "stringFieldOption": "text-box"
-      //       },
-      //       {
-      //         "fieldName": "GIS_ACRES",
-      //         "label": "Acres",
-      //         "isEditable": true,
-      //         "tooltip": "",
-      //         "visible": true,
-      //         "format": {
-      //           "places": 2,
-      //           "digitSeparator": true
-      //         },
-      //         "stringFieldOption": "text-box"
-      //       }
-      //     ]
-      //   }]
-      // }
-
-      // var openspaces = new FeatureLayer({
-      //   url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Parks_and_Open_Space_Styled/FeatureServer/0",
-      //   outFields: ["TYPE","PARK_NAME", "AGNCY_NAME","ACCESS_TYP","GIS_ACRES"],
-      //   popupTemplate: popupOpenspaces
-      // });
-
       const covidCasesLayer = new FeatureLayer({
         url:
           "https://services9.arcgis.com/d81CvrwYLC4eZEWT/arcgis/rest/services/covid_19_egypt_cases/FeatureServer",
@@ -149,14 +95,14 @@ class Map3 extends React.Component {
     return (
       <React.Fragment>
         <div className="row no-gutters covid-container">
-          <div className="col-12 col-md-2">
+          <div className="col-2">
             <SideTab governorates={this.state.governorates} />
           </div>
-          <div className="col-12 col-md-10">
+          <div className="col-10">
             <div
               className="webmap"
               ref={(ele) => (this.mapRef = ele)}
-              style={{ height: "100vh", width: "100vw" }}
+              style={{ height: "100vh", width: "100%" }}
             />
           </div>
         </div>

@@ -314,6 +314,13 @@ div.submit-wrapper {
 }
 
 /*------------------------------------------------------------------*/
+.corona-sidetab {
+  /*  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;*/
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;
 }
@@ -335,9 +342,9 @@ div.submit-wrapper {
 }
 
 @media only screen and (max-width: 768px) {
-  body {
+  /*  body {
     overflow-y: auto;
-  }
+  }*/
 
   /*  .covid-container {
   }*/
