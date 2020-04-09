@@ -1,6 +1,7 @@
 import React from "react";
 import { loadModules } from "esri-loader";
 import SideTab from "./sideTab";
+import Button from "@material-ui/core/Button";
 
 class Map3 extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class Map3 extends React.Component {
         { city: "Ismailia", "infected-cases": 4 },
         { city: "Gharbia", "infected-cases": 19 },
       ],
+      isSideTabOpen: false,
     };
   }
 
@@ -67,12 +69,6 @@ class Map3 extends React.Component {
         popupTemplate: popupCovidInfo,
       });
 
-      // var trailheads = new FeatureLayer({
-      //   url: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads_Styled/FeatureServer/0",
-      //   outFields: ["TRL_NAME","CITY_JUR","X_STREET","PARKING","ELEV_FT"],
-      //   popupTemplate: popupTrailheads
-      // });
-
       map.add(covidCasesLayer, 0);
     });
   }
@@ -82,27 +78,48 @@ class Map3 extends React.Component {
       // destroy the map view
       this.view.container = null;
     }
+
+    // <div
+    //   className="webmap"
+    //   ref={(ele) => (this.mapRef = ele)}
+    //   style={{ height: "100vh", width: "100%" }}
+    // />
   }
 
+  // U can toggle the state of the side-tab either using the (ref(recommended to be avoided in the docs) or state(preferred))
+  toggleSideTab = () => {
+    let { isSideTabOpen } = this.state;
+    isSideTabOpen = !isSideTabOpen;
+    this.setState({ isSideTabOpen });
+  };
+
   render() {
-    // return (
-    //   <div
-    //     className="webmap"
-    //     ref={(ele) => (this.mapRef = ele)}
-    //     style={{ height: "100vh", width: "100vw" }}
-    //   />
-    // );
+    const { isSideTabOpen } = this.state;
+
     return (
       <React.Fragment>
-        <div className="row no-gutters covid-container">
-          <div className="col-2">
+        <div className="row no-gutters">
+          <div className={`${isSideTabOpen ? "col-lg-2" : "d-none"}`}>
             <SideTab governorates={this.state.governorates} />
           </div>
-          <div className="col-10">
+
+          <Button
+            variant="contained"
+            color="secondary"
+            className="corona-btn"
+            onClick={this.toggleSideTab}
+          >
+            {isSideTabOpen ? "Hide" : "Show"} Summary
+          </Button>
+
+          <div
+            className={`${
+              isSideTabOpen ? "col-lg-10" : "col-lg-12"
+            } map-container`}
+          >
             <div
-              className="webmap"
+              className="webmap w-100 h-100"
               ref={(ele) => (this.mapRef = ele)}
-              style={{ height: "100vh", width: "100%" }}
             />
           </div>
         </div>

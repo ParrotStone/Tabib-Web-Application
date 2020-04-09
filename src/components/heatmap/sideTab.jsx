@@ -9,7 +9,6 @@ const SideTab = ({ governorates }) => {
   return (
     <React.Fragment>
       <div
-        className="corona-sidetab"
         style={{
           borderRight: "2px solid #444444",
           fontFamily: "JF Flat, Raleway, Segoe UI, Tahoma, sans-serif",

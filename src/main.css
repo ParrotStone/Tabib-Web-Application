@@ -314,13 +314,6 @@ div.submit-wrapper {
 }
 
 /*------------------------------------------------------------------*/
-.corona-sidetab {
-  /*  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;*/
-}
-
 .custom-scrollbar::-webkit-scrollbar {
   width: 5px;
 }
@@ -341,11 +334,33 @@ div.submit-wrapper {
   background: #444444;
 }
 
-@media only screen and (max-width: 768px) {
-  /*  body {
-    overflow-y: auto;
-  }*/
+.corona-btn {
+  position: fixed !important;
+  top: 20px !important;
+  right: 10px !important;
+  z-index: 1 !important;
+  margin: 0 !important;
+}
 
-  /*  .covid-container {
-  }*/
+.map-container {
+  height: 100vh;
+  width: 100vw;
+}
+
+.open-sidetab {
+  width: 250px !important;
+}
+
+.close-sidetab {
+  width: 0px !important;
+}
+
+@media only screen and (max-width: 992px) {
+  .open-sidetab {
+    width: 100vw !important;
+  }
+
+  .close-sidetab {
+    width: 0px !important;
+  }
 }
