@@ -3,7 +3,7 @@ import { loadModules } from "esri-loader";
 import SideTab from "./sideTab";
 import Button from "@material-ui/core/Button";
 
-class Map3 extends React.Component {
+class Map extends React.Component {
   constructor(props) {
     super(props);
 
@@ -58,9 +58,8 @@ class Map3 extends React.Component {
       });
 
       const popupCovidInfo = {
-        title: "COVID-19 Cases in {CITY_JUR} governorate",
+        title: "COVID-19 Cases in {CITY_JUR} governorate: {infected_cases}",
         outFields: ["infected_cases", "CITY_JUR"],
-        content: "Infected Cases: {infected_cases}",
       };
 
       const covidCasesLayer = new FeatureLayer({
@@ -78,12 +77,6 @@ class Map3 extends React.Component {
       // destroy the map view
       this.view.container = null;
     }
-
-    // <div
-    //   className="webmap"
-    //   ref={(ele) => (this.mapRef = ele)}
-    //   style={{ height: "100vh", width: "100%" }}
-    // />
   }
 
   // U can toggle the state of the side-tab either using the (ref(recommended to be avoided in the docs) or state(preferred))
@@ -128,4 +121,4 @@ class Map3 extends React.Component {
   }
 }
 
-export default Map3;
+export default Map;

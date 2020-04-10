@@ -38,7 +38,7 @@ const SideTab = ({ governorates }) => {
               style={{ borderRadius: "0" }}
             >
               {item["city"]}:{" "}
-              <span className="text-warning">{item["infected-cases"]}</span>
+              <span className="text-danger">{item["infected-cases"]}</span>
             </li>
           ))}
         </ul>
