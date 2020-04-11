@@ -1,7 +1,7 @@
 import React from "react";
-import Map from "./heatmap";
+import Map from "./coronaMap";
 
-const Heatmap = (props) => {
+const CoronaMap = (props) => {
   return (
     <React.Fragment>
       <Map />
@@ -9,4 +9,4 @@ const Heatmap = (props) => {
   );
 };
 
-export default Heatmap;
+export default CoronaMap;
