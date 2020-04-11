@@ -9,7 +9,7 @@ import Account from "./components/profile/account";
 import Signin from "./components/signin/index";
 import ResetPassword from "./components/common/resetPassword";
 import HomeDiagnosis from "./components/homeDiagnosis";
-import Heatmap from "./components/heatmap/index";
+import CoronaMap from "./components/heatmap/index";
 
 function App() {
   // Mount ToastContainer if none is mounted
@@ -28,7 +28,7 @@ function App() {
         <Route path="/reset-password" exact component={ResetPassword} />
         <Route path="/homie" exact component={HomeDiagnosis} />
         <Route path="/account" exact component={Account} />
-        <Route path="/heatmap" exact component={Heatmap} />
+        <Route path="/coronamap" exact component={CoronaMap} />
         <Route path="/not-found" exact component={NotFound} />
         <Redirect to="/not-found" />
       </Switch>
