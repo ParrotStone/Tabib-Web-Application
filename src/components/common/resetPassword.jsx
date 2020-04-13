@@ -3,7 +3,6 @@ import Background from "../common/background";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import { Link } from "react-router-dom";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import EmailIcon from "@material-ui/icons/Email";
@@ -54,15 +53,15 @@ class ResetPassword extends React.Component {
         <Background />
         <ThemeProvider theme={theme}>
           <div className="box">
-            <Link to="/login">
-              <ArrowBackIcon
-                color="primary"
-                style={{
-                  fontSize: "35px",
-                  marginTop: "10px",
-                }}
-              />
-            </Link>
+            <ArrowBackIcon
+              color="primary"
+              style={{
+                cursor: "pointer",
+                fontSize: "35px",
+                marginTop: "10px",
+              }}
+              onClick={this.props.history.goBack}
+            />
             <div
               className="container-fluid d-flex flex-column justify-content-center align-items-center"
               style={{ height: "85%" }}

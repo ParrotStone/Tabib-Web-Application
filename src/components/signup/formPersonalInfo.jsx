@@ -21,6 +21,8 @@ class PersonalInfoForm extends React.Component {
       profile: { gender, birthdate, phoneNum },
     } = this.props.values;
 
+    // const { maxDateToRegister } = this.props;
+
     return (
       <React.Fragment>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

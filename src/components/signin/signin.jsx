@@ -10,8 +10,9 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import auth from "../../services/authService";
+import userService from "../../services/userService";
 import utils from "../../utils.js";
 
 class SigninBox extends React.Component {
@@ -29,9 +30,18 @@ class SigninBox extends React.Component {
     const { email, password } = this.state;
 
     try {
-      const response = await auth.login({ email, password });
-      utils.notify("success", "Logged in successfully!");
-      console.log(response);
+      const {
+        data: { access, refresh },
+      } = await auth.login({ email, password });
+      const { data: user } = await userService.getUserProfile(access, refresh);
+
+      utils.notify("success", "Logged in Successfully!");
+
+      localStorage.setItem("access-token", access);
+      localStorage.setItem("refresh-token", refresh);
+      localStorage.setItem("user", JSON.stringify(user));
+      // Find a better a way to redirect the user using the(history(the location(pathname stuff)) obj provided by React Router DOM) -- (this.props.history here resolves to undefined(find out why))
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
@@ -63,6 +73,8 @@ class SigninBox extends React.Component {
   };
 
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
+
     const { email, password, showPassword } = this.state;
 
     // Customize the colors of the form

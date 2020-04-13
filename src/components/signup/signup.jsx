@@ -12,13 +12,16 @@ import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
 
 import userService from "../../services/userService";
-import http from "../../services/httpService";
-import config from "../../config.json";
+import auth from "../../services/authService";
 import utils from "../../utils.js";
 
 class SignupBox extends React.Component {
   constructor(props) {
     super(props);
+
+    // Configure this later, when integrating the Privacy-Policy/Terms-of-use, and of course once the re-defined homepage has been created/integrated
+    // // Calculating the minimum year(allowed for birthdate value) to dis-allow users less than 13 years old(COPPA law)
+    // this.maxDateToRegister = new Date(`12-31-${new Date().getFullYear() - 13}`);
 
     this.state = {
       step: 1,
@@ -116,9 +119,21 @@ class SignupBox extends React.Component {
 
     // Register a user here, and then redirect him to the damn (homie OR the login page)
     try {
-      const response = await userService.register(userData);
+      const {
+        data: { email, password },
+      } = await userService.register(userData);
+      const {
+        data: { access, refresh },
+      } = await auth.login({ email, password });
+      const { data: user } = await userService.getUserProfile(access, refresh);
+
       utils.notify("success", "Registered Successfully!");
-      console.log(response);
+
+      localStorage.setItem("access-token", access);
+      localStorage.setItem("refresh-token", refresh);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
@@ -161,6 +176,9 @@ class SignupBox extends React.Component {
     const {
       profile: { birthdate },
     } = this.state;
+
+    // const isEligible =
+    //   new Date().getFullYear() - this.maxDateToRegister.getFullYear() >= 13;
 
     const errors = this.state.errors;
 
@@ -226,6 +244,7 @@ class SignupBox extends React.Component {
             handleChange={this.handleChange}
             handleDateChange={this.handleDateChange}
             values={this.state}
+            maxDateToRegister={this.maxDateToRegister}
           />
         );
       case 2:
@@ -262,6 +281,8 @@ class SignupBox extends React.Component {
   };
 
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
+
     // Customize the colors of the form
     const theme = createMuiTheme({
       palette: {

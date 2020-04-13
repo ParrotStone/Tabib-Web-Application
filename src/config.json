@@ -1,8 +1,10 @@
 {
-  "apiURL": "http://localhost:8000/",
-  "apiSignupURL": "http://localhost:8000/api/accounts/register/",
-  "apiLoginURL": "http://localhost:8000/api/accounts/login/",
-  "apiImgPred": "http://localhost:8000/upload/",
-  "apiUpdateProfileImg": "http://localhost:8000/api/accounts/profile-picture/",
-  "apiPasswordReset": "http://localhost:8000/api/accounts/password/reset/"
+  "apiURL": "https://009c6504.ngrok.io/",
+  "apiSignupURL": "https://009c6504.ngrok.io/api/accounts/register/",
+  "apiLoginURL": "https://009c6504.ngrok.io/api/accounts/login/",
+  "apiUserProfile": "https://009c6504.ngrok.io/api/accounts/profile/",
+  "apiImgPred": "https://009c6504.ngrok.io/upload/",
+  "apiImgPredArrBuff": "https://009c6504.ngrok.io/upload/android/",
+  "apiUpdateProfileImg": "https://009c6504.ngrok.io/api/accounts/profile-picture/",
+  "apiPasswordReset": "https://009c6504.ngrok.io/api/accounts/password/reset/"
 }

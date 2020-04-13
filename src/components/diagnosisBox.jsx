@@ -8,12 +8,12 @@ import config from "../config.json";
 class DiagnosisBox extends React.Component {
   // TODO: Remember also to check the packages installed and remove the ones un-necessary especially to (sweetalert thingie) and any un-needed ones in general, also separate the devDependencies from the required ones
 
-  // The asynchronous part is to wait for the user until it uploads an image
+  // The asynchronous part is to wait for the user until it uploads an image -- replace the ugly input field with a button(custom one, figure out how to make one -- later of course) + Resolve the padding thing that happen to the logo when the damn loading popup appear/show-up + See what the damn /upload/android doesn't wanna accept the base64 string(returns a 415 unsupported media error) =>> (with content-type already set to => applicatio/json; charset=UTF-8)
   handleSkinClick = async () => {
     const { value: file } = await Swal.fire({
       title: "Select image",
       input: "file",
-      width: 900,
+      width: 800,
       scrollbarPadding: false,
       imageUrl: ImgUpload,
       imageWidth: 250,
@@ -22,42 +22,53 @@ class DiagnosisBox extends React.Component {
       imageAlt: "Upload Image",
       inputAttributes: {
         accept: "image/*",
-        "aria-label": "Upload your image"
-      }
+        "aria-label": "Upload your image",
+      },
     });
 
     // This part is pretty much useless, but for now, it's okay for it to stay here :)
     if (file) {
       const reader = new FileReader();
 
-      reader.onload = e => {
+      reader.readAsDataURL(file);
+
+      reader.onload = (e) => {
         Swal.fire({
           title: "Confirm Upload?",
           scrollbarPadding: false,
           imageUrl: e.target.result,
-          imageAlt: "The uploaded picture"
-        }).then(async result => {
+          imageAlt: "The uploaded picture",
+          onAfterClose: () => {
+            Swal.showLoading();
+          },
+        }).then((result) => {
           if (result) {
-            Swal.fire({
-              scrollbarPadding: false,
-              icon: "success",
-              title: "Success!",
-              text: "Your image has been uploaded"
-            });
+            reader.readAsDataURL(file);
+            reader.onload = async () => {
+              const formData = new FormData();
+              formData.append("file", file);
+              // Do here the AJAX call to the back-end for image diagnosis
+              const headers = {
+                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+                "Content-Type": "multipart/form-data",
+              };
 
-            // Do here the AJAX call to the back-end for image diagnosis
-            // const endPoint = `${config.apiEndpoint}upload/`;
-            // const { data: response } = await http.post(
-            //   endPoint,
-            //   reader.readAsDataURL(file)
-            // );
+              const {
+                data: { ans },
+              } = await http.post(config.apiImgPred, formData, { headers });
 
-            // console.log(response);
+              let predResult = ans.split("is")[1];
+
+              Swal.fire({
+                scrollbarPadding: false,
+                icon: "info",
+                title: "Your results!",
+                text: `It is probably ${predResult} skin disease`,
+              });
+            };
           }
         });
       };
-
-      reader.readAsDataURL(file);
     }
   };
 

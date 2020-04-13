@@ -5,17 +5,25 @@ import HomePg from "./components/home/index";
 import AboutContent from "./components/about/about";
 import NotFound from "./components/common/notfound";
 import Signup from "./components/signup/index";
-import Account from "./components/profile/account";
+import Profile from "./components/profile/profile";
 import Signin from "./components/signin/index";
+import ProtectedRoute from "./components/common/protectedRoute";
+import Logout from "./components/common/logout";
 import ResetPassword from "./components/common/resetPassword";
-import HomeDiagnosis from "./components/homeDiagnosis";
 import CoronaMap from "./components/heatmap/index";
 
-function App() {
+import PrivacyPolicy from "./components/common/privacyPolicy";
+import Terms from "./components/common/terms";
+import auth from "./services/authService";
+
+const App = () => {
   // Mount ToastContainer if none is mounted
   toast.configure({
     style: { fontSize: "1.1rem" },
   });
+
+  // Get the current user to pass it down the app tree
+  const user = auth.getCurrentUser();
 
   return (
     <React.Fragment>
@@ -25,15 +33,21 @@ function App() {
         <Route path="/about" exact component={AboutContent} />
         <Route path="/signup" exact component={Signup} />
         <Route path="/login" exact component={Signin} />
+        <Route path="/logout" exact component={Logout} />
         <Route path="/reset-password" exact component={ResetPassword} />
-        <Route path="/homie" exact component={HomeDiagnosis} />
-        <Route path="/account" exact component={Account} />
+        <ProtectedRoute
+          path="/profile"
+          exact
+          render={(props) => <Profile {...props} user={user} />}
+        />
         <Route path="/coronamap" exact component={CoronaMap} />
+        <Route path="/privacy-policy" exact component={PrivacyPolicy} />
+        <Route path="/terms-of-use" exact component={Terms} />
         <Route path="/not-found" exact component={NotFound} />
         <Redirect to="/not-found" />
       </Switch>
     </React.Fragment>
   );
-}
+};
 
 export default App;

@@ -3,9 +3,13 @@ import Logo from "../common/logo";
 import ContentSlider from "./contentSlider";
 import Navbar from "./navbar";
 import IconSlider from "./iconSlider";
+import HomeDiagnosis from "../homeDiagnosis";
 import { Link } from "react-router-dom";
 
+import auth from "../../services/authService";
+
 const HomePg = () => {
+  if (auth.getCurrentUser()) return <HomeDiagnosis />;
   return (
     <React.Fragment>
       <div id="full-pg">
