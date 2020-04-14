@@ -60,7 +60,7 @@ class EmailInfo extends React.Component {
                   "required",
                   "minStringLength:8",
                   // A regex that matches passwords w/ at least one letter, symbol, and a digit, between (8-128) character length
-                  "matchRegexp:^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!'\"`^%*#?&])[A-Za-z\\d@$'\"`^!%*#?& ]{8,128}$",
+                  "matchRegexp:^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@_$!'\"`^%*#?&])[A-Za-z\\d@_$'\"`^!%*#?& ]{8,128}$",
                   "maxStringLength:128",
                 ]}
                 errorMessages={[

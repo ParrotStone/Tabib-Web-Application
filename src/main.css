@@ -169,7 +169,7 @@ small.input-info {
   margin-left: 37px;
 }
 
-.signup-btn {
+.custom-submit-btn {
   padding: 10px 20px;
   color: white;
   background: var(--primary-color);
@@ -223,7 +223,7 @@ div.submit-wrapper {
 
 /*The main diagnosis area styles*/
 .main-diag {
-  padding: 0;
+  padding: 0 15px;
   width: 1150px;
   height: 500px;
   border-radius: 30px;
@@ -231,7 +231,7 @@ div.submit-wrapper {
 
 .user-area-wrapper {
   background: var(--primary-color);
-  width: 400px;
+  width: 340px;
   height: 500px;
   padding: 20px;
   float: left;
@@ -248,8 +248,8 @@ div.submit-wrapper {
   border-radius: 30px;
   border-top-left-radius: 0;
   position: absolute;
-  top: 40px;
-  left: 37%;
+  top: 25px;
+  left: 31%;
   color: white;
 }
 

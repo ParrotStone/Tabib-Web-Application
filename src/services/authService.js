@@ -9,8 +9,7 @@ export const login = (user) => {
 };
 
 export const getCurrentUser = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user;
+  return JSON.parse(localStorage.getItem("user"));
 };
 
 export default {

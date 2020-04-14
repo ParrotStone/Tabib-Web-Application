@@ -169,7 +169,7 @@ class SigninBox extends React.Component {
               </Grid>
               <Grid>
                 <button
-                  className="btn signup-btn d-block mt-5 mx-auto"
+                  className="btn custom-submit-btn d-block mt-5 mx-auto"
                   type="submit"
                 >
                   Log in

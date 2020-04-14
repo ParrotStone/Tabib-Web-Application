@@ -323,7 +323,7 @@ class SignupBox extends React.Component {
                 />
               </div>
               <button
-                className="btn signup-btn d-block mt-3 mx-auto"
+                className="btn custom-submit-btn d-block mt-3 mx-auto"
                 type="submit"
               >
                 Sign up

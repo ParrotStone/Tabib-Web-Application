@@ -14,16 +14,13 @@ import CoronaMap from "./components/heatmap/index";
 
 import PrivacyPolicy from "./components/common/privacyPolicy";
 import Terms from "./components/common/terms";
-import auth from "./services/authService";
+// import auth from "./services/authService";
 
 const App = () => {
   // Mount ToastContainer if none is mounted
   toast.configure({
     style: { fontSize: "1.1rem" },
   });
-
-  // Get the current user to pass it down the app tree
-  const user = auth.getCurrentUser();
 
   return (
     <React.Fragment>
@@ -35,11 +32,7 @@ const App = () => {
         <Route path="/login" exact component={Signin} />
         <Route path="/logout" exact component={Logout} />
         <Route path="/reset-password" exact component={ResetPassword} />
-        <ProtectedRoute
-          path="/profile"
-          exact
-          render={(props) => <Profile {...props} user={user} />}
-        />
+        <ProtectedRoute path="/profile" exact component={Profile} />
         <Route path="/coronamap" exact component={CoronaMap} />
         <Route path="/privacy-policy" exact component={PrivacyPolicy} />
         <Route path="/terms-of-use" exact component={Terms} />

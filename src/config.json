@@ -6,5 +6,7 @@
   "apiImgPred": "https://009c6504.ngrok.io/upload/",
   "apiImgPredArrBuff": "https://009c6504.ngrok.io/upload/android/",
   "apiUpdateProfileImg": "https://009c6504.ngrok.io/api/accounts/profile-picture/",
+  "apiUpdateProfileImgArrBuff": "https://009c6504.ngrok.io/api/accounts/profile-picture/Android/",
+  "apiDownloadProfileImg": "https://009c6504.ngrok.io/media/profile-pictures/",
   "apiPasswordReset": "https://009c6504.ngrok.io/api/accounts/password/reset/"
 }
