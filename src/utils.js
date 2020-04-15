@@ -2,7 +2,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 export const getDateFormat = (timedate) => {
-  return timedate.toISOString().split("T")[0];
+  // return timedate.toISOString().split("T")[0];
+  const parts = timedate.toLocaleDateString().split("/");
+  const newDateStr = `${parts[2]}-${parts[0]}-${parts[1]}`;
+  return newDateStr;
 };
 
 export const notify = (notificationType, msg) => {

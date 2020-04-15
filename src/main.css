@@ -130,9 +130,9 @@ div.overlay .row img {
   margin-top: 20px;
   background: #f8f8f8;
   padding: 10px 20px;
-  border: 1px solid #dddddd;
+  /*border: 1px solid #dddddd;*/
   border-radius: 10px;
-  box-shadow: 4px 4px 4px 3px #cccccc;
+  box-shadow: 3px 3px 3px 3px #cccccc;
 }
 
 .btn-group-custom {
@@ -144,13 +144,20 @@ div.overlay .row img {
   border-radius: 30px;
   width: 55%;
   margin: auto;
-  box-shadow: 4px 4px 4px 1px #cccccc;
+  box-shadow: 3px 3px 3px 1px #cccccc;
 }
 
 .btn-group-custom button {
-  margin-right: 5px;
   width: 105px;
   border-radius: 30px;
+}
+
+.btn-group-custom button:first-child {
+  margin-right: 2px;
+}
+
+.btn-group-custom button:last-child {
+  margin-left: 2px;
 }
 
 .btn-selected {

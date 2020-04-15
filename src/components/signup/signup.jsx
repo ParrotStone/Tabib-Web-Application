@@ -80,6 +80,7 @@ class SignupBox extends React.Component {
     } = this.state;
 
     dateOfBirth = utils.getDateFormat(dateOfBirth);
+    console.log(dateOfBirth);
     // Adding the Egypt country code for the phone number
     phone = "20" + phone;
 

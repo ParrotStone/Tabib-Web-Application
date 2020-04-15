@@ -7,6 +7,11 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import EmailIcon from "@material-ui/icons/Email";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import Collapse from "@material-ui/core/Collapse";
+
+import http from "../../services/httpService";
+import { apiPasswordReset } from "../../config.json";
 
 class ResetPassword extends React.Component {
   constructor(props) {
@@ -14,15 +19,16 @@ class ResetPassword extends React.Component {
 
     this.state = {
       email: "",
-      password: "",
-      showPassword: false,
+      isEmailSent: false,
     };
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     // Call the back end and re-direct towards the login(to log in w/ the new password)
-    const data = this.state;
+    const { email } = this.state;
+    const { data } = await http.post(apiPasswordReset, { email });
     console.log(data);
+    this.setState({ isEmailSent: true });
   };
 
   // Handle fields change
@@ -31,13 +37,8 @@ class ResetPassword extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  // Handle the password visibility icon
-  handlePasswordVis = (event) => {
-    this.setState({ showPassword: !this.state.showPassword });
-  };
-
   render() {
-    const { email, password, showPassword } = this.state;
+    const { email, isEmailSent } = this.state;
 
     // Customize the colors of the form
     const theme = createMuiTheme({
@@ -66,6 +67,27 @@ class ResetPassword extends React.Component {
               className="container-fluid d-flex flex-column justify-content-center align-items-center"
               style={{ height: "85%" }}
             >
+              <Collapse in={isEmailSent}>
+                <div
+                  className={`${
+                    isEmailSent ? "alert alert-primary" : "d-none"
+                  }`}
+                  role="alert"
+                  style={{ fontSize: ".9rem" }}
+                >
+                  <div className="row">
+                    <InfoOutlinedIcon
+                      className="col align-self-center"
+                      style={{ fontSize: "50px" }}
+                    />
+                    <p className="col-10">
+                      A link has been sent to your Email account with
+                      instructions to reset your password, please check your
+                      inbox, or spam folder
+                    </p>
+                  </div>
+                </div>
+              </Collapse>
               <ValidatorForm
                 instantValidate
                 onSubmit={this.handleSubmit}
@@ -97,7 +119,7 @@ class ResetPassword extends React.Component {
                   </Grid>
                 </Grid>
                 <button
-                  className="btn signup-btn d-block mt-5 mx-auto"
+                  className="btn custom-submit-btn d-block mt-5 mx-auto"
                   type="submit"
                 >
                   Reset Password
