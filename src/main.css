@@ -248,10 +248,9 @@ div.submit-wrapper {
 
 .message-box {
   background: var(--primary-color);
-  padding: 10px;
   font-size: 1rem;
-  font-weight: bold;
-  width: 220px;
+  /*width: 220px;*/
+  width: auto;
   border-radius: 30px;
   border-top-left-radius: 0;
   position: absolute;
@@ -268,6 +267,13 @@ div.submit-wrapper {
 
 .btn-action > button {
   border-radius: 30px !important;
+}
+
+.search-container {
+  position: absolute;
+  top: 77%;
+  right: 3%;
+  width: 65%;
 }
 
 /*------------------------------------------------*/

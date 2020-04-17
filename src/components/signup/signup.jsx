@@ -1,8 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import BtnGroup from "../common/button-group";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import PersonalInfoForm from "./formPersonalInfo";
@@ -40,6 +38,7 @@ class SignupBox extends React.Component {
         country: "",
         city: "",
       },
+      isSubmitting: false,
       errors: {},
     };
   }
@@ -117,28 +116,44 @@ class SignupBox extends React.Component {
     }
 
     const userData = this.formatUserData();
+    this.setState({ isSubmitting: true });
 
     // Register a user here, and then redirect him to the damn (homie OR the login page)
     try {
-      const {
-        data: { email, password },
-      } = await userService.register(userData);
-      const {
-        data: { access, refresh },
-      } = await auth.login({ email, password });
-      const { data: user } = await userService.getUserProfile(access, refresh);
+      // const {
+      //   data: { email, password },
+      // } = await userService.register(userData);
+      const response = await userService.register(userData);
+      const email = response.data.email;
+      const password = response.data.password;
+      const loginRes = await auth.login({ email, password });
+      console.log(response);
+      console.log(loginRes);
+      //       const {
+      //   data: { access, refresh },
+      // } = await auth.login({ response.data.email, response.data.password });
 
-      utils.notify("success", "Registered Successfully!");
+      const usrRes = await userService.getUserProfile(
+        loginRes.data.access,
+        loginRes.data.refresh
+      );
 
-      localStorage.setItem("access-token", access);
-      localStorage.setItem("refresh-token", refresh);
-      localStorage.setItem("user", JSON.stringify(user));
+      console.log(usrRes);
+
+      localStorage.setItem("access-token", loginRes.data.access);
+      localStorage.setItem("refresh-token", loginRes.data.refresh);
+      localStorage.setItem("user", JSON.stringify(usrRes.data));
+      this.setState({ isSubmitting: false });
+
+      // Figure out how to add the message below correcly(commented because the damn waiting(after the submitting spinner icon disappear) will enter the main page instantly, thus, the alert below is absolete -- Solve it correctly(probably after the user has already arrived at the homepage))
+      // utils.notify("success", "Registered Successfully!");
 
       window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
         const errorsMsg = this.extractErrors(errors);
+        this.setState({ isSubmitting: false });
         utils.notify("error", errorsMsg);
       }
     }
@@ -284,55 +299,57 @@ class SignupBox extends React.Component {
   render() {
     if (auth.getCurrentUser()) return <Redirect to="/" />;
 
-    // Customize the colors of the form
-    const theme = createMuiTheme({
-      palette: {
-        primary: {
-          main: "#12a2f9",
-        },
-      },
-    });
+    const { step, isSubmitting } = this.state;
 
     return (
-      <ThemeProvider theme={theme}>
-        <div className="box">
-          <div className="container d-flex justify-content-center">
-            <BtnGroup signupSelected={true} signinSelected={false} />
-          </div>
-          <ValidatorForm
-            instantValidate
-            onSubmit={this.handleSubmit}
-            ref={(ele) => (this.form = ele)}
-            autoComplete="on"
-          >
-            <TransitionGroup component={null}>
-              <CSSTransition
-                key={this.state.step}
-                in={true}
-                timeout={500}
-                appear={true}
-                classNames="slide"
-              >
-                {this.renderStep()}
-              </CSSTransition>
-            </TransitionGroup>
-            <div className="submit-wrapper">
-              <div className="container mt-4">
-                <ProgressBar
-                  currentStep={this.state.step}
-                  handleProgressChange={this.handleProgressChange}
-                />
-              </div>
-              <button
-                className="btn custom-submit-btn d-block mt-3 mx-auto"
-                type="submit"
-              >
-                Sign up
-              </button>
-            </div>
-          </ValidatorForm>
+      <div className="box">
+        <div className="container d-flex justify-content-center">
+          <BtnGroup signupSelected={true} signinSelected={false} />
         </div>
-      </ThemeProvider>
+        <ValidatorForm
+          instantValidate
+          onSubmit={this.handleSubmit}
+          ref={(ele) => (this.form = ele)}
+          autoComplete="on"
+        >
+          <TransitionGroup component={null}>
+            <CSSTransition
+              key={step}
+              in={true}
+              timeout={500}
+              appear={true}
+              classNames="slide"
+            >
+              {this.renderStep()}
+            </CSSTransition>
+          </TransitionGroup>
+          <div className="submit-wrapper">
+            <div className="container mt-4">
+              <ProgressBar
+                currentStep={step}
+                handleProgressChange={this.handleProgressChange}
+              />
+            </div>
+            <button
+              className="btn custom-submit-btn d-block mt-3 mx-auto"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
+                Sign up
+              </span>
+              <div
+                className={`${
+                  isSubmitting ? "spinner-border spinner-border-sm" : "d-none"
+                }`}
+                role="status"
+              >
+                <span className="sr-only">Loading...</span>
+              </div>
+            </button>
+          </div>
+        </ValidatorForm>
+      </div>
     );
   }
 }

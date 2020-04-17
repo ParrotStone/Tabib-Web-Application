@@ -20,6 +20,10 @@ export const notify = (notificationType, msg) => {
   toast[notificationType](msg, options);
 };
 
+export const CapitalizeFirstLetter = (str) => {
+  return str[0].toUpperCase() + str.slice(1);
+};
+
 export default {
   getDateFormat,
   notify,
