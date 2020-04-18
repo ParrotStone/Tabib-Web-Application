@@ -30,14 +30,21 @@ class SigninBox extends React.Component {
     const { email, password } = this.state;
 
     try {
-      const {
-        data: { access, refresh },
-      } = await auth.login({ email, password });
-      const { data: user } = await userService.getUserProfile(access, refresh);
+      // const {
+      //   data: { access, refresh },
+      // } = await auth.login({ email, password });
+      const response = await auth.login({ email, password });
+      // const { data: user } = await userService.getUserProfile(access, refresh);
+      const usrResponse = await userService.getUserProfile(
+        response.data.access,
+        response.data.refresh
+      );
+      console.log(response);
+      console.log(usrResponse);
 
-      localStorage.setItem("access-token", access);
-      localStorage.setItem("refresh-token", refresh);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("access-token", response.data.access);
+      localStorage.setItem("refresh-token", response.data.refresh);
+      localStorage.setItem("user", JSON.stringify(usrResponse.data));
       this.setState({ isSubmitting: false });
 
       // Find a better a way to redirect the user using the(history(the location(pathname stuff)) obj provided by React Router DOM) -- (this.props.history here resolves to undefined(find out why))

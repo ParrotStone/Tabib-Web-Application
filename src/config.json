@@ -10,8 +10,8 @@
   "apiDownloadProfileImg": "https://79c3e462.ngrok.io/media/profile-pictures/",
   "apiPasswordReset": "https://79c3e462.ngrok.io/api/accounts/password/reset/",
   "apiPasswordChange": "https://79c3e462.ngrok.io/api/accounts/password/change/",
-  "apiStartBot": "https://79c3e462.ngrok.io/chatbot/start/",
-  "apiSearchBot": "https://79c3e462.ngrok.io/chatbot/search/",
+  "apiStartBot": "http://127.0.0.1:8000/test/start/",
+  "apiSearchBot": "http://127.0.0.1:8000/test/search/",
   "apiAddSelSymptom": "https://79c3e462.ngrok.io/chatbot/append/",
   "apiConfirmSymptom": "https://79c3e462.ngrok.io/chatbot/getSymptoms/",
   "apiConfirmSubmitAns": "https://79c3e462.ngrok.io/chatbot/submitSymptoms/"

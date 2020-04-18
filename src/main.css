@@ -231,7 +231,7 @@ div.submit-wrapper {
 /*The main diagnosis area styles*/
 .main-diag {
   padding: 0 15px;
-  width: 1150px;
+  width: 1200px;
   height: 500px;
   border-radius: 30px;
 }
@@ -274,6 +274,32 @@ div.submit-wrapper {
   top: 77%;
   right: 3%;
   width: 65%;
+}
+
+.symptoms-list-container {
+  position: absolute;
+  top: 25px;
+  left: 32%;
+  width: 65%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.symptom-container {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 35px;
+  padding: 5px 12px;
+  min-width: 50px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.symptom-container:hover {
+  color: skyblue;
+  border: 1px solid skyblue;
 }
 
 /*------------------------------------------------*/

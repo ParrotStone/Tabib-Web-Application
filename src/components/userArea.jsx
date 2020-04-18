@@ -26,7 +26,6 @@ class UserArea extends React.Component {
                   padding: "5px",
                   width: "200px",
                   background: "white",
-                  border: "1px solid white",
                   borderRadius: "50%",
                 }}
               />

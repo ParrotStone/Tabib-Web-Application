@@ -112,19 +112,35 @@ class DiagnosisBox extends React.Component {
     if (value.length >= 3) {
       const headers = {
         Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+        withCredentials: true,
       };
 
       try {
         const { searchInput } = this.state;
-        await http.get(apiStartBot, { headers });
+        const response = await http.get(apiStartBot, {
+          headers,
+        });
 
-        const { data } = await http.post(
+       const responseSearch = await http.post(
           apiSearchBot,
           { ans: searchInput },
           { headers }
         );
 
-        console.log(data);
+        console.log(responseSearch);
+
+
+        console.log(response);
+        console.log(response.headers["set-cookie"]);
+        console.log(response.headers["Set-Cookie"]);
+
+        // const { data } = await http.post(
+        //   apiSearchBot,
+        //   { ans: searchInput },
+        //   { headers }
+        // );
+
+        // console.log(data);
       } catch (ex) {
         if (ex.response && ex.response.status === 400) {
           const errors = ex.response.data;
@@ -135,12 +151,34 @@ class DiagnosisBox extends React.Component {
     }
   };
 
+  handleSymptomClick = (ev) => {
+    console.log(ev.target);
+  };
+
   // Extract this function later
   extractErrors = (errors) => {
     let errorsMsg = "";
     for (const key in errors) {
       errorsMsg += `${errors[key][0]}\n`;
     }
+
+    /*
+      {isSearchBoxShown && filteredList && (
+          <div className="symptoms-list-container">
+            {filteredList.map((item, index) => {
+              return (
+                <span
+                  key={index}
+                  className="symptom-container"
+                  onClick={this.handleSymptomClick}
+                >
+                  {item}
+                </span>
+              );
+            })}
+          </div>
+        )}
+    */
 
     return errorsMsg;
   };
