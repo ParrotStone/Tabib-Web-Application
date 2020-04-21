@@ -110,29 +110,37 @@ class DiagnosisBox extends React.Component {
 
     // Make requests per every character typed
     if (value.length >= 3) {
-      const headers = {
-        Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-        withCredentials: true,
-      };
+      // const headers = {
+      //   Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+      //   "Referrer-Policy": "unsafe-url",
+      // };
 
       try {
-        const { searchInput } = this.state;
-        const response = await http.get(apiStartBot, {
-          headers,
-        });
-
-       const responseSearch = await http.post(
-          apiSearchBot,
-          { ans: searchInput },
-          { headers }
-        );
-
-        console.log(responseSearch);
-
-
+        const response = await http.get("https://6d9a4e73.ngrok.io/dump/");
         console.log(response);
-        console.log(response.headers["set-cookie"]);
-        console.log(response.headers["Set-Cookie"]);
+        for (let i = 1; i <= 5; i++) {
+          const result = await http.get(
+            "https://6d9a4e73.ngrok.io/dump/getnum/"
+          );
+          console.log(result.data);
+        }
+
+        // const { searchInput } = this.state;
+        // const response = await http.get(apiStartBot, {
+        //   headers,
+        // });
+
+        // const responseSearch = await http.post(
+        //   apiSearchBot,
+        //   { ans: searchInput },
+        //   { headers }
+        // );
+
+        // console.log(responseSearch);
+
+        // console.log(response);
+        // console.log(response.headers["set-cookie"]);
+        // console.log(response.headers["Set-Cookie"]);
 
         // const { data } = await http.post(
         //   apiSearchBot,

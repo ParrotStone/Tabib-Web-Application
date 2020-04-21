@@ -50,10 +50,11 @@ class SigninBox extends React.Component {
       // Find a better a way to redirect the user using the(history(the location(pathname stuff)) obj provided by React Router DOM) -- (this.props.history here resolves to undefined(find out why))
       window.location = "/";
     } catch (ex) {
+      // Revert the state to its original state.
+      this.setState({ isSubmitting: false });
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
         const errorsMsg = this.extractErrors(errors);
-        this.setState({ isSubmitting: false });
         notify("error", errorsMsg);
       }
     }

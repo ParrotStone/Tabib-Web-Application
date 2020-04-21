@@ -32,10 +32,11 @@ class ResetPassword extends React.Component {
       await http.post(apiPasswordReset, { email });
       this.setState({ isSubmitting: false, isEmailSent: true });
     } catch (ex) {
+      // Revert the state to its original state.
+      this.setState({ isSubmitting: false });
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
         const errsMsg = this.extractErrors(errors);
-        this.setState({ isSubmitting: false });
         notify("error", errsMsg);
       }
     }

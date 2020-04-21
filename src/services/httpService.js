@@ -2,7 +2,11 @@ import axios from "axios";
 import utils from "../utils.js";
 // import logger from "./logService";
 
-axios.interceptors.response.use(null, (error) => {
+const http = axios.create({
+  withCreditionals: true,
+});
+
+http.interceptors.response.use(null, (error) => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
@@ -20,8 +24,8 @@ axios.interceptors.response.use(null, (error) => {
 });
 
 export default {
-  get: axios.get,
-  post: axios.post,
-  put: axios.put,
-  delete: axios.delete,
+  get: http.get,
+  post: http.post,
+  put: http.put,
+  delete: http.delete,
 };

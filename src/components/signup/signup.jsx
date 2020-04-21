@@ -150,10 +150,11 @@ class SignupBox extends React.Component {
 
       window.location = "/";
     } catch (ex) {
+      // Revert the state to its original state.(Helps with whether the error was expected or not)
+      this.setState({ isSubmitting: false });
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
         const errorsMsg = this.extractErrors(errors);
-        this.setState({ isSubmitting: false });
         utils.notify("error", errorsMsg);
       }
     }
