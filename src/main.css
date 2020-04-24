@@ -246,6 +246,24 @@ div.submit-wrapper {
   border-bottom-left-radius: 30px;
 }
 
+.usr-profile-img {
+  /*Write some fancy hover effect here...*/
+}
+
+.usr-profile-img:hover {
+}
+
+.diagnosis-box {
+  /*Exact width, change/refactor it later to use flexbox/grid system as they are more effective*/
+  width: 830px;
+  float: right;
+}
+
+/*Clear the above float thingie(Not confirmred)Do confirm it*/
+.diagnosis-box::after {
+  clear: both;
+}
+
 .message-box {
   background: var(--primary-color);
   font-size: 1rem;
@@ -255,7 +273,7 @@ div.submit-wrapper {
   border-top-left-radius: 0;
   position: absolute;
   top: 25px;
-  left: 31%;
+  left: 30%;
   color: white;
 }
 
@@ -398,3 +416,17 @@ div.submit-wrapper {
     width: 0px !important;
   }
 }
+
+/*---------------------------------------------------------------*/
+/*----------------------Drug Alarm part--------------------------*/
+/*---------------------------------------------------------------*/
+/*.span-link {
+  color: #222222;
+  transition: 0.2s all ease-out;
+  cursor: pointer;
+}
+
+.span-link:hover {
+  color: red;
+}
+*/

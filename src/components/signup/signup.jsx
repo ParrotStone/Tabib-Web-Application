@@ -8,6 +8,7 @@ import HealthInfo from "./formHealthInfo";
 import DemographicsInfo from "./formDemographics";
 import EmailInfo from "./formEmailInfo";
 import ProgressBar from "../common/progressBar";
+import MaterialSpinner from "../common/materialSpinner";
 
 import userService from "../../services/userService";
 import auth from "../../services/authService";
@@ -339,14 +340,13 @@ class SignupBox extends React.Component {
               <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
                 Sign up
               </span>
-              <div
-                className={`${
-                  isSubmitting ? "spinner-border spinner-border-sm" : "d-none"
-                }`}
-                role="status"
-              >
-                <span className="sr-only">Loading...</span>
-              </div>
+              <MaterialSpinner
+                size={20}
+                thickness={4}
+                className={`mx-3 ${
+                  isSubmitting ? "d-block" : "d-none"
+                } text-white`}
+              />
             </button>
           </div>
         </ValidatorForm>

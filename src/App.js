@@ -16,7 +16,6 @@ import CoronaMap from "./components/heatmap/index";
 
 import PrivacyPolicy from "./components/common/privacyPolicy";
 import Terms from "./components/common/terms";
-// import auth from "./services/authService";
 
 const App = () => {
   // Mount ToastContainer if none is mounted

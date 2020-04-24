@@ -9,6 +9,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import { Redirect, Link } from "react-router-dom";
+import MaterialSpinner from "../common/materialSpinner";
 import auth from "../../services/authService";
 import userService from "../../services/userService";
 import { notify } from "../../utils.js";
@@ -169,14 +170,13 @@ class SigninBox extends React.Component {
                 <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
                   Log in
                 </span>
-                <div
-                  className={`${
-                    isSubmitting ? "spinner-border spinner-border-sm" : "d-none"
-                  }`}
-                  role="status"
-                >
-                  <span className="sr-only">Loading...</span>
-                </div>
+                <MaterialSpinner
+                  size={20}
+                  thickness={4}
+                  className={`mx-3 ${
+                    isSubmitting ? "d-block" : "d-none"
+                  } text-white`}
+                />
               </button>
               <Link
                 className="d-block mx-auto mt-3 text-center pass-reset-link"

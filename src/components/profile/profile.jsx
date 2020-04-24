@@ -4,6 +4,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import defaultUsrImg from "../../images/defaultUsrImg.png";
+import MaterialSpinner from "../common/materialSpinner";
 
 import { notify } from "../../utils.js";
 import { apiUpdateProfileImg, apiDownloadProfileImg } from "../../config.json";
@@ -112,16 +113,13 @@ class Profile extends React.Component {
                   <span className={`${isUploading ? "d-none" : "d-block"}`}>
                     Upload a Photo
                   </span>
-                  <div
-                    className={`${
-                      isUploading
-                        ? "spinner-border spinner-border-sm"
-                        : "d-none"
-                    }`}
-                    role="status"
-                  >
-                    <span className="sr-only">Loading...</span>
-                  </div>
+                  <MaterialSpinner
+                    size={20}
+                    thickness={4}
+                    className={`mx-auto ${
+                      isUploading ? "d-block" : "d-none"
+                    } text-white`}
+                  />
                 </button>
               </div>
               <div className="col-12 mt-4">

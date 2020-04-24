@@ -11,6 +11,7 @@ import Collapse from "@material-ui/core/Collapse";
 import http from "../../services/httpService";
 import { apiPasswordReset } from "../../config.json";
 import { notify } from "../../utils.js";
+import MaterialSpinner from "./materialSpinner";
 
 class ResetPassword extends React.Component {
   constructor(props) {
@@ -135,14 +136,13 @@ class ResetPassword extends React.Component {
                 <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
                   Reset Password
                 </span>
-                <div
-                  className={`${
-                    isSubmitting ? "spinner-border spinner-border-sm" : "d-none"
-                  }`}
-                  role="status"
-                >
-                  <span className="sr-only">Loading...</span>
-                </div>
+                <MaterialSpinner
+                  size={20}
+                  thickness={4}
+                  className={`mx-3 ${
+                    isSubmitting ? "d-block" : "d-none"
+                  } text-white`}
+                />
               </button>
             </ValidatorForm>
           </div>
