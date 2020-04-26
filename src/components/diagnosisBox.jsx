@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
+import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
 import MessageBox from "./common/messageBox";
 import ImgUpload from "../images/img-upload.png";
 import MaterialSpinner from "./common/materialSpinner";
@@ -11,11 +12,11 @@ import {
   apiImgPred,
   apiStartBot,
   apiSearchBot,
-  apiAddSelSymptom,
-  apiConfirmSymptom,
+  apiAppSelSymptom,
+  apiGetSymptom,
   apiConfirmSubmitAns,
 } from "../config.json";
-import { notify, CapitalizeFirstLetter } from "../utils.js";
+import { notify, CapitalizeFirstLetter, SortStrArr } from "../utils.js";
 import { getCurrentUser } from "../services/authService";
 
 class DiagnosisBox extends React.Component {
@@ -29,6 +30,10 @@ class DiagnosisBox extends React.Component {
       )}, I'm Tabib bot, What do you wanna do?`,
       isSearchBoxShown: true,
       sympList: [],
+      isFetching: false,
+      selectedSymptoms: [],
+      offerChoice: false,
+      result: undefined,
     };
   }
 
@@ -108,9 +113,13 @@ class DiagnosisBox extends React.Component {
   handleChange = async ({ target }) => {
     // Keep the UI state in sync
     const { value } = target;
-    this.setState({ usrMsg: "", searchInput: value });
+    this.setState({ usrMsg: "", searchInput: value, isFetching: true });
 
-    // Make requests per every character typed
+    if (!value.length) {
+      this.setState({ isFetching: false });
+      return;
+    }
+
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("access-token")}`,
     };
@@ -124,15 +133,16 @@ class DiagnosisBox extends React.Component {
       const { result } = data;
       // In case there is no matching
       if (!result) {
-        this.setState({ sympList: [] });
+        this.setState({ sympList: [], isFetching: false });
         return;
       }
 
-      const symptomsList = result.map((symptom) =>
-        symptom.split("_").join(" ")
-      );
+      // Sorting, removing the separators, and picking only the first 15 symptom
+      const symptomsList = SortStrArr(result)
+        .map((symptom) => symptom.split("_").join(" "))
+        .slice(0, 15);
 
-      this.setState({ sympList: symptomsList });
+      this.setState({ sympList: symptomsList, isFetching: false });
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = ex.response.data;
@@ -142,19 +152,139 @@ class DiagnosisBox extends React.Component {
     }
   };
 
-  // Spinners + The part about the damn start http request every time starting again(what solution you could do here??)
+  // Spinners + The part about the damn start http request every time starting again(what solution you could do here??) + the spaces thingie in the search bar
 
-  handleSymptomClick = (ev) => {
-    console.log(ev.target);
-    console.log(ev.target.textContent);
-    console.log(ev.target.innerText);
-    console.log("Clicked!");
+  handleSymptomClick = ({ target }) => {
+    const symptomValue = target.textContent;
+    const selectedSymp = [...this.state.selectedSymptoms];
+    selectedSymp.push(symptomValue);
+    this.setState({
+      searchInput: "",
+      usrMsg: "Do you want to add another symptom?",
+      isSearchBoxShown: false,
+      sympList: [],
+      selectedSymptoms: selectedSymp,
+      offerChoice: true,
+    });
+  };
 
-    // How to know when the damn thing is fetching a thing from the backend API
+  handleChoice = async ({ target }) => {
+    const { selectedSymptoms, result } = this.state;
+    const choice = target.textContent.toLowerCase();
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
+    };
 
-    //    <div className="text-right mt-4 mx-4">
-    //    <MaterialSpinner thickness={3} />
-    //</div>
+    if (choice === "yes") {
+      if (selectedSymptoms.length) {
+        this.setState({
+          usrMsg: "What are you complaining about?",
+          isSearchBoxShown: true,
+          offerChoice: false,
+        });
+
+        return;
+      }
+
+      try {
+        await http.post(apiConfirmSubmitAns, { ans: "y" }, { headers });
+
+        const { data } = await http.get(apiGetSymptom, { headers });
+        if (data.result) {
+          const symptom = data["result"].split("_").join(" ");
+          this.setState({
+            usrMsg: `Do you have the following symptom: ${symptom}?`,
+            isFetching: false,
+            offerChoice: true,
+          });
+          return;
+        } else {
+          // <CheckCircleOutlinedIcon className={`${}`} />
+          const predictionResult = data["predict"].includes("could not")
+            ? `Oops! we couldn't find a disease based on your input, could you try again?`
+            : `You are likely to have the following disease: ${data["predict"]}`;
+          this.setState({
+            usrMsg: predictionResult,
+            isFetching: false,
+            offerChoice: false,
+          });
+          return;
+        }
+      } catch (ex) {
+        if (ex.response && ex.response.status === 400) {
+          const errors = ex.response.data;
+          const errorsMsg = this.extractErrors(errors);
+          notify("error", errorsMsg);
+        }
+      }
+    }
+
+    if (choice === "no") {
+      if (!selectedSymptoms.length) {
+        try {
+          await http.post(apiConfirmSubmitAns, { ans: "n" }, { headers });
+        } catch (ex) {
+          if (ex.response && ex.response.status === 400) {
+            const errors = ex.response.data;
+            const errorsMsg = this.extractErrors(errors);
+            notify("error", errorsMsg);
+          }
+        }
+      }
+
+      this.setState({ isFetching: true, offerChoice: false });
+
+      try {
+        // No need to start the session again - ASK AZ
+        // await http.get(apiStartBot, { headers });
+        // Send the list of symptoms one-by-one(Network costly operation ahead!)
+        for (let i = 0; i < selectedSymptoms.length; i++) {
+          let symptom = selectedSymptoms[i].split(" ").join("_");
+          await http.post(
+            apiAppSelSymptom,
+            { ans: symptom },
+            {
+              headers,
+            }
+          );
+        }
+
+        const { data } = await http.get(apiGetSymptom, { headers });
+        if (data.result) {
+          const symptom = data["result"].split("_").join(" ");
+          this.setState({
+            usrMsg: `Do you have the following symptom: ${symptom}?`,
+            isFetching: false,
+            selectedSymptoms: [],
+            offerChoice: true,
+          });
+          return;
+        } else {
+          const predictionResult = data["predict"].includes("could not")
+            ? `Oops! we couldn't find a disease based on your input, could you try again?`
+            : `You are likely to have the following disease: ${data["predict"]}`;
+          this.setState({
+            usrMsg: predictionResult,
+            isSearchBoxShown: false,
+            isFetching: false,
+            selectedSymptoms: [],
+            offerChoice: false,
+          });
+          return;
+        }
+      } catch (ex) {
+        if (ex.response && ex.response.status === 400) {
+          const errors = ex.response.data;
+          const errorsMsg = this.extractErrors(errors);
+          notify("error", errorsMsg);
+        }
+      }
+
+      this.setState({
+        isFetching: false,
+        offerChoice: false,
+      });
+    }
   };
 
   // Extract this function later
@@ -186,39 +316,70 @@ class DiagnosisBox extends React.Component {
   };
 
   render() {
-    const { searchInput, usrMsg, isSearchBoxShown, sympList } = this.state;
+    const {
+      searchInput,
+      usrMsg,
+      isSearchBoxShown,
+      sympList,
+      isFetching,
+      offerChoice,
+    } = this.state;
 
     return (
       <React.Fragment>
         <div className="diagnosis-box">
+          <div
+            className={`text-right mt-4 mx-4 ${
+              isFetching ? "d-block" : "d-none"
+            }`}
+          >
+            <MaterialSpinner thickness={3} />
+          </div>
           <MessageBox message={usrMsg} />
           <div className="conatiner mt-4 mx-2">
-            {sympList.map((symptom, index) => (
-              <button
-                key={index}
-                className="btn btn-outline-primary d-inline-block mx-1 mb-2"
-                onClick={this.handleSymptomClick}
-              >
-                {symptom}
-              </button>
-            ))}
-            {!sympList.length && !usrMsg && (
+            {!isFetching &&
+              sympList.map((symptom, index) => (
+                <button
+                  key={index}
+                  className="btn btn-outline-primary pill-border d-inline-block mx-1 mb-2"
+                  onClick={this.handleSymptomClick}
+                >
+                  {symptom}
+                </button>
+              ))}
+            {!sympList.length && !usrMsg && !isFetching && (
               <h1 className="text-primary">Not Matching Symptom</h1>
             )}
           </div>
-          {!isSearchBoxShown && (
+          {!isSearchBoxShown && !offerChoice && (
             <div className="btn-action">
               <button
-                className="btn btn-outline-primary d-block mb-3"
+                className="btn btn-outline-primary pill-border d-block mb-3"
                 onClick={this.handleBotClick}
               >
                 Speak to Tabib Bot
               </button>
               <button
-                className="btn btn-outline-primary d-block"
+                className="btn btn-outline-primary pill-border d-block"
                 onClick={this.handleSkinClick}
               >
                 Skin Detection
+              </button>
+            </div>
+          )}
+          {offerChoice && (
+            <div className="btn-action">
+              <button
+                className="btn btn-outline-primary pill-border d-block mb-3"
+                onClick={this.handleChoice}
+              >
+                Yes
+              </button>
+              <button
+                className="btn btn-outline-primary pill-border d-block"
+                onClick={this.handleChoice}
+              >
+                No
               </button>
             </div>
           )}
