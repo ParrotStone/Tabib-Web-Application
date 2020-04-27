@@ -10,7 +10,7 @@ import Collapse from "@material-ui/core/Collapse";
 
 import http from "../../services/httpService";
 import { apiPasswordReset } from "../../config.json";
-import { notify } from "../../utils.js";
+import { reportUserErrors } from "../../utils.js";
 import MaterialSpinner from "./materialSpinner";
 
 class ResetPassword extends React.Component {
@@ -35,22 +35,8 @@ class ResetPassword extends React.Component {
     } catch (ex) {
       // Revert the state to its original state.
       this.setState({ isSubmitting: false });
-      if (ex.response && ex.response.status === 400) {
-        const errors = ex.response.data;
-        const errsMsg = this.extractErrors(errors);
-        notify("error", errsMsg);
-      }
+      reportUserErrors(ex);
     }
-  };
-
-  // Extract this function later
-  extractErrors = (errors) => {
-    let errorsMsg = "";
-    for (const key in errors) {
-      errorsMsg += `${errors[key][0]}\n`;
-    }
-
-    return errorsMsg;
   };
 
   // Handle fields change
@@ -141,7 +127,7 @@ class ResetPassword extends React.Component {
                   thickness={4}
                   className={`mx-3 ${
                     isSubmitting ? "d-block" : "d-none"
-                  } text-white`}
+                    } text-white`}
                 />
               </button>
             </ValidatorForm>

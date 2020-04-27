@@ -153,31 +153,8 @@ class SignupBox extends React.Component {
     } catch (ex) {
       // Revert the state to its original state.(Helps with whether the error was expected or not)
       this.setState({ isSubmitting: false });
-      if (ex.response && ex.response.status === 400) {
-        const errors = ex.response.data;
-        const errorsMsg = this.extractErrors(errors);
-        utils.notify("error", errorsMsg);
-      }
+      utils.reportUserErrors(ex);
     }
-  };
-
-  // Extract errors from response obj(given it's an expected error)
-  // In case of multiple errors, it's configured to report either (profile/other-data) errors -- and so, it doesn't show all the errors at once, for UX convenience...Nothing more or less.
-  // Extract this function later
-  extractErrors = (errors) => {
-    let errorsMsg = "";
-    if (errors["profile"]) {
-      const { profile } = errors;
-      for (const key in profile) {
-        errorsMsg += `${profile[key][0]}\n`;
-      }
-    } else {
-      for (const key in errors) {
-        errorsMsg += `${errors[key][0]}\n`;
-      }
-    }
-
-    return errorsMsg;
   };
 
   // Proceed to the next step
@@ -345,7 +322,7 @@ class SignupBox extends React.Component {
                 thickness={4}
                 className={`mx-3 ${
                   isSubmitting ? "d-block" : "d-none"
-                } text-white`}
+                  } text-white`}
               />
             </button>
           </div>

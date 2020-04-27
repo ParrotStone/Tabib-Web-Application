@@ -20,11 +20,40 @@ export const notify = (notificationType, msg) => {
   toast[notificationType](msg, options);
 };
 
-export const CapitalizeFirstLetter = (str) => {
+// Extract errors from response obj(given it's an expected error)
+// In case of multiple errors, it's configured to report either (profile/other-data) errors -- and so, it doesn't show all the errors at once, for UX convenience...Nothing more or less.
+const extractErrors = (errors) => {
+  let errorsMsg = "";
+
+  if (errors["profile"]) {
+    const { profile } = errors;
+    for (const key in profile) {
+      errorsMsg += `${profile[key][0]}\n`;
+    }
+
+    return errorsMsg;
+  }
+
+  for (const key in errors) {
+    errorsMsg += `${errors[key][0]}\n`;
+  }
+
+  return errorsMsg;
+};
+
+export const reportUserErrors = (exception) => {
+  if (exception.response && exception.response.status === 400) {
+    const errors = exception.response.data;
+    const errorsMsg = extractErrors(errors);
+    notify("error", errorsMsg);
+  }
+};
+
+export const capitalizeFirstLetter = (str) => {
   return str[0].toUpperCase() + str.slice(1);
 };
 
-export const SortStrArr = (strArr) => {
+export const sortStrArr = (strArr) => {
   return strArr.sort((a, b) => {
     const aUpper = a.toUpperCase();
     const bUpper = b.toUpperCase();
@@ -38,6 +67,7 @@ export const SortStrArr = (strArr) => {
 export default {
   getDateFormat,
   notify,
-  CapitalizeFirstLetter,
-  SortStrArr,
+  reportUserErrors,
+  capitalizeFirstLetter,
+  sortStrArr
 };

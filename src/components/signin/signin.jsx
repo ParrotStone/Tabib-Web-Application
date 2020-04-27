@@ -12,7 +12,7 @@ import { Redirect, Link } from "react-router-dom";
 import MaterialSpinner from "../common/materialSpinner";
 import auth from "../../services/authService";
 import userService from "../../services/userService";
-import { notify } from "../../utils.js";
+import { reportUserErrors } from "../../utils.js";
 
 class SigninBox extends React.Component {
   constructor(props) {
@@ -53,22 +53,8 @@ class SigninBox extends React.Component {
     } catch (ex) {
       // Revert the state to its original state.
       this.setState({ isSubmitting: false });
-      if (ex.response && ex.response.status === 400) {
-        const errors = ex.response.data;
-        const errorsMsg = this.extractErrors(errors);
-        notify("error", errorsMsg);
-      }
+      reportUserErrors(ex);
     }
-  };
-
-  // Extract this function later
-  extractErrors = (errors) => {
-    let errorsMsg = "";
-    for (const key in errors) {
-      errorsMsg += `${errors[key][0]}\n`;
-    }
-
-    return errorsMsg;
   };
 
   // Handle fields change
@@ -175,7 +161,7 @@ class SigninBox extends React.Component {
                   thickness={4}
                   className={`mx-3 ${
                     isSubmitting ? "d-block" : "d-none"
-                  } text-white`}
+                    } text-white`}
                 />
               </button>
               <Link

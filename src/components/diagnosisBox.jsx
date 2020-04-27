@@ -16,7 +16,7 @@ import {
   apiGetSymptom,
   apiConfirmSubmitAns,
 } from "../config.json";
-import { notify, CapitalizeFirstLetter, SortStrArr } from "../utils.js";
+import * as utils from "../utils.js";
 import { getCurrentUser } from "../services/authService";
 
 class DiagnosisBox extends React.Component {
@@ -25,10 +25,10 @@ class DiagnosisBox extends React.Component {
 
     this.state = {
       searchInput: "",
-      usrMsg: `Hi ${CapitalizeFirstLetter(
+      usrMsg: `Hi ${utils.capitalizeFirstLetter(
         getCurrentUser().first_name
       )}, I'm Tabib bot, What do you wanna do?`,
-      isSearchBoxShown: true,
+      isSearchBoxShown: false,
       sympList: [],
       isFetching: false,
       selectedSymptoms: [],
@@ -138,17 +138,13 @@ class DiagnosisBox extends React.Component {
       }
 
       // Sorting, removing the separators, and picking only the first 15 symptom
-      const symptomsList = SortStrArr(result)
+      const symptomsList = utils.sortStrArr(result)
         .map((symptom) => symptom.split("_").join(" "))
         .slice(0, 15);
 
       this.setState({ sympList: symptomsList, isFetching: false });
     } catch (ex) {
-      if (ex.response && ex.response.status === 400) {
-        const errors = ex.response.data;
-        const errorsMsg = this.extractErrors(errors);
-        notify("error", errorsMsg);
-      }
+      utils.reportUserErrors(ex);
     }
   };
 
@@ -211,11 +207,7 @@ class DiagnosisBox extends React.Component {
           return;
         }
       } catch (ex) {
-        if (ex.response && ex.response.status === 400) {
-          const errors = ex.response.data;
-          const errorsMsg = this.extractErrors(errors);
-          notify("error", errorsMsg);
-        }
+        utils.reportUserErrors(ex);
       }
     }
 
@@ -224,11 +216,7 @@ class DiagnosisBox extends React.Component {
         try {
           await http.post(apiConfirmSubmitAns, { ans: "n" }, { headers });
         } catch (ex) {
-          if (ex.response && ex.response.status === 400) {
-            const errors = ex.response.data;
-            const errorsMsg = this.extractErrors(errors);
-            notify("error", errorsMsg);
-          }
+          utils.reportUserErrors(ex);
         }
       }
 
@@ -273,11 +261,7 @@ class DiagnosisBox extends React.Component {
           return;
         }
       } catch (ex) {
-        if (ex.response && ex.response.status === 400) {
-          const errors = ex.response.data;
-          const errorsMsg = this.extractErrors(errors);
-          notify("error", errorsMsg);
-        }
+        utils.reportUserErrors(ex);
       }
 
       this.setState({
@@ -285,34 +269,6 @@ class DiagnosisBox extends React.Component {
         offerChoice: false,
       });
     }
-  };
-
-  // Extract this function later
-  extractErrors = (errors) => {
-    let errorsMsg = "";
-    for (const key in errors) {
-      errorsMsg += `${errors[key][0]}\n`;
-    }
-
-    /*
-      {isSearchBoxShown && filteredList && (
-          <div className="symptoms-list-container">
-            {filteredList.map((item, index) => {
-              return (
-                <span
-                  key={index}
-                  className="symptom-container"
-                  onClick={this.handleSymptomClick}
-                >
-                  {item}
-                </span>
-              );
-            })}
-          </div>
-        )}
-    */
-
-    return errorsMsg;
   };
 
   render() {
@@ -331,7 +287,7 @@ class DiagnosisBox extends React.Component {
           <div
             className={`text-right mt-4 mx-4 ${
               isFetching ? "d-block" : "d-none"
-            }`}
+              }`}
           >
             <MaterialSpinner thickness={3} />
           </div>
