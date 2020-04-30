@@ -1,16 +1,16 @@
 import React from "react";
-import Background from "../common/background";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import defaultUsrImg from "../../images/defaultUsrImg.png";
-import MaterialSpinner from "../common/materialSpinner";
+import MaterialSpinner from "../common/MaterialSpinner";
 
+import Background from "../common/Background";
 import { notify } from "../../utils.js";
 import { apiUpdateProfileImg, apiDownloadProfileImg } from "../../config.json";
-import http from "../../services/httpService";
-import { getCurrentUser } from "../../services/authService";
-import { getUserProfile } from "../../services/userService";
+import http from "../../services/HttpService";
+import { getCurrentUser } from "../../services/AuthService";
+import { getUserProfile } from "../../services/UserService";
 
 class Profile extends React.Component {
   constructor(props) {

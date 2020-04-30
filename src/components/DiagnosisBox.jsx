@@ -4,10 +4,10 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
-import MessageBox from "./common/messageBox";
+import MessageBox from "./common/MessageBox";
 import ImgUpload from "../images/img-upload.png";
-import MaterialSpinner from "./common/materialSpinner";
-import http from "../services/httpService";
+import MaterialSpinner from "./common/MaterialSpinner";
+import http from "../services/HttpService";
 import {
   apiImgPred,
   apiStartBot,
@@ -17,7 +17,7 @@ import {
   apiConfirmSubmitAns,
 } from "../config.json";
 import * as utils from "../utils.js";
-import { getCurrentUser } from "../services/authService";
+import { getCurrentUser } from "../services/AuthService";
 
 class DiagnosisBox extends React.Component {
   constructor(props) {
@@ -138,7 +138,8 @@ class DiagnosisBox extends React.Component {
       }
 
       // Sorting, removing the separators, and picking only the first 15 symptom
-      const symptomsList = utils.sortStrArr(result)
+      const symptomsList = utils
+        .sortStrArr(result)
         .map((symptom) => symptom.split("_").join(" "))
         .slice(0, 15);
 
@@ -287,7 +288,7 @@ class DiagnosisBox extends React.Component {
           <div
             className={`text-right mt-4 mx-4 ${
               isFetching ? "d-block" : "d-none"
-              }`}
+            }`}
           >
             <MaterialSpinner thickness={3} />
           </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import Background from "../common/background";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
@@ -8,10 +7,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import Collapse from "@material-ui/core/Collapse";
 
-import http from "../../services/httpService";
+import Background from "../common/Background";
+import http from "../../services/HttpService";
 import { apiPasswordReset } from "../../config.json";
 import { reportUserErrors } from "../../utils.js";
-import MaterialSpinner from "./materialSpinner";
+import MaterialSpinner from "./MaterialSpinner";
 
 class ResetPassword extends React.Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class ResetPassword extends React.Component {
     const { email, isEmailSent, isSubmitting } = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <Background />
         <div className="box">
           <ArrowBackIcon
@@ -127,13 +127,13 @@ class ResetPassword extends React.Component {
                   thickness={4}
                   className={`mx-3 ${
                     isSubmitting ? "d-block" : "d-none"
-                    } text-white`}
+                  } text-white`}
                 />
               </button>
             </ValidatorForm>
           </div>
         </div>
-      </React.Fragment>
+      </>
     );
   }
 }

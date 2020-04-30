@@ -8,7 +8,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 
-class EmailInfo extends React.Component {
+class FormEmailInfo extends React.Component {
   render() {
     const { email, password, showPassword } = this.props.values;
     const { handleChange, handlePasswordVis } = this.props;
@@ -95,4 +95,4 @@ class EmailInfo extends React.Component {
   }
 }
 
-export default EmailInfo;
+export default FormEmailInfo;

@@ -1,5 +1,5 @@
 import React from "react";
-import BtnGroup from "../common/button-group";
+import ButtonGroup from "../common/ButtonGroup";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import EmailIcon from "@material-ui/icons/Email";
@@ -9,12 +9,12 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockIcon from "@material-ui/icons/Lock";
 import { Redirect, Link } from "react-router-dom";
-import MaterialSpinner from "../common/materialSpinner";
-import auth from "../../services/authService";
-import userService from "../../services/userService";
+import MaterialSpinner from "../common/MaterialSpinner";
+import auth from "../../services/AuthService";
+import userService from "../../services/UserService";
 import { reportUserErrors } from "../../utils.js";
 
-class SigninBox extends React.Component {
+class LoginBox extends React.Component {
   constructor(props) {
     super(props);
 
@@ -76,7 +76,7 @@ class SigninBox extends React.Component {
     return (
       <div className="box">
         <div className="container d-flex justify-content-center">
-          <BtnGroup signupSelected={false} signinSelected={true} />
+          <ButtonGroup signupSelected={false} signinSelected={true} />
         </div>
         <div
           className="container-fluid d-flex flex-column justify-content-center align-items-center"
@@ -161,7 +161,7 @@ class SigninBox extends React.Component {
                   thickness={4}
                   className={`mx-3 ${
                     isSubmitting ? "d-block" : "d-none"
-                    } text-white`}
+                  } text-white`}
                 />
               </button>
               <Link
@@ -178,4 +178,4 @@ class SigninBox extends React.Component {
   }
 }
 
-export default SigninBox;
+export default LoginBox;

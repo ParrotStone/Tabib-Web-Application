@@ -1,9 +1,9 @@
 import React from "react";
 import { loadModules } from "esri-loader";
-import SideTab from "./sideTab";
 import Button from "@material-ui/core/Button";
+import SideTab from "./SideTab";
 
-class Map extends React.Component {
+class CoronaMap extends React.Component {
   constructor(props) {
     super(props);
 
@@ -121,4 +121,4 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+export default CoronaMap;

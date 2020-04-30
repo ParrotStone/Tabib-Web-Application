@@ -7,7 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
-class HealthInfo extends React.Component {
+class FormHealthInfo extends React.Component {
   render() {
     const {
       profile: { prevDiseases, smokingCheckBox, weight },
@@ -96,4 +96,4 @@ class HealthInfo extends React.Component {
   }
 }
 
-export default HealthInfo;
+export default FormHealthInfo;

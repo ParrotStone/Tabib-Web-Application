@@ -1,4 +1,4 @@
-import http from "./httpService";
+import http from "./HttpService";
 import config from "../config.json";
 
 // RemoteURL: https://5139cc91.ngrok.io/ =>> AZ web server

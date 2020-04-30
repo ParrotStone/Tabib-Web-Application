@@ -14,7 +14,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-class PersonalInfoForm extends React.Component {
+class FormPersonalInfo extends React.Component {
   render() {
     const {
       username,
@@ -138,4 +138,4 @@ class PersonalInfoForm extends React.Component {
   }
 }
 
-export default PersonalInfoForm;
+export default FormPersonalInfo;

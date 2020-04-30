@@ -7,9 +7,9 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
 import { apiDownloadProfileImg } from "../config.json";
 import defaultUsrImg from "../images/defaultUsrImg.png";
-import { getCurrentUser } from "../services/authService";
+import { getCurrentUser } from "../services/AuthService";
 
-import DrugAlarmPopUp from "./drugAlarm/drugAlarmPopup";
+import DrugAlarmPopUp from "./drug-alarm/DrugAlarmPopup";
 
 class UserArea extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class UserArea extends React.Component {
     const userProfilePic = apiDownloadProfileImg + picture_url;
 
     return (
-      <React.Fragment>
+      <>
         <div className="container user-area-wrapper row justify-content-center">
           <div className="row">
             <div className="col-12 align-self-center">
@@ -85,7 +85,7 @@ class UserArea extends React.Component {
         </div>
 
         <DrugAlarmPopUp open={this.state.open} handleClose={this.handleClose} />
-      </React.Fragment>
+      </>
     );
   }
 }

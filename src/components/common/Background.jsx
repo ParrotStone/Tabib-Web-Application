@@ -1,7 +1,7 @@
 import React from "react";
-import Logo from "../common/logo";
+import Logo from "../common/Logo";
 
-const Background = props => {
+const Background = (props) => {
   return (
     <div className="full-width">
       <div className="container">

@@ -1,12 +1,12 @@
 import React from "react";
-import Logo from "../common/logo";
-import ContentSlider from "./contentSlider";
-import Navbar from "./navbar";
-import IconSlider from "./iconSlider";
-import HomeDiagnosis from "../homeDiagnosis";
+import Logo from "../common/Logo";
+import ContentSlider from "./ContentSlider";
+import Navbar from "./Navbar";
+import IconSlider from "./IconSlider";
+import HomeDiagnosis from "../HomeDiagnosis";
 import { Link } from "react-router-dom";
 
-import auth from "../../services/authService";
+import auth from "../../services/AuthService";
 
 const HomePg = () => {
   if (auth.getCurrentUser()) return <HomeDiagnosis />;

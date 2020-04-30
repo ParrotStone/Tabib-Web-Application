@@ -5,9 +5,9 @@ const ProgressBar = ({ currentStep, handleProgressChange }) => {
   const steps = [1, 2, 3, 4];
 
   return (
-    <React.Fragment>
+    <>
       <div className="progress-wrapper">
-        {steps.map(step => (
+        {steps.map((step) => (
           <span
             key={step}
             onClick={handleProgressChange}
@@ -18,7 +18,7 @@ const ProgressBar = ({ currentStep, handleProgressChange }) => {
           ></span>
         ))}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

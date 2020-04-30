@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const BtnGroup = ({ signupSelected, signinSelected }) => {
+const ButtonGroup = ({ signupSelected, signinSelected }) => {
   let classesSignup = "btn ";
   let classesSignin = "btn ";
   if (signupSelected && !signinSelected) classesSignup += "btn-selected";
@@ -20,4 +20,4 @@ const BtnGroup = ({ signupSelected, signinSelected }) => {
   );
 };
 
-export default BtnGroup;
+export default ButtonGroup;

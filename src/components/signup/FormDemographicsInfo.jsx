@@ -6,7 +6,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 
-class DemographicsInfo extends React.Component {
+class FormDemographicsInfo extends React.Component {
   render() {
     const {
       profile: { height, country, city },
@@ -134,4 +134,4 @@ class DemographicsInfo extends React.Component {
   }
 }
 
-export default DemographicsInfo;
+export default FormDemographicsInfo;

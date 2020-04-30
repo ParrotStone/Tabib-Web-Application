@@ -1,17 +1,17 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import BtnGroup from "../common/button-group";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import PersonalInfoForm from "./formPersonalInfo";
-import HealthInfo from "./formHealthInfo";
-import DemographicsInfo from "./formDemographics";
-import EmailInfo from "./formEmailInfo";
-import ProgressBar from "../common/progressBar";
-import MaterialSpinner from "../common/materialSpinner";
+import ButtonGroup from "../common/ButtonGroup";
+import FormPersonalInfo from "./FormPersonalInfo";
+import FormHealthInfo from "./FormHealthInfo";
+import FormDemographicsInfo from "./FormDemographicsInfo";
+import FormEmailInfo from "./FormEmailInfo";
+import ProgressBar from "../common/ProgressBar";
+import MaterialSpinner from "../common/MaterialSpinner";
 
-import userService from "../../services/userService";
-import auth from "../../services/authService";
+import userService from "../../services/UserService";
+import auth from "../../services/AuthService";
 import utils from "../../utils.js";
 
 class SignupBox extends React.Component {
@@ -234,7 +234,7 @@ class SignupBox extends React.Component {
     switch (this.state.step) {
       case 1:
         return (
-          <PersonalInfoForm
+          <FormPersonalInfo
             nextStep={this.nextStep}
             handleChange={this.handleChange}
             handleDateChange={this.handleDateChange}
@@ -244,7 +244,7 @@ class SignupBox extends React.Component {
         );
       case 2:
         return (
-          <HealthInfo
+          <FormHealthInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={this.state}
@@ -253,7 +253,7 @@ class SignupBox extends React.Component {
         );
       case 3:
         return (
-          <DemographicsInfo
+          <FormDemographicsInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={this.state}
@@ -262,7 +262,7 @@ class SignupBox extends React.Component {
         );
       case 4:
         return (
-          <EmailInfo
+          <FormEmailInfo
             nextStep={this.nextStep}
             prevStep={this.prevStep}
             values={this.state}
@@ -283,7 +283,7 @@ class SignupBox extends React.Component {
     return (
       <div className="box">
         <div className="container d-flex justify-content-center">
-          <BtnGroup signupSelected={true} signinSelected={false} />
+          <ButtonGroup signupSelected={true} signinSelected={false} />
         </div>
         <ValidatorForm
           instantValidate
@@ -322,7 +322,7 @@ class SignupBox extends React.Component {
                 thickness={4}
                 className={`mx-3 ${
                   isSubmitting ? "d-block" : "d-none"
-                  } text-white`}
+                } text-white`}
               />
             </button>
           </div>
