@@ -1,14 +1,18 @@
 import React from "react";
 import Switch from "@material-ui/core/Switch";
 
-const Alarm = ({ day, time, note }) => {
+const Alarm = ({ name, day, time, note }) => {
   const [switchState, setSwitchState] = React.useState({ checked: true });
 
   return (
     <div className="row">
-      {day}
-      {time}
-      <div className="col-9 text-right">
+      <div className="col-5">
+        <h5 className="text-primary">{name}</h5>
+        <p className="text-primary">
+          {day} {time}
+        </p>
+      </div>
+      <div className="col-7 text-right">
         <Switch
           checked={switchState.checked}
           onChange={() => setSwitchState({ checked: !switchState.checked })}
@@ -17,7 +21,8 @@ const Alarm = ({ day, time, note }) => {
           inputProps={{ "aria-label": "primary checkbox" }}
         />
       </div>
-      <div className="col">{note}</div>
+      <hr />
+      <div className="col-12">{note || "No notes"}</div>
     </div>
   );
 };
