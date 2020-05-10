@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import ButtonGroup from "../common/ButtonGroup";
+// import CustomButtonGroup from "../common/CustomButtonGroup";
 import FormPersonalInfo from "./FormPersonalInfo";
 import FormHealthInfo from "./FormHealthInfo";
 import FormDemographicsInfo from "./FormDemographicsInfo";
@@ -121,29 +122,16 @@ class SignupBox extends React.Component {
 
     // Register a user here, and then redirect him to the damn (homie OR the login page)
     try {
-      // const {
-      //   data: { email, password },
-      // } = await userService.register(userData);
-      const response = await userService.register(userData);
-      const email = response.data.email;
-      const password = response.data.password;
-      const loginRes = await auth.login({ email, password });
-      console.log(response);
-      console.log(loginRes);
-      //       const {
-      //   data: { access, refresh },
-      // } = await auth.login({ response.data.email, response.data.password });
+      const {
+        data: { email, password },
+      } = await userService.register(userData);
+      const {
+        data: { access, refresh },
+      } = await auth.login({ email, password });
 
-      const usrRes = await userService.getUserProfile(
-        loginRes.data.access,
-        loginRes.data.refresh
-      );
+      const { data: user } = await userService.getUserProfile(access, refresh);
 
-      console.log(usrRes);
-
-      localStorage.setItem("access-token", loginRes.data.access);
-      localStorage.setItem("refresh-token", loginRes.data.refresh);
-      localStorage.setItem("user", JSON.stringify(usrRes.data));
+      utils.persistUserDetails(access, refresh, user);
       this.setState({ isSubmitting: false });
 
       // Figure out how to add the message below correcly(commented because the damn waiting(after the submitting spinner icon disappear) will enter the main page instantly, thus, the alert below is absolete -- Solve it correctly(probably after the user has already arrived at the homepage))

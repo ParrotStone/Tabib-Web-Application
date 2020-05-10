@@ -41,6 +41,13 @@ const extractErrors = (errors) => {
   return errorsMsg;
 };
 
+export const persistUserDetails = (accessToken, refreshToken, user) => {
+  localStorage.setItem("access-token", accessToken);
+  localStorage.setItem("refresh-token", refreshToken);
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("alarms", JSON.stringify([]));
+};
+
 export const reportUserErrors = (exception) => {
   if (exception.response && exception.response.status === 400) {
     const errors = exception.response.data;
@@ -64,10 +71,21 @@ export const sortStrArr = (strArr) => {
   });
 };
 
+export const getCurrTimeInTwelveFormat = (currentTimeDate) => {
+  if (typeof currentTimeDate === "string")
+    currentTimeDate = new Date(currentTimeDate);
+
+  const hours = currentTimeDate.getHours();
+  const minutes = currentTimeDate.toTimeString().split(":")[1];
+  return hours > 12 ? `${hours - 12}:${minutes} PM` : `${hours}:${minutes} AM`;
+};
+
 export default {
   getDateFormat,
   notify,
   reportUserErrors,
+  persistUserDetails,
   capitalizeFirstLetter,
-  sortStrArr
+  sortStrArr,
+  getCurrTimeInTwelveFormat,
 };

@@ -17,21 +17,22 @@ import Map from "./components/density-map/index";
 import PrivacyPolicy from "./components/common/PrivacyPolicy";
 import Terms from "./components/common/Terms";
 
-const App = () => {
-  // Mount ToastContainer if none is mounted
-  toast.configure({
-    style: { fontSize: "1.1rem" },
-  });
+// Mount ToastContainer if none is mounted
+toast.configure({
+  style: { fontSize: "1.1rem" },
+});
 
-  // Customize the colors of the form
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: "#12a2f9",
-      },
+// Customize the colors of the form
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#12a2f9",
+      contrastText: "#ffffff",
     },
-  });
+  },
+});
 
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <React.Fragment>

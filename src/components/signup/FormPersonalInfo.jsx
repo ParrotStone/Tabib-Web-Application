@@ -1,5 +1,4 @@
 import React from "react";
-import "date-fns";
 import { TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -25,61 +24,61 @@ class FormPersonalInfo extends React.Component {
 
     return (
       <React.Fragment>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <div className="container-fluid d-flex flex-column align-items-center mt-3">
-            <Grid container spacing={1} alignItems="center">
-              <Grid item className="w-100">
-                <TextValidator
-                  id="username"
-                  label="Username"
-                  name="username"
-                  fullWidth
-                  validators={["required", "isString", "minStringLength:4"]}
-                  errorMessages={[
-                    "This field is required",
-                    "Username must be a valid text",
-                    "Username length must be a minimum of 4 characters",
-                  ]}
-                  onChange={this.props.handleChange}
-                  value={username}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AccountCircle color="primary" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-            </Grid>
-            <Grid
-              container
-              spacing={1}
-              direction="row"
-              alignItems="center"
-              className="mt-4"
-            >
-              <RadioGroup
-                aria-label="gender"
-                name="gender"
-                value={gender}
+        <div className="container-fluid d-flex flex-column align-items-center mt-3">
+          <Grid container spacing={1} alignItems="center">
+            <Grid item className="w-100">
+              <TextValidator
+                id="username"
+                label="Username"
+                name="username"
+                fullWidth
+                validators={["required", "isString", "minStringLength:4"]}
+                errorMessages={[
+                  "This field is required",
+                  "Username must be a valid text",
+                  "Username length must be a minimum of 4 characters",
+                ]}
                 onChange={this.props.handleChange}
-                className="d-flex flex-row justify-content-between w-100 ml-2"
-              >
-                <FormControlLabel
-                  value="M"
-                  control={<Radio color="primary" />}
-                  label="Male"
-                />
-                <FormControlLabel
-                  value="F"
-                  control={<Radio color="primary" />}
-                  label="Female"
-                />
-              </RadioGroup>
+                value={username}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AccountCircle color="primary" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </Grid>
-            <Grid container spacing={1} direction="column">
-              <Grid item className="w-100">
+          </Grid>
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            alignItems="center"
+            className="mt-4"
+          >
+            <RadioGroup
+              aria-label="gender"
+              name="gender"
+              value={gender}
+              onChange={this.props.handleChange}
+              className="d-flex flex-row justify-content-between w-100 ml-2"
+            >
+              <FormControlLabel
+                value="M"
+                control={<Radio color="primary" />}
+                label="Male"
+              />
+              <FormControlLabel
+                value="F"
+                control={<Radio color="primary" />}
+                label="Female"
+              />
+            </RadioGroup>
+          </Grid>
+          <Grid container spacing={1} direction="column">
+            <Grid item className="w-100">
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   className="mt-3"
                   format="MM/dd/yyyy"
@@ -96,43 +95,43 @@ class FormPersonalInfo extends React.Component {
                     "aria-label": "change date",
                   }}
                 />
-              </Grid>
+              </MuiPickersUtilsProvider>
             </Grid>
-            <Grid container spacing={1} className="mt-4" alignItems="center">
-              <Grid item className="w-100">
-                <TextValidator
-                  id="phoneNum"
-                  label="Phone Number"
-                  name="phoneNum"
-                  value={phoneNum}
-                  onChange={this.props.handleChange}
-                  type="tel"
-                  validators={[
-                    "required",
-                    "isNumber",
-                    "matchRegexp:^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
-                  ]}
-                  errorMessages={[
-                    "This field is required",
-                    "Invalid input format",
-                    "Phone number must be in (xxx-xxx-xxxx) format",
-                  ]}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <PhoneIcon color="primary" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="start">(+20)</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
+          </Grid>
+          <Grid container spacing={1} className="mt-4" alignItems="center">
+            <Grid item className="w-100">
+              <TextValidator
+                id="phoneNum"
+                label="Phone Number"
+                name="phoneNum"
+                value={phoneNum}
+                onChange={this.props.handleChange}
+                type="tel"
+                validators={[
+                  "required",
+                  "isNumber",
+                  "matchRegexp:^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "Invalid input format",
+                  "Phone number must be in (xxx-xxx-xxxx) format",
+                ]}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PhoneIcon color="primary" />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="start">(+20)</InputAdornment>
+                  ),
+                }}
+              />
             </Grid>
-          </div>
-        </MuiPickersUtilsProvider>
+          </Grid>
+        </div>
       </React.Fragment>
     );
   }

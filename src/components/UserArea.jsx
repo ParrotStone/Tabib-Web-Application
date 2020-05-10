@@ -16,23 +16,29 @@ class UserArea extends React.Component {
     super(props);
 
     this.state = {
-      open: true,
+      show: true,
+      showAlarms: true,
     };
   }
 
-  handleClose = () => {
-    this.setState({ open: false });
+  handleClosePopup = () => {
+    this.setState({ show: false });
   };
 
-  handleDrugAlarmClick = (ev) => {
+  handleShowPopup = (ev) => {
     ev.preventDefault();
 
-    this.setState({ open: true });
+    this.setState({ show: true, showAlarms: true });
+  };
+
+  handleHideAlarms = () => {
+    this.setState({ showAlarms: false });
   };
 
   render() {
     const { picture_url } = getCurrentUser();
     const userProfilePic = apiDownloadProfileImg + picture_url;
+    const { show, showAlarms } = this.state;
 
     return (
       <>
@@ -41,7 +47,7 @@ class UserArea extends React.Component {
             <div className="col-12 align-self-center">
               <img
                 src={picture_url ? userProfilePic : defaultUsrImg}
-                alt="User Profile Img"
+                alt="User Profile Pic"
                 style={{
                   padding: "5px",
                   width: "200px",
@@ -69,7 +75,7 @@ class UserArea extends React.Component {
               <a
                 href="#drug-alarm"
                 className="d-block nav-header-link"
-                onClick={this.handleDrugAlarmClick}
+                onClick={this.handleShowPopup}
               >
                 <AccessAlarmsIcon className="text-light mx-3" />
                 Drug Alarm
@@ -84,7 +90,13 @@ class UserArea extends React.Component {
           </div>
         </div>
 
-        <DrugAlarmPopUp open={this.state.open} handleClose={this.handleClose} />
+        <DrugAlarmPopUp
+          show={show}
+          handleClose={this.handleClosePopup}
+          showAlarms={showAlarms}
+          handleHideAlarms={this.handleHideAlarms}
+          handleShowPopup={this.handleShowPopup}
+        />
       </>
     );
   }

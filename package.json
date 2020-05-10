@@ -13,7 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
-    "date-fns": "^2.12.0",
+    "date-fns": "^2.13.0",
     "esri-loader": "^2.14.0",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",

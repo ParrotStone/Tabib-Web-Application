@@ -90,7 +90,7 @@ class Profile extends React.Component {
                 <div className="align-self-center">
                   <img
                     src={user.picture_url ? userProfilePic : defaultUsrImg}
-                    alt="User"
+                    alt="User Profile Pic"
                     style={{ width: "150px", height: "150px" }}
                     className="rounded"
                   />

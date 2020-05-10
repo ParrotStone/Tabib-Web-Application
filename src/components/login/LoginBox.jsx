@@ -12,7 +12,7 @@ import { Redirect, Link } from "react-router-dom";
 import MaterialSpinner from "../common/MaterialSpinner";
 import auth from "../../services/AuthService";
 import userService from "../../services/UserService";
-import { reportUserErrors } from "../../utils.js";
+import { reportUserErrors, persistUserDetails } from "../../utils.js";
 
 class LoginBox extends React.Component {
   constructor(props) {
@@ -31,21 +31,13 @@ class LoginBox extends React.Component {
     const { email, password } = this.state;
 
     try {
-      // const {
-      //   data: { access, refresh },
-      // } = await auth.login({ email, password });
-      const response = await auth.login({ email, password });
-      // const { data: user } = await userService.getUserProfile(access, refresh);
-      const usrResponse = await userService.getUserProfile(
-        response.data.access,
-        response.data.refresh
-      );
-      console.log(response);
-      console.log(usrResponse);
+      const {
+        data: { access, refresh },
+      } = await auth.login({ email, password });
 
-      localStorage.setItem("access-token", response.data.access);
-      localStorage.setItem("refresh-token", response.data.refresh);
-      localStorage.setItem("user", JSON.stringify(usrResponse.data));
+      const { data: user } = await userService.getUserProfile(access, refresh);
+
+      persistUserDetails(access, refresh, user);
       this.setState({ isSubmitting: false });
 
       // Find a better a way to redirect the user using the(history(the location(pathname stuff)) obj provided by React Router DOM) -- (this.props.history here resolves to undefined(find out why))
