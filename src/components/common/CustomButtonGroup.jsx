@@ -3,8 +3,9 @@ import React from "react";
 const ButtonGroup = ({
   fstBtnText,
   sndBtnText,
-  isOneSelected,
-  setOneSelected,
+  isFirstSelected,
+  setFirstSelected,
+  setAlarms,
 }) => {
   const [selected, setSelected] = React.useState(true);
 
@@ -13,20 +14,20 @@ const ButtonGroup = ({
       <div className="btn-group-custom">
         <span
           className={`btn-indicator ${
-            selected && isOneSelected
+            selected && isFirstSelected
               ? "btn-selected-first"
               : "btn-selected-second"
           }`}
         ></span>
         <button
           className={`${selected ? "btn-selected" : ""}`}
-          onClick={() => setSelected(true) || setOneSelected(true)}
+          onClick={() => setSelected(true) || setFirstSelected(true)}
         >
           {fstBtnText}
         </button>
         <button
-          className={`${!selected && !isOneSelected ? "btn-selected" : ""}`}
-          onClick={() => setSelected(false) || setOneSelected(false)}
+          className={`${!selected && !isFirstSelected ? "btn-selected" : ""}`}
+          onClick={() => setSelected(false) || setFirstSelected(false)}
         >
           {sndBtnText}
         </button>

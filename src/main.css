@@ -178,7 +178,7 @@ div.overlay .row img {
 }
 
 .btn-selected-second {
-  transform: translateX(101px);
+  transform: translateX(100px);
 }
 
 .btn-selected > a {

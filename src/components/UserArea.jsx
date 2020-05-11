@@ -17,7 +17,7 @@ class UserArea extends React.Component {
 
     this.state = {
       show: true,
-      showAlarms: true,
+      showAlarms: false,
     };
   }
 

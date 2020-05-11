@@ -1,36 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Alarm from "./Alarm";
-import WeekDays from "./WeekDays";
 import { getCurrTimeInTwelveFormat } from "../../utils.js";
 
 const weekdays = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
 const Alarms = (props) => {
-  /*
-      {
-      name: "Heart disease medicine alarm",
-      day: "Fri",
-      time: "15:30",
-      note: "This is some note related to the Friday drug alarm",
-      isActive: true,
-    },
-    {
-      name: "Headache medicine alarm",
-      day: "Wed",
-      time: "19:30",
-      note: null,
-      isActive: true,
-    },
-    {
-      name: "Some medicine alarm",
-      day: "Sun",
-      time: "22:30",
-      note: "This is some note related to the Sunday drug alarm",
-      isActive: true,
-    },
-  */
-
   // Fetches the list from the local storage, and then represent using a single Alarm component
-  const [alarmsList, setAlarmsList] = React.useState(
+  const [alarmsList, setAlarmsList] = useState(
     JSON.parse(localStorage.getItem("alarms"))
   );
 
@@ -77,6 +52,14 @@ const Alarms = (props) => {
     );
   };
 
+  const handleTimeShow = (timeList) => {
+    if (timeList.length) {
+      return timeList.map((time) => `${getCurrTimeInTwelveFormat(time)},`);
+    }
+
+    return getCurrTimeInTwelveFormat(timeList);
+  };
+
   return (
     <React.Fragment>
       <ul className="list-group">
@@ -86,7 +69,7 @@ const Alarms = (props) => {
               <Alarm
                 name={drugName}
                 day={handleDaysShow(selectedDays, time)}
-                time={getCurrTimeInTwelveFormat(time)}
+                time={handleTimeShow(time)}
                 note={note}
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}

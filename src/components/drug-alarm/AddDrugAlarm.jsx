@@ -9,27 +9,34 @@ import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import CheckCircleOutlineRoundedIcon from "@material-ui/icons/CheckCircleOutlineRounded";
 import CancelIcon from "@material-ui/icons/Cancel";
+import AddIcon from "@material-ui/icons/Add";
 
 import TimeBoxIndicator from "./TimeBoxIndicator";
 import { notify } from "../../utils.js";
 import CustomButtonGroup from "../common/CustomButtonGroup";
 import WeekDays from "./WeekDays";
+import TimeAlarmItem from "./TimeAlarmItem";
+
+const addAlarmStyles = {
+  cursor: "pointer",
+};
 
 const AddDrugAlarm = ({ handleShowPopup }) => {
-  const [oneSelected, setOneSelected] = useState(true);
+  const [firstSelected, setFirstSelected] = useState(true);
+  const [open, setOpen] = useState(false);
   const [time, setTime] = useState(new Date());
+  const [timeList, setTimeList] = useState([]);
   const [drugName, setDrugName] = useState("");
   const [switchState, setSwitchState] = useState({ checked: false });
   const [selectedDays, setSelectedDays] = useState([]);
   const [note, setNote] = useState("");
-  const [open, setOpen] = useState(false);
 
   const handleAddAlarm = (ev) => {
     ev.preventDefault();
 
     const alarms = JSON.parse(localStorage.getItem("alarms"));
     const alarmItem = {
-      time,
+      time: timeList.length ? timeList : time,
       drugName,
       selectedDays,
       note,
@@ -48,16 +55,45 @@ const AddDrugAlarm = ({ handleShowPopup }) => {
     );
   };
 
+  const updateTime = (newTime) => {
+    if (firstSelected) {
+      setTime(newTime);
+      return;
+    }
+
+    setTimeList([...timeList, newTime]);
+  };
+
   return (
     <>
-      <TimeBoxIndicator setOpen={setOpen} time={time} />
+      {firstSelected && <TimeBoxIndicator setOpen={setOpen} time={time} />}
+      {!firstSelected && (
+        <div
+          className="w-75 mx-auto d-flex justify-content-between text-primary"
+          style={addAlarmStyles}
+          onClick={() => setOpen(true)}
+        >
+          <span>Add Alarm</span>
+          <AddIcon />
+        </div>
+      )}
+      {!firstSelected &&
+        timeList.map((time, idx) => (
+          <TimeAlarmItem
+            key={idx}
+            alarmIdx={idx}
+            chosenTime={time}
+            timeList={timeList}
+            setTimeList={setTimeList}
+          />
+        ))}
       <div className="d-none">
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimePicker
             open={open}
             onClose={() => setOpen(false)}
             value={time}
-            onChange={setTime}
+            onChange={updateTime}
           />
         </MuiPickersUtilsProvider>
       </div>
@@ -65,8 +101,8 @@ const AddDrugAlarm = ({ handleShowPopup }) => {
         <CustomButtonGroup
           fstBtnText="One"
           sndBtnText="Many"
-          isOneSelected={oneSelected}
-          setOneSelected={setOneSelected}
+          isFirstSelected={firstSelected}
+          setFirstSelected={setFirstSelected}
         />
       </div>
       <div className="w-75 mx-auto">

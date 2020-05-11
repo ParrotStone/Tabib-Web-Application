@@ -75,9 +75,19 @@ export const getCurrTimeInTwelveFormat = (currentTimeDate) => {
   if (typeof currentTimeDate === "string")
     currentTimeDate = new Date(currentTimeDate);
 
-  const hours = currentTimeDate.getHours();
+  let hours = currentTimeDate.getHours();
+  const AMorPM = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 === 0 ? 12 : hours % 12;
   const minutes = currentTimeDate.toTimeString().split(":")[1];
-  return hours > 12 ? `${hours - 12}:${minutes} PM` : `${hours}:${minutes} AM`;
+
+  return `${hours}:${minutes} ${AMorPM}`;
+
+  // OR
+  // return currentTimeDate.toLocaleTimeString("en-US", {
+  //   hour12: true,
+  //   hour: "numeric",
+  //   minute: "2-digit",
+  // });
 };
 
 export default {

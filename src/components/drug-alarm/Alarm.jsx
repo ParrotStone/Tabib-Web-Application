@@ -1,6 +1,8 @@
 import React from "react";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
   const [switchState, setSwitchState] = React.useState({ checked: true });
@@ -8,8 +10,16 @@ const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
   return (
     <div className="row">
       <div className="col-6">
-        <h5 className="text-primary">{name}</h5>
-        <p className="text-primary">{time}</p>
+        <h5 className="text-primary font-weight-bold">{name}</h5>
+        <p className="text-primary">
+          {time.length
+            ? time.map((timeItem, index) => (
+                <span key={index} className="mr-1">
+                  {timeItem}
+                </span>
+              ))
+            : time}
+        </p>
         <p>{day}</p>
       </div>
       <div className="col-6 text-right">
@@ -26,11 +36,17 @@ const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
         <Button
           variant="contained"
           className="bg-success text-white mr-3"
+          startIcon={<EditIcon />}
           onClick={handleEdit}
         >
           Edit
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleDelete}>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<DeleteIcon />}
+          onClick={handleDelete}
+        >
           Delete
         </Button>
       </div>
