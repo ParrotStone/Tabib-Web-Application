@@ -27,7 +27,7 @@ const TimeAlarmItem = ({ alarmIdx, chosenTime, timeList, setTimeList }) => {
 
   return (
     <>
-      <div className="w-75 mx-auto d-flex justify-content-between text-primary mt-3">
+      <div className="w-75 mx-auto d-flex justify-content-between text-primary mb-3">
         <span>Alarm {alarmIdx + 1}:</span>
         <span style={styles} onClick={() => setOpen(true)}>
           {getCurrTimeInTwelveFormat(time)}

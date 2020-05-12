@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AddAlarmIcon from "@material-ui/icons/AddAlarm";
@@ -8,6 +8,35 @@ import Alarms from "./Alarms";
 import AddDrugAlarm from "./AddDrugAlarm";
 
 const DrugAlarmPopUp = (props) => {
+  const [firstSelected, setFirstSelected] = useState(true);
+  const [time, setTime] = useState(new Date());
+  const [timeList, setTimeList] = useState([]);
+  const [drugName, setDrugName] = useState("");
+  const [switchState, setSwitchState] = useState({ checked: false });
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [note, setNote] = useState("");
+  const [editStatus, setEditStatus] = useState({ wasEdited: false, id: null });
+  const [timeBoxOpened, setTimeBoxOpened] = useState(false);
+  const values = {
+    firstSelected,
+    setFirstSelected,
+    time,
+    setTime,
+    timeList,
+    setTimeList,
+    drugName,
+    setDrugName,
+    switchState,
+    setSwitchState,
+    selectedDays,
+    setSelectedDays,
+    note,
+    setNote,
+    editStatus,
+    setEditStatus,
+    timeBoxOpened,
+    setTimeBoxOpened,
+  };
   const {
     show,
     handleClose,
@@ -17,12 +46,6 @@ const DrugAlarmPopUp = (props) => {
   } = props;
 
   const handleAddAlarm = () => {
-    /*
-      - Hide the alarm list
-      - Show the add page with some nice animation
-      - Show a back button & save button that returns to the list and not close the damn drug alarm altogether
-    */
-
     handleHideAlarms();
   };
 
@@ -66,12 +89,12 @@ const DrugAlarmPopUp = (props) => {
         <Modal.Body>
           {showAlarms && (
             <div className="alarms-container">
-              <Alarms />
+              <Alarms handleHideAlarms={handleHideAlarms} values={values} />
             </div>
           )}
           {!showAlarms && (
             <div className="container">
-              <AddDrugAlarm handleShowPopup={handleShowPopup} />
+              <AddDrugAlarm handleShowPopup={handleShowPopup} values={values} />
             </div>
           )}
           {showAlarms && (

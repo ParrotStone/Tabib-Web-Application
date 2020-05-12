@@ -16,7 +16,7 @@ class UserArea extends React.Component {
     super(props);
 
     this.state = {
-      show: true,
+      show: false,
       showAlarms: false,
     };
   }

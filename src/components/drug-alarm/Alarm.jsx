@@ -12,7 +12,7 @@ const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
       <div className="col-6">
         <h5 className="text-primary font-weight-bold">{name}</h5>
         <p className="text-primary">
-          {time.length
+          {Array.isArray(time)
             ? time.map((timeItem, index) => (
                 <span key={index} className="mr-1">
                   {timeItem}

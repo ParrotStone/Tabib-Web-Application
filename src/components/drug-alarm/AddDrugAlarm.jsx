@@ -21,41 +21,88 @@ const addAlarmStyles = {
   cursor: "pointer",
 };
 
-const AddDrugAlarm = ({ handleShowPopup }) => {
-  const [firstSelected, setFirstSelected] = useState(true);
+const AddDrugAlarm = ({ handleShowPopup, values }) => {
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState(new Date());
-  const [timeList, setTimeList] = useState([]);
-  const [drugName, setDrugName] = useState("");
-  const [switchState, setSwitchState] = useState({ checked: false });
-  const [selectedDays, setSelectedDays] = useState([]);
-  const [note, setNote] = useState("");
+  const {
+    firstSelected,
+    setFirstSelected,
+    time,
+    setTime,
+    timeList,
+    setTimeList,
+    drugName,
+    setDrugName,
+    switchState,
+    setSwitchState,
+    selectedDays,
+    setSelectedDays,
+    note,
+    setNote,
+    editStatus,
+    timeBoxOpened,
+    setTimeBoxOpened,
+  } = values;
+
+  const resetUIToDefault = () => {
+    // Resetting the UI back to default values
+    setFirstSelected(true);
+    setTime(new Date());
+    setTimeList([]);
+    setDrugName("");
+    setSwitchState({ checked: false });
+    setSelectedDays([]);
+    setNote("");
+    setTimeBoxOpened(false);
+  };
 
   const handleAddAlarm = (ev) => {
     ev.preventDefault();
 
     const alarms = JSON.parse(localStorage.getItem("alarms"));
-    const alarmItem = {
-      time: timeList.length ? timeList : time,
-      drugName,
-      selectedDays,
-      note,
-      isActive: true,
-    };
-    alarms.push(alarmItem);
-    localStorage.setItem("alarms", JSON.stringify(alarms));
+
+    if (editStatus.edited) {
+      const targetIdx = alarms.findIndex((alarm) => alarm.id === editStatus.id);
+      const updated = { ...alarms[targetIdx] };
+      updated.time = firstSelected ? time : timeList;
+      updated.timeList = firstSelected ? [] : timeList;
+      updated.drugName = drugName;
+      updated.selectedDays = selectedDays;
+      updated.note = note;
+      alarms[targetIdx] = updated;
+
+      localStorage.setItem("alarms", JSON.stringify(alarms));
+    }
+
+    if (!editStatus.edited) {
+      const lastItem = alarms[alarms.length - 1];
+      const id = lastItem ? lastItem.id + 1 : 1;
+      const alarmItem = {
+        id,
+        time: firstSelected ? time : timeList,
+        drugName,
+        selectedDays,
+        note,
+        isActive: true,
+      };
+
+      alarms.push(alarmItem);
+      localStorage.setItem("alarms", JSON.stringify(alarms));
+    }
+
+    resetUIToDefault();
 
     handleShowPopup(ev);
     notify(
       "success",
       <p className="d-flex align-items-center">
         <span className="material-icons mr-2">check_circle_outline</span>{" "}
-        <span>{drugName} Alarm Saved!</span>
+        <span>Alarm Saved Successfully!</span>
       </p>
     );
   };
 
   const updateTime = (newTime) => {
+    setTimeBoxOpened(true);
     if (firstSelected) {
       setTime(newTime);
       return;
@@ -64,18 +111,19 @@ const AddDrugAlarm = ({ handleShowPopup }) => {
     setTimeList([...timeList, newTime]);
   };
 
+  const handleCancelClick = (ev) => {
+    handleShowPopup(ev);
+    resetUIToDefault();
+  };
+
   return (
     <>
-      {firstSelected && <TimeBoxIndicator setOpen={setOpen} time={time} />}
-      {!firstSelected && (
-        <div
-          className="w-75 mx-auto d-flex justify-content-between text-primary"
-          style={addAlarmStyles}
-          onClick={() => setOpen(true)}
-        >
-          <span>Add Alarm</span>
-          <AddIcon />
-        </div>
+      {firstSelected && (
+        <TimeBoxIndicator
+          setOpen={setOpen}
+          time={time}
+          opened={timeBoxOpened}
+        />
       )}
       {!firstSelected &&
         timeList.map((time, idx) => (
@@ -87,12 +135,22 @@ const AddDrugAlarm = ({ handleShowPopup }) => {
             setTimeList={setTimeList}
           />
         ))}
+      {!firstSelected && (
+        <div
+          className="w-75 mx-auto d-flex justify-content-between text-primary"
+          style={addAlarmStyles}
+          onClick={() => setOpen(true)}
+        >
+          <span>Add Alarm</span>
+          <AddIcon />
+        </div>
+      )}
       <div className="d-none">
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <TimePicker
             open={open}
             onClose={() => setOpen(false)}
-            value={time}
+            value={timeBoxOpened ? time : new Date()}
             onChange={updateTime}
           />
         </MuiPickersUtilsProvider>
@@ -181,7 +239,7 @@ const AddDrugAlarm = ({ handleShowPopup }) => {
               variant="contained"
               color="secondary"
               startIcon={<CancelIcon />}
-              onClick={handleShowPopup}
+              onClick={handleCancelClick}
             >
               Cancel
             </Button>

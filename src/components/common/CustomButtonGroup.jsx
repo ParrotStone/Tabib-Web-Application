@@ -5,29 +5,24 @@ const ButtonGroup = ({
   sndBtnText,
   isFirstSelected,
   setFirstSelected,
-  setAlarms,
 }) => {
-  const [selected, setSelected] = React.useState(true);
-
   return (
     <React.Fragment>
       <div className="btn-group-custom">
         <span
           className={`btn-indicator ${
-            selected && isFirstSelected
-              ? "btn-selected-first"
-              : "btn-selected-second"
+            isFirstSelected ? "btn-selected-first" : "btn-selected-second"
           }`}
         ></span>
         <button
-          className={`${selected ? "btn-selected" : ""}`}
-          onClick={() => setSelected(true) || setFirstSelected(true)}
+          className={`${isFirstSelected ? "btn-selected" : ""}`}
+          onClick={() => setFirstSelected(true)}
         >
           {fstBtnText}
         </button>
         <button
-          className={`${!selected && !isFirstSelected ? "btn-selected" : ""}`}
-          onClick={() => setSelected(false) || setFirstSelected(false)}
+          className={`${!isFirstSelected ? "btn-selected" : ""}`}
+          onClick={() => setFirstSelected(false)}
         >
           {sndBtnText}
         </button>
