@@ -15,7 +15,7 @@ const DrugAlarmPopUp = (props) => {
   const [switchState, setSwitchState] = useState({ checked: false });
   const [selectedDays, setSelectedDays] = useState([]);
   const [note, setNote] = useState("");
-  const [editStatus, setEditStatus] = useState({ wasEdited: false, id: null });
+  const [editStatus, setEditStatus] = useState({ edit: false, id: null });
   const [timeBoxOpened, setTimeBoxOpened] = useState(false);
   const values = {
     firstSelected,

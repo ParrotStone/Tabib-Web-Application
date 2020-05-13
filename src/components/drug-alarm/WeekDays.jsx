@@ -1,6 +1,6 @@
 import React from "react";
 
-const weekdays = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const commonStyles = {
   cursor: "pointer",
   display: "inline-block",

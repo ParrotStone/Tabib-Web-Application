@@ -39,6 +39,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     note,
     setNote,
     editStatus,
+    setEditStatus,
     timeBoxOpened,
     setTimeBoxOpened,
   } = values;
@@ -52,6 +53,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     setSwitchState({ checked: false });
     setSelectedDays([]);
     setNote("");
+    setEditStatus({ edit: false, id: null });
     setTimeBoxOpened(false);
   };
 
@@ -60,7 +62,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
 
     const alarms = JSON.parse(localStorage.getItem("alarms"));
 
-    if (editStatus.edited) {
+    if (editStatus.edit) {
       const targetIdx = alarms.findIndex((alarm) => alarm.id === editStatus.id);
       const updated = { ...alarms[targetIdx] };
       updated.time = firstSelected ? time : timeList;
@@ -73,7 +75,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
       localStorage.setItem("alarms", JSON.stringify(alarms));
     }
 
-    if (!editStatus.edited) {
+    if (!editStatus.edit) {
       const lastItem = alarms[alarms.length - 1];
       const id = lastItem ? lastItem.id + 1 : 1;
       const alarmItem = {
@@ -89,9 +91,9 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
       localStorage.setItem("alarms", JSON.stringify(alarms));
     }
 
+    handleShowPopup(ev);
     resetUIToDefault();
 
-    handleShowPopup(ev);
     notify(
       "success",
       <p className="d-flex align-items-center">

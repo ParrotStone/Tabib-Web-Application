@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Alarm from "./Alarm";
 import { getCurrTimeInTwelveFormat } from "../../utils.js";
 
-const weekdays = ["Fri", "Sat", "Sun", "Mon", "Tue", "Wed", "Thu"];
+const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const getCurrentAlarmItem = (target) => {
   // To get the exact elemented clicked whether the clicked target was the span|button itself -- needs more review to see if there is a better way
@@ -34,10 +34,10 @@ const Alarms = ({ handleHideAlarms, values }) => {
 
   const fillFields = (targetAlarmData) => {
     setTimeBoxOpened(true);
-    // The case where {Many} time alarms is selected
-    if (Array.isArray(targetAlarmData["time"])) {
-      setFirstSelected(false);
-      setTimeList(targetAlarmData["time"]);
+    // The case where {One} time alarms is selected
+    if (!Array.isArray(targetAlarmData["time"])) {
+      setFirstSelected(true);
+      setTime(targetAlarmData["time"]);
       setDrugName(targetAlarmData["drugName"]);
       setSwitchState({
         checked: targetAlarmData["selectedDays"].length ? true : false,
@@ -45,13 +45,12 @@ const Alarms = ({ handleHideAlarms, values }) => {
       setDrugName(targetAlarmData["drugName"]);
       setSelectedDays(targetAlarmData["selectedDays"]);
       setNote(targetAlarmData["note"]);
-      handleHideAlarms();
       return;
     }
 
-    // The case where {One} time alarms is selected
-    setFirstSelected(true);
-    setTime(targetAlarmData["time"]);
+    // The case where {Many} time alarms is selected
+    setFirstSelected(false);
+    setTimeList(targetAlarmData["time"]);
     setDrugName(targetAlarmData["drugName"]);
     setSwitchState({
       checked: targetAlarmData["selectedDays"].length ? true : false,
@@ -59,6 +58,7 @@ const Alarms = ({ handleHideAlarms, values }) => {
     setDrugName(targetAlarmData["drugName"]);
     setSelectedDays(targetAlarmData["selectedDays"]);
     setNote(targetAlarmData["note"]);
+    handleHideAlarms();
   };
 
   const handleEdit = ({ target }) => {
@@ -67,8 +67,7 @@ const Alarms = ({ handleHideAlarms, values }) => {
       targetAlarm.id.includes(index)
     );
 
-    setEditStatus({ edited: true, id: targetAlarmData.id });
-    console.log(targetAlarmData);
+    setEditStatus({ edit: true, id: targetAlarmData.id });
     fillFields(targetAlarmData);
     handleHideAlarms();
   };
@@ -82,7 +81,9 @@ const Alarms = ({ handleHideAlarms, values }) => {
     setAlarmsList(filteredAlarmList);
   };
 
-  const handleDaysShow = (selectedDays) => {
+  const handleDaysShow = (selectedDays, time) => {
+    const currentTime = new Date();
+
     if (selectedDays.length) {
       return weekdays.map((day, index) => (
         <span
@@ -100,7 +101,12 @@ const Alarms = ({ handleHideAlarms, values }) => {
 
     return (
       <span className="text-primary font-weight-bold">
-        {new Date().toDateString().slice(0, 3)}
+        Alarm set at:{" "}
+        {!Array.isArray(time) &&
+        !selectedDays.length &&
+        time < currentTime.toISOString()
+          ? weekdays[currentTime.getDay() + 1]
+          : currentTime.toDateString().slice(0, 3)}
       </span>
     );
   };
@@ -123,7 +129,7 @@ const Alarms = ({ handleHideAlarms, values }) => {
             <li key={index} className="list-group-item" id={`alarm-${index}`}>
               <Alarm
                 name={drugName}
-                day={handleDaysShow(selectedDays)}
+                day={handleDaysShow(selectedDays, time)}
                 time={handleTimeShow(time)}
                 note={note}
                 handleEdit={handleEdit}
