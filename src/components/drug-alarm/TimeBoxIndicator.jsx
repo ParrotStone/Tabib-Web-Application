@@ -5,14 +5,14 @@ const styles = { border: "2px solid", borderRadius: "20px", cursor: "pointer" };
 const classes =
   "d-flex justify-content-center align-items-center w-25 mx-auto py-4 text-primary border-primary";
 
-const TimeBoxIndicator = ({ setOpen, time, opened }) => {
+const TimeBoxIndicator = ({ setOpen, time, currentTime, opened }) => {
   return (
     <>
       <div className={classes} style={styles} onClick={() => setOpen(true)}>
         <h1 className="m-0">
           {opened
             ? getCurrTimeInTwelveFormat(time)
-            : getCurrTimeInTwelveFormat(new Date())}
+            : getCurrTimeInTwelveFormat(currentTime)}
         </h1>
       </div>
     </>

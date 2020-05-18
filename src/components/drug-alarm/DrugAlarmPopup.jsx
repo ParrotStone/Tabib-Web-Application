@@ -88,7 +88,7 @@ const DrugAlarmPopUp = (props) => {
         </Modal.Header>
         <Modal.Body>
           {showAlarms && (
-            <div className="alarms-container">
+            <div>
               <Alarms handleHideAlarms={handleHideAlarms} values={values} />
             </div>
           )}

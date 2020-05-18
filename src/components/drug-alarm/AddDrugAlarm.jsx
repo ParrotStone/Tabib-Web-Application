@@ -21,8 +21,13 @@ const addAlarmStyles = {
   cursor: "pointer",
 };
 
+const spaceIconText = {
+  width: "35px",
+};
+
 const AddDrugAlarm = ({ handleShowPopup, values }) => {
   const [open, setOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const {
     firstSelected,
     setFirstSelected,
@@ -44,6 +49,11 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     setTimeBoxOpened,
   } = values;
 
+  // // Another way to set the current time in case no time was chosen, figure out how Hooks & useEffect(when it's called) works more :) -- {05/17/2020}
+  // React.useEffect(() => {
+  //   if (!timeBoxOpened) setTime(currentTime);
+  // });
+
   const resetUIToDefault = () => {
     // Resetting the UI back to default values
     setFirstSelected(true);
@@ -60,8 +70,22 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
   const handleAddAlarm = (ev) => {
     ev.preventDefault();
 
-    const alarms = JSON.parse(localStorage.getItem("alarms"));
+    // In the case where no alarm is set(in the many(alarms) option)
+    if (!firstSelected && !timeList.length) {
+      notify(
+        "info",
+        <p className="d-flex">
+          <span className="material-icons mt-1" style={spaceIconText}>
+            error_icon
+          </span>{" "}
+          <span>You have to add an alarm!</span>
+        </p>
+      );
 
+      return;
+    }
+
+    const alarms = JSON.parse(localStorage.getItem("alarms"));
     if (editStatus.edit) {
       const targetIdx = alarms.findIndex((alarm) => alarm.id === editStatus.id);
       const updated = { ...alarms[targetIdx] };
@@ -76,11 +100,19 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     }
 
     if (!editStatus.edit) {
+      // This way is better, I kinda not fully convinced, the other way is using lifecycle methods(hooks) or useEffect thingie
+      // I guess the ordinary way(if condition at the beginning method to check if the damn thing is opened or not) didn't work coz of the asynchronous nature of state updating -> figure out how it works and come back to this piece of code to see if anything can be improved, also, asked around about online about how this code can be improved and ask about why the earlier code(if cond...) didn't work and get answers!! It's important to do!(reddit and twitter are good places to start with)
+      let chosenTime = firstSelected
+        ? !timeBoxOpened
+          ? currentTime
+          : time
+        : timeList;
+
       const lastItem = alarms[alarms.length - 1];
       const id = lastItem ? lastItem.id + 1 : 1;
       const alarmItem = {
         id,
-        time: firstSelected ? time : timeList,
+        time: chosenTime,
         drugName,
         selectedDays,
         note,
@@ -104,9 +136,12 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
   };
 
   const updateTime = (newTime) => {
-    setTimeBoxOpened(true);
     if (firstSelected) {
+      // The reason I have put the setTimeBoxOpened here in the one alarm only section is coz if it were put top-leve of the function it would cause the the opened to be for all which when choose just the current date/time of the many alarm option, would find the first alarm thingie to be the right where the following times-pickers are out of sync with the current time -- in essence, it was put here inside of the condition on a damn valid good reason, see the Git(Hub) log for more details
+      setTimeBoxOpened(true);
       setTime(newTime);
+      // Kinda unncessary, figure out later how to remove it(safely)
+      setCurrentTime(newTime);
       return;
     }
 
@@ -124,6 +159,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
         <TimeBoxIndicator
           setOpen={setOpen}
           time={time}
+          currentTime={currentTime}
           opened={timeBoxOpened}
         />
       )}
@@ -152,7 +188,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
           <TimePicker
             open={open}
             onClose={() => setOpen(false)}
-            value={timeBoxOpened ? time : new Date()}
+            value={timeBoxOpened ? time : currentTime}
             onChange={updateTime}
           />
         </MuiPickersUtilsProvider>
@@ -178,11 +214,17 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
               label="Drug Name"
               name="drug-name"
               fullWidth
-              validators={["required", "isString", "minStringLength:3"]}
+              validators={[
+                "required",
+                "isString",
+                "minStringLength:3",
+                "matchRegexp:[A-z0-9]{3,}$",
+              ]}
               errorMessages={[
                 "This field is required",
                 "Drug name must be a valid text",
                 "Drug name must be a minimum of 3 characters",
+                "Drug name must contain valid characters",
               ]}
               value={drugName}
               onChange={(ev) => setDrugName(ev.target.value)}

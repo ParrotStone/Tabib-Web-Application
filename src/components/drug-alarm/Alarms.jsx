@@ -20,6 +20,14 @@ const Alarms = ({ handleHideAlarms, values }) => {
     JSON.parse(localStorage.getItem("alarms"))
   );
 
+  const updateStatus = (id) => {
+    const alarms = JSON.parse(localStorage.getItem("alarms"));
+    const alarmIdx = alarms.findIndex((alarm) => alarm.id === id);
+    alarms[alarmIdx].isActive = !alarms[alarmIdx].isActive;
+    setAlarmsList(alarms);
+    localStorage.setItem("alarms", JSON.stringify(alarms));
+  };
+
   const {
     setFirstSelected,
     setTime,
@@ -83,6 +91,9 @@ const Alarms = ({ handleHideAlarms, values }) => {
 
   const handleDaysShow = (selectedDays, time) => {
     const currentTime = new Date();
+    const today = currentTime.toDateString().slice(0, 3);
+    const tomorrow =
+      currentTime.getDay() + 1 >= 7 ? 0 : currentTime.getDay() + 1;
 
     if (selectedDays.length) {
       return weekdays.map((day, index) => (
@@ -99,14 +110,27 @@ const Alarms = ({ handleHideAlarms, values }) => {
       ));
     }
 
+    let days = [];
+    if (Array.isArray(time)) {
+      for (let singleTime of time) {
+        const isNextDay = singleTime <= currentTime.toISOString();
+        days.push(isNextDay ? weekdays[tomorrow] : today);
+      }
+    } else {
+      const isNextDay = time <= currentTime.toISOString();
+      days.push(isNextDay ? weekdays[tomorrow] : today);
+    }
+
+    days = [...new Set(days)];
+
     return (
       <span className="text-primary font-weight-bold">
-        Alarm set at:{" "}
-        {!Array.isArray(time) &&
-        !selectedDays.length &&
-        time < currentTime.toISOString()
-          ? weekdays[currentTime.getDay() + 1]
-          : currentTime.toDateString().slice(0, 3)}
+        <span>Alarm set at: </span>
+        {days.map((day, index) => (
+          <span key={index} className="mr-1">
+            {day}
+          </span>
+        ))}
       </span>
     );
   };
@@ -125,18 +149,29 @@ const Alarms = ({ handleHideAlarms, values }) => {
     <React.Fragment>
       <ul className="list-group">
         {alarmsList.length ? (
-          alarmsList.map(({ drugName, selectedDays, time, note }, index) => (
-            <li key={index} className="list-group-item" id={`alarm-${index}`}>
-              <Alarm
-                name={drugName}
-                day={handleDaysShow(selectedDays, time)}
-                time={handleTimeShow(time)}
-                note={note}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-              />
-            </li>
-          ))
+          alarmsList.map(
+            ({ id, drugName, isActive, selectedDays, time, note }, index) => (
+              <li
+                key={index}
+                className={`list-group-item ${
+                  isActive ? "" : "disabled-alarm"
+                }`}
+                id={`alarm-${index}`}
+              >
+                <Alarm
+                  id={id}
+                  name={drugName}
+                  isActive={isActive}
+                  updateStatus={updateStatus}
+                  day={handleDaysShow(selectedDays, time)}
+                  time={handleTimeShow(time)}
+                  note={note}
+                  handleEdit={handleEdit}
+                  handleDelete={handleDelete}
+                />
+              </li>
+            )
+          )
         ) : (
           <h4 className="text-primary text-center">
             No drug alarms are set yet

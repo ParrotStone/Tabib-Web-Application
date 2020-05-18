@@ -8,7 +8,7 @@
 
 body {
   color: #333333;
-  font-family: "JF Flat", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  font-family: "JF Flat", Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   font-size: 1.2rem;
@@ -19,6 +19,11 @@ body {
   position: relative;
   /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
   overflow: hidden;
+}
+
+@font-face {
+  font-family: "JF Flat";
+  src: local("JF Flat"), url("./fonts/JF-Flat-regular.otf") format("opentype");
 }
 
 code {
@@ -450,6 +455,6 @@ div.submit-wrapper {
   max-width: 70vw;
 }
 
-/*Add new styles to the alarms container here(if needed)*/
-.alarms-container {
+.disabled-alarm {
+  background: #f0f0f0;
 }

@@ -4,8 +4,18 @@ import Button from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
-  const [switchState, setSwitchState] = React.useState({ checked: true });
+const Alarm = (props) => {
+  const {
+    id,
+    name,
+    isActive,
+    updateStatus,
+    day,
+    time,
+    note,
+    handleEdit,
+    handleDelete,
+  } = props;
 
   return (
     <div className="row">
@@ -24,8 +34,8 @@ const Alarm = ({ name, day, time, note, handleEdit, handleDelete }) => {
       </div>
       <div className="col-6 text-right">
         <Switch
-          checked={switchState.checked}
-          onChange={() => setSwitchState({ checked: !switchState.checked })}
+          checked={isActive}
+          onChange={() => updateStatus(id)}
           name="active"
           color="primary"
           inputProps={{ "aria-label": "active checkbox" }}

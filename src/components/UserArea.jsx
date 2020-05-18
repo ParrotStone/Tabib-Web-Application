@@ -16,7 +16,7 @@ class UserArea extends React.Component {
     super(props);
 
     this.state = {
-      show: false,
+      show: true,
       showAlarms: false,
     };
   }
@@ -71,7 +71,7 @@ class UserArea extends React.Component {
                 Corona Map
               </Link>
             </div>
-            <div className="col-7">
+            <div className="col-8">
               <a
                 href="#drug-alarm"
                 className="d-block nav-header-link"
@@ -81,7 +81,7 @@ class UserArea extends React.Component {
                 Drug Alarm
               </a>
             </div>
-            <div className="col-6">
+            <div className="col-7">
               <Link to="/logout" className="d-block nav-header-link">
                 <ExitToAppIcon className="text-light mx-3" />
                 Sign out
