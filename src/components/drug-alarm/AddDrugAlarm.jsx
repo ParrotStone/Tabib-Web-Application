@@ -102,9 +102,14 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     if (!editStatus.edit) {
       // This way is better, I kinda not fully convinced, the other way is using lifecycle methods(hooks) or useEffect thingie
       // I guess the ordinary way(if condition at the beginning method to check if the damn thing is opened or not) didn't work coz of the asynchronous nature of state updating -> figure out how it works and come back to this piece of code to see if anything can be improved, also, asked around about online about how this code can be improved and ask about why the earlier code(if cond...) didn't work and get answers!! It's important to do!(reddit and twitter are good places to start with)
+
+      const currTimeTomorrow = new Date(currentTime);
+      currTimeTomorrow.setDate(currentTime.getDate() + 1);
+      currTimeTomorrow.setSeconds(0, 0);
+
       let chosenTime = firstSelected
         ? !timeBoxOpened
-          ? currentTime
+          ? currTimeTomorrow
           : time
         : timeList;
 
@@ -136,6 +141,12 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
   };
 
   const updateTime = (newTime) => {
+    const isNextDay = newTime <= currentTime.toISOString();
+    if (isNextDay) newTime.setDate(newTime.getDate() + 1);
+    else newTime.setDate(currentTime.getDate());
+
+    newTime.setSeconds(0, 0);
+
     if (firstSelected) {
       // The reason I have put the setTimeBoxOpened here in the one alarm only section is coz if it were put top-leve of the function it would cause the the opened to be for all which when choose just the current date/time of the many alarm option, would find the first alarm thingie to be the right where the following times-pickers are out of sync with the current time -- in essence, it was put here inside of the condition on a damn valid good reason, see the Git(Hub) log for more details
       setTimeBoxOpened(true);

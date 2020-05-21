@@ -90,10 +90,10 @@ const Alarms = ({ handleHideAlarms, values }) => {
   };
 
   const handleDaysShow = (selectedDays, time) => {
-    const currentTime = new Date();
-    const today = currentTime.toDateString().slice(0, 3);
-    const tomorrow =
-      currentTime.getDay() + 1 >= 7 ? 0 : currentTime.getDay() + 1;
+    // const currentTime = new Date();
+    // const today = currentTime.toDateString().slice(0, 3);
+    // const tomorrow =
+    //   currentTime.getDay() + 1 >= 7 ? 0 : currentTime.getDay() + 1;
 
     if (selectedDays.length) {
       return weekdays.map((day, index) => (
@@ -110,15 +110,41 @@ const Alarms = ({ handleHideAlarms, values }) => {
       ));
     }
 
+    // let days = [];
+    // if (Array.isArray(time)) {
+    //   for (let singleTime of time) {
+    //     const isNextDay = singleTime <= currentTime.toISOString();
+    //     days.push(isNextDay ? weekdays[tomorrow] : today);
+    //   }
+    // } else {
+    //   const isNextDay = time <= currentTime.toISOString();
+    //   days.push(isNextDay ? weekdays[tomorrow] : today);
+    // }
+
+    // days = [...new Set(days)];
+
+    // time -> [Wed, Tue]
+    // time -> Wed
+    // let days = [];
+    // if (Array.isArray(time)) {
+    //   for (let singleTime of time) {
+    //     const isNextDay = singleTime <= currentTime.toISOString();
+    //     days.push(isNextDay ? weekdays[tomorrow] : today);
+    //   }
+    // } else {
+    //   const isNextDay = time <= currentTime.toISOString();
+    //   days.push(isNextDay ? weekdays[tomorrow] : today);
+    // }
+
+    // days = [...new Set(days)];
+
     let days = [];
     if (Array.isArray(time)) {
       for (let singleTime of time) {
-        const isNextDay = singleTime <= currentTime.toISOString();
-        days.push(isNextDay ? weekdays[tomorrow] : today);
+        days.push(new Date(singleTime).toDateString().slice(0, 3));
       }
     } else {
-      const isNextDay = time <= currentTime.toISOString();
-      days.push(isNextDay ? weekdays[tomorrow] : today);
+      days.push(new Date(time).toDateString().slice(0, 3));
     }
 
     days = [...new Set(days)];

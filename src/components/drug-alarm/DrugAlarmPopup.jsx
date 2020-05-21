@@ -6,8 +6,10 @@ import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 // import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Alarms from "./Alarms";
 import AddDrugAlarm from "./AddDrugAlarm";
+import { initAlarmNotification } from "./DrugAlarmUtils";
 
 const DrugAlarmPopUp = (props) => {
+  initAlarmNotification();
   const [firstSelected, setFirstSelected] = useState(true);
   const [time, setTime] = useState(new Date());
   const [timeList, setTimeList] = useState([]);
