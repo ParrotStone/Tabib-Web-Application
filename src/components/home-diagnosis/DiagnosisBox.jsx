@@ -6,19 +6,19 @@ import SearchIcon from "@material-ui/icons/Search";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { from, BehaviorSubject } from "rxjs";
 import { debounceTime, distinctUntilChanged, mergeMap } from "rxjs/operators";
-import MessageBox from "./common/MessageBox";
-import ImgUpload from "../images/img-upload.png";
-import MaterialSpinner from "./common/MaterialSpinner";
-import http from "../services/HttpService";
+import MessageBox from "../common/MessageBox";
+import ImgUpload from "../../images/img-upload.png";
+import MaterialSpinner from "../common/MaterialSpinner";
+import http from "../../services/HttpService";
 import {
   apiImgPred,
   apiAppSelSymptom,
   apiGetSymptom,
   apiConfirmSubmitAns,
-} from "../config.json";
-import * as utils from "../utils.js";
-import { getCurrentUser } from "../services/AuthService";
-import { searchSymptoms } from "../services/BotService";
+} from "../../config.json";
+import * as utils from "../../utils.js";
+import { getCurrentUser } from "../../services/AuthService";
+import { searchSymptoms } from "../../services/BotService";
 
 const searchSympSub = new BehaviorSubject("");
 const sympResultObservable = searchSympSub.pipe(

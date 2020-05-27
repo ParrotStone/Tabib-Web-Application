@@ -16,7 +16,6 @@ const DrugAlarmPopUp = (props) => {
   const [note, setNote] = useState("");
   const [editStatus, setEditStatus] = useState({ edit: false, id: null });
   const [timeBoxOpened, setTimeBoxOpened] = useState(false);
-  const [status, setStatus] = useState("read");
   const values = {
     firstSelected,
     setFirstSelected,
@@ -36,8 +35,6 @@ const DrugAlarmPopUp = (props) => {
     setEditStatus,
     timeBoxOpened,
     setTimeBoxOpened,
-    status,
-    setStatus,
   };
   const {
     show,

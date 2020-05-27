@@ -3,7 +3,7 @@ import Logo from "../common/Logo";
 import ContentSlider from "./ContentSlider";
 import Navbar from "./Navbar";
 import IconSlider from "./IconSlider";
-import HomeDiagnosis from "../HomeDiagnosis";
+import HomeDiagnosis from "../home-diagnosis/index";
 import { Link } from "react-router-dom";
 
 import auth from "../../services/AuthService";

@@ -1,5 +1,5 @@
 import React from "react";
-import Background from "./common/Background";
+import Background from "../common/Background";
 import UserArea from "./UserArea";
 import DiagnosisBox from "./DiagnosisBox";
 

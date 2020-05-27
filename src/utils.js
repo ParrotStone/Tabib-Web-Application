@@ -1,6 +1,5 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import axios from "axios";
 
 export const getDateFormat = (timedate) => {
   // return timedate.toISOString().split("T")[0];

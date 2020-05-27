@@ -5,11 +5,11 @@ import MapIcon from "@material-ui/icons/Map";
 import AccessAlarmsIcon from "@material-ui/icons/AccessAlarms";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-import { apiDownloadProfileImg } from "../config.json";
-import defaultUsrImg from "../images/defaultUsrImg.png";
-import { getCurrentUser } from "../services/AuthService";
+import { apiDownloadProfileImg } from "../../config.json";
+import defaultUsrImg from "../../images/defaultUsrImg.png";
+import { getCurrentUser } from "../../services/AuthService";
 
-import DrugAlarmPopUp from "./drug-alarm/DrugAlarmPopup";
+import DrugAlarmPopUp from "../drug-alarm/DrugAlarmPopup";
 
 class UserArea extends React.Component {
   constructor(props) {

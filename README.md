@@ -1,9 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Remember to install React Bootstrap -- The drug alarm thingie ;)
-
-Here you go [React Bootstrap](https://react-bootstrap.github.io/getting-started/introduction/#customize-bootstrap)
-
 ## Available Scripts
 
 In the project directory, you can run:
