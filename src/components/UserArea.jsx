@@ -10,17 +10,14 @@ import defaultUsrImg from "../images/defaultUsrImg.png";
 import { getCurrentUser } from "../services/AuthService";
 
 import DrugAlarmPopUp from "./drug-alarm/DrugAlarmPopup";
-import { initAlarmNotification } from "./drug-alarm/DrugAlarmUtils";
 
 class UserArea extends React.Component {
   constructor(props) {
     super(props);
 
-    initAlarmNotification();
-
     this.state = {
-      show: true,
-      showAlarms: true,
+      show: false,
+      showAlarms: false,
     };
   }
 

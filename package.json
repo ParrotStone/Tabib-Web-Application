@@ -29,6 +29,7 @@
     "react-toastify": "^5.5.0",
     "react-transition-group": "^4.3.0",
     "reactstrap": "^8.4.1",
+    "rxjs": "^6.5.5",
     "sweetalert2": "^9.10.12",
     "sweetalert2-react-content": "^3.0.1"
   },

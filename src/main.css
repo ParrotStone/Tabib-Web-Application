@@ -286,17 +286,33 @@ div.submit-wrapper {
 .message-box {
   background: var(--primary-color);
   font-size: 1rem;
-  /*width: 220px;*/
   width: auto;
   border-radius: 30px;
-  border-top-left-radius: 0;
   position: absolute;
-  top: 25px;
-  left: 30%;
   color: white;
 }
 
+.message-box > span {
+  border-color: #d0d0d0 !important;
+}
+
+.message-box > span:last-child {
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.message-box > span:last-child:hover {
+  color: #dddddd;
+}
+
 .btn-action {
+  position: absolute;
+  top: 70%;
+  right: 3%;
+}
+
+.btn-action-choice {
   position: absolute;
   top: 77%;
   right: 3%;

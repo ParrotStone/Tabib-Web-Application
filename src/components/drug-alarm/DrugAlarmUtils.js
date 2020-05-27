@@ -9,27 +9,52 @@ import Push from "push.js";
  timeList: []
 */
 
-export const initAlarmNotification = () => {
+// Problems with current approach:
+// - When it's initialized(a place where all the app is mounted and can notify the user wherever they are on the site)
+// - Work in the background and notify the user even if the page is closed or the whole browser is closed(service workers)
+// - Work with multiple times(after & before(next day))
+// - Work with one(singular) and multiple(alarms as above) but with repeat option set on the alarm itself
+// - Same thing with many alarms thingie
+// - Mass test it
+
+export const initAlarmNotification = (status) => {
+  if (status === "read" || status === "create") {
+    // Do Something HERE...
+  }
+
+  // Remove the old set timers in case of the update/delete only
+  // in the other cases, you just update the state(to notice the damn changes(in case of update->adding new alarm))
+
   const alarms = JSON.parse(localStorage.getItem("alarms"));
+
   alarms.forEach((alarm) => {
-    const currAlarmTime = new Date(alarm.time).toTimeString();
-    let wasNotified = false;
-
-    const intervalID = setTimeout(() => {
-      const currTimeObj = new Date();
-      currTimeObj.setSeconds(0, 0);
-      const currTime = currTimeObj.toTimeString();
-
-      if (currTime > currAlarmTime || wasNotified) clearInter();
-
-      if (alarm.isActive && currTime === currAlarmTime && !wasNotified) {
-        notifyDrugAlarm(alarm.drugName, alarm.note);
-        wasNotified = true;
-      }
-    }, 1500);
-
-    const clearInter = () => clearInterval(intervalID);
+    // If one time alarm only, do the following
+    if (!Array.isArray(alarm.time)) {
+      checkSingleAlarm(alarm);
+    } else {
+      checkMultipleAlarms(alarm);
+    }
   });
+};
+
+const checkSingleAlarm = (alarm) => {
+  const delay = new Date(alarm.time) - new Date();
+  checkTimeAndNotify(alarm, delay);
+};
+
+const checkMultipleAlarms = (alarm) => {
+  alarm.time.forEach((singleTime) => {
+    const delay = new Date(singleTime) - new Date();
+    checkTimeAndNotify(alarm, delay);
+  });
+};
+
+const checkTimeAndNotify = ({ drugName, isActive, note }, delay) => {
+  if (isActive && delay > 0) {
+    setTimeout(() => {
+      notifyDrugAlarm(drugName, note);
+    }, delay);
+  }
 };
 
 const notifyDrugAlarm = (drugName, note) => {

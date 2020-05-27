@@ -3,13 +3,10 @@ import Modal from "react-bootstrap/Modal";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AddAlarmIcon from "@material-ui/icons/AddAlarm";
 import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
-// import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Alarms from "./Alarms";
 import AddDrugAlarm from "./AddDrugAlarm";
-import { initAlarmNotification } from "./DrugAlarmUtils";
 
 const DrugAlarmPopUp = (props) => {
-  initAlarmNotification();
   const [firstSelected, setFirstSelected] = useState(true);
   const [time, setTime] = useState(new Date());
   const [timeList, setTimeList] = useState([]);
@@ -19,6 +16,7 @@ const DrugAlarmPopUp = (props) => {
   const [note, setNote] = useState("");
   const [editStatus, setEditStatus] = useState({ edit: false, id: null });
   const [timeBoxOpened, setTimeBoxOpened] = useState(false);
+  const [status, setStatus] = useState("read");
   const values = {
     firstSelected,
     setFirstSelected,
@@ -38,6 +36,8 @@ const DrugAlarmPopUp = (props) => {
     setEditStatus,
     timeBoxOpened,
     setTimeBoxOpened,
+    status,
+    setStatus,
   };
   const {
     show,

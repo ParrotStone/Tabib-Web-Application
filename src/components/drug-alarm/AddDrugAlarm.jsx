@@ -47,6 +47,8 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     setEditStatus,
     timeBoxOpened,
     setTimeBoxOpened,
+    status,
+    setStatus,
   } = values;
 
   // // Another way to set the current time in case no time was chosen, figure out how Hooks & useEffect(when it's called) works more :) -- {05/17/2020}
@@ -65,6 +67,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     setNote("");
     setEditStatus({ edit: false, id: null });
     setTimeBoxOpened(false);
+    setStatus("read");
   };
 
   const handleAddAlarm = (ev) => {
@@ -100,9 +103,9 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
     }
 
     if (!editStatus.edit) {
+      setStatus("create");
       // This way is better, I kinda not fully convinced, the other way is using lifecycle methods(hooks) or useEffect thingie
       // I guess the ordinary way(if condition at the beginning method to check if the damn thing is opened or not) didn't work coz of the asynchronous nature of state updating -> figure out how it works and come back to this piece of code to see if anything can be improved, also, asked around about online about how this code can be improved and ask about why the earlier code(if cond...) didn't work and get answers!! It's important to do!(reddit and twitter are good places to start with)
-
       const currTimeTomorrow = new Date(currentTime);
       currTimeTomorrow.setDate(currentTime.getDate() + 1);
       currTimeTomorrow.setSeconds(0, 0);
@@ -141,7 +144,7 @@ const AddDrugAlarm = ({ handleShowPopup, values }) => {
   };
 
   const updateTime = (newTime) => {
-    const isNextDay = newTime <= currentTime.toISOString();
+    const isNextDay = newTime <= currentTime;
     if (isNextDay) newTime.setDate(newTime.getDate() + 1);
     else newTime.setDate(currentTime.getDate());
 

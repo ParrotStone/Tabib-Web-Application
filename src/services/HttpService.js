@@ -1,12 +1,18 @@
 import axios from "axios";
 import utils from "../utils.js";
-// import logger from "./logService";
+// import logger from "./LogService";
 
-const http = axios.create({
-  withCreditionals: true,
-});
+// Attach the access token to every request once the user is logged in
+const accessToken = localStorage.getItem("access-token");
+if (accessToken) {
+  axios.defaults.headers.get["Authorization"] = `Bearer ${accessToken}`;
+  axios.defaults.headers.post["Authorization"] = `Bearer ${accessToken}`;
+} else {
+  delete axios.defaults.headers.get["Authorization"];
+  delete axios.defaults.headers.post["Authorization"];
+}
 
-http.interceptors.response.use(null, (error) => {
+axios.interceptors.response.use(null, (error) => {
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
@@ -24,8 +30,8 @@ http.interceptors.response.use(null, (error) => {
 });
 
 export default {
-  get: http.get,
-  post: http.post,
-  put: http.put,
-  delete: http.delete,
+  get: axios.get,
+  post: axios.post,
+  put: axios.put,
+  delete: axios.delete,
 };

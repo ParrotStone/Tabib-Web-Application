@@ -3,38 +3,58 @@ import Swal from "sweetalert2";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
-import CheckCircleOutlinedIcon from "@material-ui/icons/CheckCircleOutlined";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import { from, BehaviorSubject } from "rxjs";
+import { debounceTime, distinctUntilChanged, mergeMap } from "rxjs/operators";
 import MessageBox from "./common/MessageBox";
 import ImgUpload from "../images/img-upload.png";
 import MaterialSpinner from "./common/MaterialSpinner";
 import http from "../services/HttpService";
 import {
   apiImgPred,
-  apiStartBot,
-  apiSearchBot,
   apiAppSelSymptom,
   apiGetSymptom,
   apiConfirmSubmitAns,
 } from "../config.json";
 import * as utils from "../utils.js";
 import { getCurrentUser } from "../services/AuthService";
+import { searchSymptoms } from "../services/BotService";
+
+const searchSympSub = new BehaviorSubject("");
+const sympResultObservable = searchSympSub.pipe(
+  debounceTime(350),
+  distinctUntilChanged(),
+  mergeMap((value) => from(searchSymptoms(value)))
+);
 
 class DiagnosisBox extends React.Component {
   constructor(props) {
     super(props);
 
+    this.userWelcomeMsg = `Hi ${utils.capitalizeFirstLetter(
+      getCurrentUser().first_name
+    )}, I'm Tabib bot, What do you wanna do?`;
+
     this.state = {
       searchInput: "",
-      usrMsg: `Hi ${utils.capitalizeFirstLetter(
-        getCurrentUser().first_name
-      )}, I'm Tabib bot, What do you wanna do?`,
+      usrMsg: this.userWelcomeMsg,
+      showOptions: true,
       isSearchBoxShown: false,
       sympList: [],
       isFetching: false,
       selectedSymptoms: [],
       offerChoice: false,
-      result: undefined,
     };
+  }
+
+  componentDidMount() {
+    this.subscription = sympResultObservable.subscribe((result) => {
+      this.setState({ sympList: result, isFetching: false });
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   // TODO: Remember also to check the packages installed and remove the ones un-necessary especially to (sweetalert thingie) and any un-needed ones in general, also separate the devDependencies from the required ones
@@ -80,7 +100,6 @@ class DiagnosisBox extends React.Component {
               formData.append("file", file);
               // Do here the AJAX call to the back-end for image diagnosis
               const headers = {
-                Authorization: `Bearer ${localStorage.getItem("access-token")}`,
                 "Content-Type": "multipart/form-data",
               };
 
@@ -106,6 +125,7 @@ class DiagnosisBox extends React.Component {
   handleBotClick = () => {
     this.setState({
       usrMsg: "What are you complaining about?",
+      showOptions: false,
       isSearchBoxShown: true,
     });
   };
@@ -113,39 +133,12 @@ class DiagnosisBox extends React.Component {
   handleChange = async ({ target }) => {
     // Keep the UI state in sync
     const { value } = target;
-    this.setState({ usrMsg: "", searchInput: value, isFetching: true });
+    this.setState({ searchInput: value, usrMsg: "", isFetching: true });
+    searchSympSub.next(value);
 
     if (!value.length) {
       this.setState({ isFetching: false });
       return;
-    }
-
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-    };
-
-    try {
-      await http.get(apiStartBot, { headers });
-      const { data } = await http.get(`${apiSearchBot}${value}`, {
-        headers,
-      });
-
-      const { result } = data;
-      // In case there is no matching
-      if (!result) {
-        this.setState({ sympList: [], isFetching: false });
-        return;
-      }
-
-      // Sorting, removing the separators, and picking only the first 15 symptom
-      const symptomsList = utils
-        .sortStrArr(result)
-        .map((symptom) => symptom.split("_").join(" "))
-        .slice(0, 15);
-
-      this.setState({ sympList: symptomsList, isFetching: false });
-    } catch (ex) {
-      utils.reportUserErrors(ex);
     }
   };
 
@@ -158,6 +151,7 @@ class DiagnosisBox extends React.Component {
     this.setState({
       searchInput: "",
       usrMsg: "Do you want to add another symptom?",
+      showOptions: false,
       isSearchBoxShown: false,
       sympList: [],
       selectedSymptoms: selectedSymp,
@@ -166,17 +160,23 @@ class DiagnosisBox extends React.Component {
   };
 
   handleChoice = async ({ target }) => {
-    const { selectedSymptoms, result } = this.state;
+    const { selectedSymptoms } = this.state;
     const choice = target.textContent.toLowerCase();
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
-    };
+
+    this.setState({
+      showOptions: false,
+      isSearchBoxShown: false,
+      isFetching: true,
+      offerChoice: false,
+    });
 
     if (choice === "yes") {
       if (selectedSymptoms.length) {
         this.setState({
           usrMsg: "What are you complaining about?",
+          showOptions: false,
           isSearchBoxShown: true,
+          isFetching: false,
           offerChoice: false,
         });
 
@@ -184,9 +184,9 @@ class DiagnosisBox extends React.Component {
       }
 
       try {
-        await http.post(apiConfirmSubmitAns, { ans: "y" }, { headers });
+        await http.post(apiConfirmSubmitAns, { ans: "y" });
+        const { data } = await http.get(apiGetSymptom);
 
-        const { data } = await http.get(apiGetSymptom, { headers });
         if (data.result) {
           const symptom = data["result"].split("_").join(" ");
           this.setState({
@@ -196,12 +196,10 @@ class DiagnosisBox extends React.Component {
           });
           return;
         } else {
-          // <CheckCircleOutlinedIcon className={`${}`} />
-          const predictionResult = data["predict"].includes("could not")
-            ? `Oops! we couldn't find a disease based on your input, could you try again?`
-            : `You are likely to have the following disease: ${data["predict"]}`;
           this.setState({
-            usrMsg: predictionResult,
+            usrMsg: utils.getPredictionMsg(data),
+            showOptions: true,
+            isSearchBoxShown: false,
             isFetching: false,
             offerChoice: false,
           });
@@ -215,45 +213,37 @@ class DiagnosisBox extends React.Component {
     if (choice === "no") {
       if (!selectedSymptoms.length) {
         try {
-          await http.post(apiConfirmSubmitAns, { ans: "n" }, { headers });
+          await http.post(apiConfirmSubmitAns, { ans: "n" });
         } catch (ex) {
           utils.reportUserErrors(ex);
         }
       }
 
-      this.setState({ isFetching: true, offerChoice: false });
-
       try {
         // No need to start the session again - ASK AZ
-        // await http.get(apiStartBot, { headers });
+        // await http.get(apiStartBot);
         // Send the list of symptoms one-by-one(Network costly operation ahead!)
         for (let i = 0; i < selectedSymptoms.length; i++) {
           let symptom = selectedSymptoms[i].split(" ").join("_");
-          await http.post(
-            apiAppSelSymptom,
-            { ans: symptom },
-            {
-              headers,
-            }
-          );
+          await http.post(apiAppSelSymptom, { ans: symptom });
         }
 
-        const { data } = await http.get(apiGetSymptom, { headers });
+        const { data } = await http.get(apiGetSymptom);
+
         if (data.result) {
           const symptom = data["result"].split("_").join(" ");
           this.setState({
             usrMsg: `Do you have the following symptom: ${symptom}?`,
+            showOptions: false,
             isFetching: false,
             selectedSymptoms: [],
             offerChoice: true,
           });
           return;
         } else {
-          const predictionResult = data["predict"].includes("could not")
-            ? `Oops! we couldn't find a disease based on your input, could you try again?`
-            : `You are likely to have the following disease: ${data["predict"]}`;
           this.setState({
-            usrMsg: predictionResult,
+            usrMsg: utils.getPredictionMsg(data),
+            showOptions: true,
             isSearchBoxShown: false,
             isFetching: false,
             selectedSymptoms: [],
@@ -266,21 +256,29 @@ class DiagnosisBox extends React.Component {
       }
 
       this.setState({
+        showOptions: true,
         isFetching: false,
         offerChoice: false,
       });
     }
   };
 
+  handleSearchClick = () => {
+    console.log("search button clicked");
+  };
+
   render() {
     const {
       searchInput,
       usrMsg,
+      showOptions,
       isSearchBoxShown,
       sympList,
       isFetching,
       offerChoice,
     } = this.state;
+    const isResultReady =
+      Array.isArray(usrMsg) || usrMsg.includes("couldn't find");
 
     return (
       <React.Fragment>
@@ -292,7 +290,22 @@ class DiagnosisBox extends React.Component {
           >
             <MaterialSpinner thickness={3} />
           </div>
-          <MessageBox message={usrMsg} />
+          <MessageBox
+            message={usrMsg}
+            left={isResultReady ? false : true}
+            bottom={isResultReady ? true : false}
+            secondMsg={false}
+            result={null}
+          />
+          {isResultReady && (
+            <MessageBox
+              message={"Do you want to try again?"}
+              left={true}
+              bottom={false}
+              secondMsg={true}
+              result={usrMsg}
+            />
+          )}
           <div className="conatiner mt-4 mx-2">
             {!isFetching &&
               sympList.map((symptom, index) => (
@@ -308,26 +321,32 @@ class DiagnosisBox extends React.Component {
               <h1 className="text-primary">Not Matching Symptom</h1>
             )}
           </div>
-          {!isSearchBoxShown && !offerChoice && (
+          {!isSearchBoxShown && !offerChoice && showOptions && (
             <div className="btn-action">
               <button
-                className="btn btn-outline-primary pill-border d-block mb-3"
+                className="btn btn-outline-primary pill-border d-block mb-2"
                 onClick={this.handleBotClick}
               >
                 Speak to Tabib Bot
               </button>
               <button
-                className="btn btn-outline-primary pill-border d-block"
+                className="btn btn-outline-primary pill-border d-block mb-2"
                 onClick={this.handleSkinClick}
               >
                 Skin Detection
               </button>
+              <button
+                className="btn btn-outline-primary pill-border d-block"
+                onClick={this.handleSearchClick}
+              >
+                Disease Search
+              </button>
             </div>
           )}
           {offerChoice && (
-            <div className="btn-action">
+            <div className="btn-action-choice">
               <button
-                className="btn btn-outline-primary pill-border d-block mb-3"
+                className="btn btn-outline-primary pill-border d-block mb-2"
                 onClick={this.handleChoice}
               >
                 Yes
@@ -341,7 +360,7 @@ class DiagnosisBox extends React.Component {
             </div>
           )}
           {isSearchBoxShown && (
-            <div className="conatiner-fluid search-container">
+            <div className="conatiner-fluid search-container d-flex">
               <TextField
                 id="searchbot-input"
                 label="Search Symptoms"
@@ -356,6 +375,26 @@ class DiagnosisBox extends React.Component {
                     </InputAdornment>
                   ),
                 }}
+              />
+              <ArrowForwardIcon
+                color="primary"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "40px",
+                  margin: "25px 0 0 30px",
+                }}
+                onClick={() =>
+                  this.setState({
+                    searchInput: "",
+                    usrMsg: this.userWelcomeMsg,
+                    showOptions: true,
+                    isSearchBoxShown: false,
+                    sympList: [],
+                    isFetching: false,
+                    selectedSymptoms: [],
+                    offerChoice: false,
+                  })
+                }
               />
             </div>
           )}

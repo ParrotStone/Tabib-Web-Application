@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import axios from "axios";
 
 export const getDateFormat = (timedate) => {
   // return timedate.toISOString().split("T")[0];
@@ -71,6 +72,19 @@ export const sortStrArr = (strArr) => {
   });
 };
 
+export const getPredictionMsg = (data) => {
+  const { mainPredict } = data;
+  const msg = mainPredict["name"]
+    ? [
+        mainPredict["name"],
+        mainPredict["treatment"],
+        mainPredict["otherPredicts"],
+      ]
+    : `Sorry, we couldn't find a disease based on your input`;
+
+  return msg;
+};
+
 export const getCurrTimeInTwelveFormat = (currentTimeDate) => {
   if (typeof currentTimeDate === "string")
     currentTimeDate = new Date(currentTimeDate);
@@ -97,5 +111,6 @@ export default {
   persistUserDetails,
   capitalizeFirstLetter,
   sortStrArr,
+  getPredictionMsg,
   getCurrTimeInTwelveFormat,
 };

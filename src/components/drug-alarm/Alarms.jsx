@@ -5,7 +5,7 @@ import { getCurrTimeInTwelveFormat } from "../../utils.js";
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const getCurrentAlarmItem = (target) => {
-  // To get the exact elemented clicked whether the clicked target was the span|button itself -- needs more review to see if there is a better way
+  // To get the exact elemented clicked whether the clicked target was the span|button itself -- needs reviewing to see if there is a better way
   let targetAlarm = target;
   while (!targetAlarm.classList.contains("list-group-item")) {
     targetAlarm = targetAlarm.parentElement;
@@ -38,10 +38,12 @@ const Alarms = ({ handleHideAlarms, values }) => {
     setNote,
     setEditStatus,
     setTimeBoxOpened,
+    setStatus,
   } = values;
 
   const fillFields = (targetAlarmData) => {
     setTimeBoxOpened(true);
+    setStatus("update");
     // The case where {One} time alarms is selected
     if (!Array.isArray(targetAlarmData["time"])) {
       setFirstSelected(true);
@@ -81,6 +83,7 @@ const Alarms = ({ handleHideAlarms, values }) => {
   };
 
   const handleDelete = ({ target }) => {
+    setStatus("delete");
     const targetAlarm = getCurrentAlarmItem(target);
     const filteredAlarmList = alarmsList.filter(
       (_, index) => !targetAlarm.id.includes(index)
@@ -90,11 +93,6 @@ const Alarms = ({ handleHideAlarms, values }) => {
   };
 
   const handleDaysShow = (selectedDays, time) => {
-    // const currentTime = new Date();
-    // const today = currentTime.toDateString().slice(0, 3);
-    // const tomorrow =
-    //   currentTime.getDay() + 1 >= 7 ? 0 : currentTime.getDay() + 1;
-
     if (selectedDays.length) {
       return weekdays.map((day, index) => (
         <span
@@ -109,34 +107,6 @@ const Alarms = ({ handleHideAlarms, values }) => {
         </span>
       ));
     }
-
-    // let days = [];
-    // if (Array.isArray(time)) {
-    //   for (let singleTime of time) {
-    //     const isNextDay = singleTime <= currentTime.toISOString();
-    //     days.push(isNextDay ? weekdays[tomorrow] : today);
-    //   }
-    // } else {
-    //   const isNextDay = time <= currentTime.toISOString();
-    //   days.push(isNextDay ? weekdays[tomorrow] : today);
-    // }
-
-    // days = [...new Set(days)];
-
-    // time -> [Wed, Tue]
-    // time -> Wed
-    // let days = [];
-    // if (Array.isArray(time)) {
-    //   for (let singleTime of time) {
-    //     const isNextDay = singleTime <= currentTime.toISOString();
-    //     days.push(isNextDay ? weekdays[tomorrow] : today);
-    //   }
-    // } else {
-    //   const isNextDay = time <= currentTime.toISOString();
-    //   days.push(isNextDay ? weekdays[tomorrow] : today);
-    // }
-
-    // days = [...new Set(days)];
 
     let days = [];
     if (Array.isArray(time)) {
