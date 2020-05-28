@@ -19,10 +19,11 @@ import {
 import * as utils from "../../utils.js";
 import { getCurrentUser } from "../../services/AuthService";
 import { searchSymptoms } from "../../services/BotService";
+import SearchDiseasePopup from "./SearchDiseasePopup";
 
 const searchSympSub = new BehaviorSubject("");
 const sympResultObservable = searchSympSub.pipe(
-  debounceTime(350),
+  debounceTime(300),
   distinctUntilChanged(),
   mergeMap((value) => from(searchSymptoms(value)))
 );
@@ -44,6 +45,7 @@ class DiagnosisBox extends React.Component {
       isFetching: false,
       selectedSymptoms: [],
       offerChoice: false,
+      show: false,
     };
   }
 
@@ -130,7 +132,7 @@ class DiagnosisBox extends React.Component {
     });
   };
 
-  handleChange = async ({ target }) => {
+  handleChange = ({ target }) => {
     // Keep the UI state in sync
     const { value } = target;
     this.setState({ searchInput: value, usrMsg: "", isFetching: true });
@@ -264,7 +266,11 @@ class DiagnosisBox extends React.Component {
   };
 
   handleSearchClick = () => {
-    console.log("search button clicked");
+    this.setState({ show: true });
+  };
+
+  handleClosePopup = () => {
+    this.setState({ show: false });
   };
 
   render() {
@@ -276,6 +282,7 @@ class DiagnosisBox extends React.Component {
       sympList,
       isFetching,
       offerChoice,
+      show,
     } = this.state;
     const isResultReady =
       Array.isArray(usrMsg) || usrMsg.includes("couldn't find");
@@ -399,6 +406,11 @@ class DiagnosisBox extends React.Component {
             </div>
           )}
         </div>
+
+        <SearchDiseasePopup
+          show={show}
+          handleClosePopup={this.handleClosePopup}
+        />
       </React.Fragment>
     );
   }

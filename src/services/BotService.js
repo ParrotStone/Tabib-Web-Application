@@ -1,15 +1,16 @@
 import http from "./HttpService";
 import config from "../config.json";
 import utils from "../utils.js";
+import { getCurrentUser } from "./AuthService";
 
-const { apiStartBot, apiSearchBot } = config;
+const { apiStartBot, apiSearchBot, apiDiseaseSearch, apiDiseaseInfo } = config;
 
-export const searchSymptoms = async (value) => {
-  if (!value) return [];
+export const searchSymptoms = async (symptomName) => {
+  if (!symptomName) return [];
 
   try {
     await http.get(apiStartBot);
-    const { data } = await http.get(`${apiSearchBot}${value}`);
+    const { data } = await http.get(`${apiSearchBot}${symptomName}`);
 
     const { result } = data;
     // In case there is no matching
@@ -29,6 +30,37 @@ export const searchSymptoms = async (value) => {
   }
 };
 
+if (getCurrentUser()) {
+  (async () => {
+    // if (!diseaseName) return [];
+
+    try {
+      const { data } = await http.post(apiDiseaseSearch, { pref: "" });
+
+      const { Diseases } = data;
+      // Sorting, and picking only the first 4 symptom
+      // const sortedDiseases = utils.sortStrArr(Diseases).slice(0, 4);
+      const sortedDiseases = utils.sortStrArr(Diseases);
+
+      localStorage.setItem("disease-list", JSON.stringify(sortedDiseases));
+    } catch (ex) {
+      utils.reportUserErrors(ex);
+    }
+  })();
+}
+
+export const submitDiseaseName = async (diseaseName) => {
+  try {
+    const { data: diseaseInfo } = await http.post(apiDiseaseInfo, {
+      disease: diseaseName,
+    });
+    return diseaseInfo;
+  } catch (ex) {
+    utils.reportUserErrors(ex);
+  }
+};
+
 export default {
   searchSymptoms,
+  submitDiseaseName,
 };
