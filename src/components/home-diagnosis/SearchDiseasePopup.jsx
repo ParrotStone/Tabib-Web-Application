@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -79,7 +79,12 @@ const useStyles = makeStyles((theme) => ({
 
 const diseaseList = JSON.parse(localStorage.getItem("disease-list"));
 
-const SearchDiseasePopup = ({ show, handleClosePopup }) => {
+const SearchDiseasePopup = ({
+  show,
+  handleClosePopup,
+  requestedDiseaseInfo,
+  showDiseaseInfo,
+}) => {
   const [searchVal, setSearchVal] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [diseases, setDiseases] = useState([]);
@@ -92,8 +97,15 @@ const SearchDiseasePopup = ({ show, handleClosePopup }) => {
   const [humanSys, setHumanSys] = useState([]);
   const classes = useStyles();
 
+  // In order to handle the case where the 'more-info' label was clicked
+  useEffect(() => {
+    if (requestedDiseaseInfo)
+      handleChosenDisease({ target: { textContent: requestedDiseaseInfo } });
+  }, [requestedDiseaseInfo]);
+
   const resetUIToDefault = () => {
     // Rest the UI back to default values
+    setDiseases([]);
     setDiseaseName("");
     setDiseaseInfo("");
     setTreatments([]);
@@ -146,7 +158,15 @@ const SearchDiseasePopup = ({ show, handleClosePopup }) => {
       <Modal
         show={show}
         onHide={handleClosePopup}
-        onExited={() => setSearchVal("") || resetUIToDefault()}
+        onEnter={() =>
+          requestedDiseaseInfo ? null : setSearchVal("") || resetUIToDefault()
+        }
+        onExited={() =>
+          (requestedDiseaseInfo
+            ? null
+            : setSearchVal("") || resetUIToDefault()) ||
+          showDiseaseInfo(false, "")
+        }
         aria-labelledby="drug-alarm-modal"
         dialogClassName="drug-alarm-width-70"
         centered

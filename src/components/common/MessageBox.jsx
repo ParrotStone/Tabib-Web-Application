@@ -2,7 +2,7 @@ import React from "react";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 const MessageBox = (props) => {
-  const { message, left, bottom, secondMsg, result } = props;
+  const { message, left, bottom, secondMsg, result, showDiseaseInfo } = props;
   let styles = { padding: `${!message.length ? "0px" : "10px"}`, top: "25px" };
   if (left) styles = { ...styles, borderTopLeftRadius: 0 };
   if (bottom) styles = { ...styles, borderBottomLeftRadius: 0 };
@@ -36,7 +36,10 @@ const MessageBox = (props) => {
               {message[2]}
             </span>
           )}
-          <span className="d-block w-25 ml-auto py-2 mt-3 text-right">
+          <span
+            className="d-block w-50 ml-auto py-2 mt-2 text-right"
+            onClick={() => showDiseaseInfo(true, message[0])}
+          >
             More info <KeyboardArrowRight />
           </span>
         </>

@@ -46,6 +46,7 @@ class DiagnosisBox extends React.Component {
       selectedSymptoms: [],
       offerChoice: false,
       show: false,
+      requestedDiseaseInfo: "",
     };
   }
 
@@ -273,6 +274,13 @@ class DiagnosisBox extends React.Component {
     this.setState({ show: false });
   };
 
+  showDiseaseInfo = (showPopup, requestedDiseaseName) => {
+    this.setState({
+      show: showPopup,
+      requestedDiseaseInfo: requestedDiseaseName,
+    });
+  };
+
   render() {
     const {
       searchInput,
@@ -283,6 +291,7 @@ class DiagnosisBox extends React.Component {
       isFetching,
       offerChoice,
       show,
+      requestedDiseaseInfo,
     } = this.state;
     const isResultReady =
       Array.isArray(usrMsg) || usrMsg.includes("couldn't find");
@@ -303,6 +312,7 @@ class DiagnosisBox extends React.Component {
             bottom={isResultReady ? true : false}
             secondMsg={false}
             result={null}
+            showDiseaseInfo={this.showDiseaseInfo}
           />
           {isResultReady && (
             <MessageBox
@@ -311,6 +321,7 @@ class DiagnosisBox extends React.Component {
               bottom={false}
               secondMsg={true}
               result={usrMsg}
+              showDiseaseInfo={null}
             />
           )}
           <div className="conatiner mt-4 mx-2">
@@ -410,6 +421,8 @@ class DiagnosisBox extends React.Component {
         <SearchDiseasePopup
           show={show}
           handleClosePopup={this.handleClosePopup}
+          showDiseaseInfo={this.showDiseaseInfo}
+          requestedDiseaseInfo={requestedDiseaseInfo}
         />
       </React.Fragment>
     );
