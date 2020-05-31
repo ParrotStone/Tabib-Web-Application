@@ -72,13 +72,9 @@ export const sortStrArr = (strArr) => {
 };
 
 export const getPredictionMsg = (data) => {
-  const { mainPredict } = data;
+  const { mainPredict, otherPredicts } = data;
   const msg = mainPredict["name"]
-    ? [
-        mainPredict["name"],
-        mainPredict["treatment"],
-        mainPredict["otherPredicts"],
-      ]
+    ? [mainPredict["name"], mainPredict["treatment"], otherPredicts]
     : `Sorry, we couldn't find a disease based on your input`;
 
   return msg;

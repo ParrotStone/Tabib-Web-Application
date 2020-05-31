@@ -38,7 +38,7 @@ class DiagnosisBox extends React.Component {
 
     this.state = {
       searchInput: "",
-      usrMsg: this.userWelcomeMsg,
+      usrMsgs: [this.userWelcomeMsg],
       showOptions: true,
       isSearchBoxShown: false,
       sympList: [],
@@ -127,7 +127,7 @@ class DiagnosisBox extends React.Component {
 
   handleBotClick = () => {
     this.setState({
-      usrMsg: "What are you complaining about?",
+      usrMsgs: ["What are you complaining about?"],
       showOptions: false,
       isSearchBoxShown: true,
     });
@@ -136,7 +136,7 @@ class DiagnosisBox extends React.Component {
   handleChange = ({ target }) => {
     // Keep the UI state in sync
     const { value } = target;
-    this.setState({ searchInput: value, usrMsg: "", isFetching: true });
+    this.setState({ searchInput: value, usrMsgs: [""], isFetching: true });
     searchSympSub.next(value);
 
     if (!value.length) {
@@ -153,7 +153,7 @@ class DiagnosisBox extends React.Component {
     selectedSymp.push(symptomValue);
     this.setState({
       searchInput: "",
-      usrMsg: "Do you want to add another symptom?",
+      usrMsgs: ["Do you want to add another symptom?"],
       showOptions: false,
       isSearchBoxShown: false,
       sympList: [],
@@ -176,7 +176,7 @@ class DiagnosisBox extends React.Component {
     if (choice === "yes") {
       if (selectedSymptoms.length) {
         this.setState({
-          usrMsg: "What are you complaining about?",
+          usrMsgs: ["What are you complaining about?"],
           showOptions: false,
           isSearchBoxShown: true,
           isFetching: false,
@@ -193,14 +193,17 @@ class DiagnosisBox extends React.Component {
         if (data.result) {
           const symptom = data["result"].split("_").join(" ");
           this.setState({
-            usrMsg: `Do you have the following symptom: ${symptom}?`,
+            usrMsgs: [`Do you have the following symptom: ${symptom}?`],
             isFetching: false,
             offerChoice: true,
           });
           return;
         } else {
           this.setState({
-            usrMsg: utils.getPredictionMsg(data),
+            usrMsgs: [
+              utils.getPredictionMsg(data),
+              ["Do you want to start a new session?"],
+            ],
             showOptions: true,
             isSearchBoxShown: false,
             isFetching: false,
@@ -236,7 +239,7 @@ class DiagnosisBox extends React.Component {
         if (data.result) {
           const symptom = data["result"].split("_").join(" ");
           this.setState({
-            usrMsg: `Do you have the following symptom: ${symptom}?`,
+            usrMsgs: [`Do you have the following symptom: ${symptom}?`],
             showOptions: false,
             isFetching: false,
             selectedSymptoms: [],
@@ -245,7 +248,10 @@ class DiagnosisBox extends React.Component {
           return;
         } else {
           this.setState({
-            usrMsg: utils.getPredictionMsg(data),
+            usrMsgs: [
+              utils.getPredictionMsg(data),
+              ["Do you want to start a new session?"],
+            ],
             showOptions: true,
             isSearchBoxShown: false,
             isFetching: false,
@@ -281,10 +287,23 @@ class DiagnosisBox extends React.Component {
     });
   };
 
+  /*
+    {isResultReady && (
+      <MessageBox
+        message={"Do you want to try again?"}
+        left={true}
+        bottom={false}
+        secondMsg={true}
+        result={usrMsgs}
+        showDiseaseInfo={null}
+      />
+    )}
+  */
+
   render() {
     const {
       searchInput,
-      usrMsg,
+      usrMsgs,
       showOptions,
       isSearchBoxShown,
       sympList,
@@ -293,8 +312,6 @@ class DiagnosisBox extends React.Component {
       show,
       requestedDiseaseInfo,
     } = this.state;
-    const isResultReady =
-      Array.isArray(usrMsg) || usrMsg.includes("couldn't find");
 
     return (
       <React.Fragment>
@@ -307,23 +324,9 @@ class DiagnosisBox extends React.Component {
             <MaterialSpinner thickness={3} />
           </div>
           <MessageBox
-            message={usrMsg}
-            left={isResultReady ? false : true}
-            bottom={isResultReady ? true : false}
-            secondMsg={false}
-            result={null}
+            message={usrMsgs}
             showDiseaseInfo={this.showDiseaseInfo}
           />
-          {isResultReady && (
-            <MessageBox
-              message={"Do you want to try again?"}
-              left={true}
-              bottom={false}
-              secondMsg={true}
-              result={usrMsg}
-              showDiseaseInfo={null}
-            />
-          )}
           <div className="conatiner mt-4 mx-2">
             {!isFetching &&
               sympList.map((symptom, index) => (
@@ -335,7 +338,7 @@ class DiagnosisBox extends React.Component {
                   {symptom}
                 </button>
               ))}
-            {!sympList.length && !usrMsg && !isFetching && (
+            {!sympList.length && !usrMsgs && !isFetching && (
               <h1 className="text-primary">Not Matching Symptom</h1>
             )}
           </div>
@@ -404,7 +407,7 @@ class DiagnosisBox extends React.Component {
                 onClick={() =>
                   this.setState({
                     searchInput: "",
-                    usrMsg: this.userWelcomeMsg,
+                    usrMsgs: [this.userWelcomeMsg],
                     showOptions: true,
                     isSearchBoxShown: false,
                     sympList: [],

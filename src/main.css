@@ -283,12 +283,15 @@ div.submit-wrapper {
   clear: both;
 }
 
+/*How it's stationed at the top left corner?! && how how fix the radius issues, and the when loading thing -- finally test with more than message for better modularity*/
+/*Fix the other issues, at last fix the loading(like facebook one) and add Pace.JS to have a better UI -- Also have the user profile image of a certain size so you can save space on the server and also have the user resize it if he wants -> Those are the final touches as to say beyond the basic ones(the responsiveness, and the other really important additional like performance, drug-alarm, etc) are to be added when you have a better understanding of React, Context API, Hooks, Redux, ...*/
+
 .message-box {
   background: var(--primary-color);
   font-size: 1rem;
-  width: auto;
+  /*min-width: 250px;*/
+  display: inline-block;
   border-radius: 30px;
-  position: absolute;
   color: white;
 }
 
@@ -462,6 +465,7 @@ div.submit-wrapper {
 
 .disabled-alarm {
   background: #f0f0f0;
+  cursor: disabled;
 }
 
 /*--------------------------------------------------------------------*/
@@ -485,4 +489,8 @@ div.submit-wrapper {
 
 .bg-shadow-container {
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25), 0px -1px 5px rgba(0, 0, 0, 0.25) !important;
+}
+
+.disease-info-small-font {
+  font-size: 0.95rem;
 }

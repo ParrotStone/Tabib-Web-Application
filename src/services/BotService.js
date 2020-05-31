@@ -30,24 +30,22 @@ export const searchSymptoms = async (symptomName) => {
   }
 };
 
-if (getCurrentUser()) {
-  (async () => {
-    // if (!diseaseName) return [];
+(async () => {
+  if (!getCurrentUser()) return;
+  // if (!diseaseName) return [];
+  try {
+    const { data } = await http.post(apiDiseaseSearch, { pref: "" });
 
-    try {
-      const { data } = await http.post(apiDiseaseSearch, { pref: "" });
+    const { Diseases } = data;
+    // Sorting, and picking only the first 4 symptom
+    // const sortedDiseases = utils.sortStrArr(Diseases).slice(0, 4);
+    const sortedDiseases = utils.sortStrArr(Diseases);
 
-      const { Diseases } = data;
-      // Sorting, and picking only the first 4 symptom
-      // const sortedDiseases = utils.sortStrArr(Diseases).slice(0, 4);
-      const sortedDiseases = utils.sortStrArr(Diseases);
-
-      localStorage.setItem("disease-list", JSON.stringify(sortedDiseases));
-    } catch (ex) {
-      utils.reportUserErrors(ex);
-    }
-  })();
-}
+    localStorage.setItem("disease-list", JSON.stringify(sortedDiseases));
+  } catch (ex) {
+    utils.reportUserErrors(ex);
+  }
+})();
 
 export const submitDiseaseName = async (diseaseName) => {
   try {

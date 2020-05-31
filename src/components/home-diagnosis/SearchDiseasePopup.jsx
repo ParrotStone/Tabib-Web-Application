@@ -12,9 +12,10 @@ import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import MaterialSpinner from "../common/MaterialSpinner";
 
 import { submitDiseaseName } from "../../services/BotService.js";
+import { reportUserErrors } from "../../utils.js";
 
 const modalBodyStyles = {
-  height: "400px",
+  height: "500px",
   overflowY: "scroll",
 };
 
@@ -77,14 +78,29 @@ const useStyles = makeStyles((theme) => ({
 //   }, [observable, setter, setIsFetching]);
 // };
 
+// const useDiseaseInfo = (requestedDiseaseInfo, setter) => {
+// // In order to handle the case where the 'more-info' label was clicked
+// useEffect(() => {
+//   if (requestedDiseaseInfo)
+//     setter({ target: { textContent: requestedDiseaseInfo } });
+// }, [requestedDiseaseInfo, setter]);
+// };
+
+// // In order to handle the reload/load times when the disease-list hasn't been loaded yet into the site
+// let diseaseList = [];
+// useEffect(() => {
+//   diseaseList = JSON.parse(localStorage.getItem("disease-list"));
+// });
+
 const diseaseList = JSON.parse(localStorage.getItem("disease-list"));
 
-const SearchDiseasePopup = ({
-  show,
-  handleClosePopup,
-  requestedDiseaseInfo,
-  showDiseaseInfo,
-}) => {
+const SearchDiseasePopup = (props) => {
+  const {
+    show,
+    handleClosePopup,
+    requestedDiseaseInfo,
+    showDiseaseInfo,
+  } = props;
   const [searchVal, setSearchVal] = useState("");
   const [isFetching, setIsFetching] = useState(false);
   const [diseases, setDiseases] = useState([]);
@@ -96,12 +112,6 @@ const SearchDiseasePopup = ({
   const [organs, setOrgans] = useState([]);
   const [humanSys, setHumanSys] = useState([]);
   const classes = useStyles();
-
-  // In order to handle the case where the 'more-info' label was clicked
-  useEffect(() => {
-    if (requestedDiseaseInfo)
-      handleChosenDisease({ target: { textContent: requestedDiseaseInfo } });
-  }, [requestedDiseaseInfo]);
 
   const resetUIToDefault = () => {
     // Rest the UI back to default values
@@ -133,18 +143,24 @@ const SearchDiseasePopup = ({
   };
 
   const handleChosenDisease = async ({ target }) => {
-    const { textContent: diseaseName } = target;
+    let { textContent: diseaseName } = target;
+    diseaseName = diseaseName ? diseaseName : searchVal;
+    // diseaseName = diseaseName.trim();
     setSearchVal(diseaseName);
     setDiseases([]);
     setIsFetching(true);
-    const diseaseDetails = await submitDiseaseName(diseaseName.trim());
-    setIsFetching(false);
-    setDiseaseName(diseaseDetails["name"]);
-    setDiseaseInfo(diseaseDetails["info"]);
-    setTreatments(diseaseDetails["treatments"]);
-    setSymptoms(diseaseDetails["symptomps"]);
-    setOrgans(diseaseDetails["organs"]);
-    setHumanSys(diseaseDetails["humanSystems"]);
+    try {
+      const diseaseDetails = await submitDiseaseName(diseaseName);
+      setIsFetching(false);
+      setDiseaseName(diseaseDetails["name"]);
+      setDiseaseInfo(diseaseDetails["info"]);
+      setTreatments(diseaseDetails["treatments"]);
+      setSymptoms(diseaseDetails["symptomps"]);
+      setOrgans(diseaseDetails["organs"]);
+      setHumanSys(diseaseDetails["humanSystems"]);
+    } catch (ex) {
+      reportUserErrors(ex);
+    }
   };
 
   const handleEnterPress = (ev) => {
@@ -152,6 +168,13 @@ const SearchDiseasePopup = ({
     // Simulate a user click on the first auto-complete list item
     handleChosenDisease({ target: { textContent: diseases[0] } });
   };
+
+  // In order to handle the case where the 'more-info' label was clicked
+  useEffect(() => {
+    if (requestedDiseaseInfo)
+      handleChosenDisease({ target: { textContent: requestedDiseaseInfo } });
+  }, [requestedDiseaseInfo]);
+  // useDiseaseInfo(requestedDiseaseInfo, handleChosenDisease);
 
   return (
     <>
@@ -176,10 +199,10 @@ const SearchDiseasePopup = ({
           className="flex-column-reverse align-items-center"
         >
           <Modal.Title className="text-primary text-center">
-            <h1>
+            <h2>
               <InfoIcon style={fontSizeHeaderIcon} className="mt-n2" /> Search
               for disease info
-            </h1>
+            </h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={modalBodyStyles}>
@@ -224,50 +247,50 @@ const SearchDiseasePopup = ({
           ) : null}
           {!diseases.length && !isFetching && !diseaseName && (
             <div style={centerMiddleStyles}>
-              <h1 className="text-primary text-center">
+              <h4 className="text-primary text-center">
                 {" "}
-                <ErrorOutlineIcon fontSize="large" /> Nothing Found
-              </h1>
+                <ErrorOutlineIcon fontSize="default" /> Nothing Found
+              </h4>
             </div>
           )}
           {diseaseName && diseaseInfo && (
             <div className={classes.resultContainer}>
-              <h1 className="text-white text-center pill-border bg-primary p-4 mt-4 mb-4">
+              <h2 className="text-white text-center pill-border bg-primary p-4 mt-4 mb-4">
                 {diseaseName}
-              </h1>
+              </h2>
               <div className="mb-5">
-                <h4 className="text-primary w-50">Overview</h4>
-                <div className="wide-border-left bg-shadow-container p-3">
+                <h5 className="text-primary w-50">Overview</h5>
+                <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {diseaseInfo}
                 </div>
               </div>
               <div className="mb-5">
-                <h4 className="text-primary">Human Systems</h4>
-                <div className="wide-border-left bg-shadow-container p-3">
+                <h5 className="text-primary">Human Systems</h5>
+                <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {humanSys.map((sys, index) => (
                     <p key={index}>- {sys}</p>
                   ))}
                 </div>
               </div>
               <div className="mb-5">
-                <h4 className="text-primary">Affected Organs</h4>
-                <div className="wide-border-left bg-shadow-container p-3">
+                <h5 className="text-primary">Affected Organs</h5>
+                <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {organs.map((organ, index) => (
                     <p key={index}>- {organ}</p>
                   ))}
                 </div>
               </div>
               <div className="mb-5">
-                <h4 className="text-primary">Symptoms</h4>
-                <div className="wide-border-left bg-shadow-container p-3">
+                <h5 className="text-primary">Symptoms</h5>
+                <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {symptoms.map((symptom, index) => (
                     <p key={index}>- {symptom}</p>
                   ))}
                 </div>
               </div>
               <div className="mb-5">
-                <h4 className="text-primary">Treatment</h4>
-                <div className="wide-border-left bg-shadow-container p-3">
+                <h5 className="text-primary">Treatment</h5>
+                <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {treatments.map((treatment, index) => (
                     <p key={index}>- {treatment}</p>
                   ))}
