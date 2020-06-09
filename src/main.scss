@@ -1,9 +1,7 @@
+$primary-color: #12a2f9;
+
 * {
   box-sizing: border-box;
-}
-
-:root {
-  --primary-color: #12a2f9;
 }
 
 body {
@@ -11,12 +9,13 @@ body {
   font-family: "JF Flat", Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 
   height: 100vh;
-  width: 100%;
+  width: 100vw;
 
-  position: relative;
+  /*What its use here?(the property)*/
+  /*position: relative;*/
   /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
   overflow: hidden;
 }
@@ -31,19 +30,29 @@ code {
     monospace;
 }
 
-div.overlay {
+nav {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
   width: 100%;
-  background: var(--primary-color);
+  height: 100px;
+  overflow: hidden;
+}
+
+div.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  background: $primary-color;
   clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
+  z-index: -1;
 }
 
 img.logo {
-  height: 140px;
-  width: 140px;
+  height: 135px;
+  width: 135px;
 }
 
 div#full-pg {
@@ -64,7 +73,7 @@ a.nav-header-link {
 }
 
 a.pass-reset-link {
-  color: var(--primary-color);
+  color: $primary-color;
   font-size: 1rem;
 }
 
@@ -73,52 +82,45 @@ a:hover {
   text-decoration: none;
 }
 
-div.get-started {
-  /* position: absolute; */
-  /* z-index: 1; */
-  /* margin-top: 80px; */
-  /* margin-left: 435px; */
-  position: relative;
-  width: 100%;
-  margin: 50px auto;
-  text-align: center;
-  z-index: 1;
+.sliders-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-div.get-started button {
-  /* TODO: Color might change */
-  border: 1px solid var(--primary-color);
-}
-
-div.overlay .row img {
+.sliders-container img {
   width: 400px;
   height: 400px;
 }
 
 .primary-color {
-  color: var(--primary-color);
+  color: $primary-color;
 }
 
-.content h1 {
-  font-family: "JF Flat", sans-serif;
-}
+.content {
+  h1 {
+    font-family: "JF Flat", sans-serif;
+  }
 
-.content p {
-  width: 500px;
-}
+  p {
+    width: 500px;
+  }
 
-.content button {
-  background: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  border-radius: 20px;
+  button {
+    background: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 20px;
+  }
 }
 
 /* Background styles(Drug Capsules) */
-.full-width {
+.bg-capsule {
   top: 0;
   left: 0;
   /*The additional 4vh here is to account for the negative margin given to the 'Tabib' logo in the logo.jsx component*/
-  min-height: 104vh;
+  /*min-height: 104vh;*/
+  min-height: 100vh;
   min-width: 100%;
   background: url("./images/background.png") repeat;
   background-size: 40px;
@@ -129,15 +131,12 @@ div.overlay .row img {
   top: 50vh;
   left: 50vw;
   transform: translate(-50%, -43%);
-  height: 530px;
+  height: 550px;
   width: 500px;
-  margin-top: 20px;
   background: #f8f8f8;
   padding: 10px 20px;
-  /*border: 1px solid #dddddd;*/
   border-radius: 10px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25),
-    0px 10px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.25), 0px 7px 15px rgba(0, 0, 0, 0.25);
 }
 
 .btn-group-custom {
@@ -145,28 +144,28 @@ div.overlay .row img {
   text-align: center;
   padding: 3px;
   background: #ffffff;
-  color: var(--primary-color);
+  color: $primary-color;
   border: 1px solid #dddddd;
   border-radius: 30px;
   width: 215px;
   margin: auto;
   z-index: 0;
-}
 
-.btn-group-custom button {
-  width: 50%;
-  height: 40px;
-  border-radius: 30px;
-  border: none;
-  outline: 0;
-  background: transparent;
-  transition: all 0.5s ease-in-out;
+  & button {
+    width: 50%;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    outline: 0;
+    background: transparent;
+    transition: all 0.5s ease-in-out;
+  }
 }
 
 .btn-indicator {
   position: absolute;
   display: inline-block;
-  background: var(--primary-color);
+  background: $primary-color;
   width: 50%;
   height: 40px;
   z-index: -1;
@@ -198,7 +197,7 @@ small.input-info {
 .custom-submit-btn {
   padding: 10px 20px;
   color: white;
-  background: var(--primary-color);
+  background: $primary-color;
   border-radius: 30px;
 }
 
@@ -208,55 +207,47 @@ div.progress-wrapper {
   margin: auto;
   display: flex;
   justify-content: center;
-}
 
-div.progress-wrapper > span.progress-span {
-  cursor: pointer;
-  align-self: center;
-  width: 10px;
-  height: 10px;
-  padding: 7px;
-  border: 3px solid var(--primary-color);
-  border-radius: 50%;
-  margin-left: 15px;
-  margin-right: 15px;
-  transition: 0.5s ease;
-}
+  & > span.progress-span {
+    cursor: pointer;
+    align-self: center;
+    width: 10px;
+    height: 10px;
+    padding: 7px;
+    border: 3px solid $primary-color;
+    border-radius: 50%;
+    margin-left: 15px;
+    margin-right: 15px;
+    transition: 0.5s ease;
+  }
 
-div.progress-wrapper > span::after {
-  content: "";
-  display: block;
-  height: 3px;
-  padding-right: 10px;
-  border-right: 33px solid var(--primary-color);
-}
+  & > span::after {
+    content: "";
+    display: block;
+    height: 3px;
+    padding-right: 10px;
+    border-right: 33px solid $primary-color;
+  }
 
-div.progress-wrapper > span:last-child::after {
-  border: none;
+  & > span:last-child::after {
+    border: none;
+  }
 }
 
 .current-step {
-  background: var(--primary-color);
-}
-
-div.submit-wrapper {
-  position: absolute;
-  top: 74%;
-  /*Centering it at the middle horizontally*/
-  left: 50%;
-  transform: translateX(-50%);
+  background: $primary-color;
 }
 
 /*The main diagnosis area styles*/
 .main-diag {
-  padding: 0 15px;
+  /*padding: 0 15px;*/
   width: 1200px;
   height: 500px;
   border-radius: 30px;
 }
 
 .user-area-wrapper {
-  background: var(--primary-color);
+  background: $primary-color;
   width: 340px;
   height: 500px;
   padding: 20px;
@@ -287,10 +278,11 @@ div.submit-wrapper {
 /*Fix the other issues, at last fix the loading(like facebook one) and add Pace.JS to have a better UI -- Also have the user profile image of a certain size so you can save space on the server and also have the user resize it if he wants -> Those are the final touches as to say beyond the basic ones(the responsiveness, and the other really important additional like performance, drug-alarm, etc) are to be added when you have a better understanding of React, Context API, Hooks, Redux, ...*/
 
 .message-box {
-  background: var(--primary-color);
+  background: $primary-color;
   font-size: 1rem;
-  /*min-width: 250px;*/
-  display: inline-block;
+  min-width: 250px;
+  /*To have every message dealt with as if it were a separate table(with auto after exceeding the 250 threshold and all)*/
+  display: table;
   border-radius: 30px;
   color: white;
 }
@@ -343,8 +335,8 @@ div.submit-wrapper {
 
 .symptom-container {
   font-size: 1.1rem;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  color: $primary-color;
+  border: 1px solid $primary-color;
   border-radius: 35px;
   padding: 5px 12px;
   min-width: 50px;
@@ -361,45 +353,89 @@ div.submit-wrapper {
 /*------------------------------------------------*/
 /*----------------Animation Styles----------------*/
 /*------------------------------------------------*/
-
-/*Appear state*/
-/*When the element first mounted into the DOM*/
-/*.slide-appear {
-    opacity: 0;
-}
-
-.slide-appear-active {
-    opacity: 1;
-    transition: all 1s linear;
-}
-*/
 /*Enter state*/
-.slide-enter {
+.appear-enter {
   opacity: 0;
   transform: scale(0.97) translateY(5px);
 }
 
-.slide-enter-active {
+.appear-enter-active {
   opacity: 1;
   transform: scale(1) translateY(0);
   transition: all 0.5s linear;
 }
 
 /*Leave state*/
-.slide-exit {
+.appear-exit {
   opacity: 0;
   transform: scale(1) translateY(0);
 }
 
-.slide-exit-active {
+.appear-exit-active {
   opacity: 0;
   transform: scale(0.97) translateY(5px);
   transition: all 0.5s linear;
 }
 
-.slide-exit-done {
+.appear-exit-done {
   opacity: 0;
 }
+
+// -------------------------------------------------
+// -----------------Slide Effect--------------------
+// -------------------------------------------------
+// .slide-left-enter {
+//   opacity: 0;
+//   transform: translateX(-50px);
+// }
+
+// .slide-left-enter-active {
+//   opacity: 1;
+//   transform: translateX(0);
+//   transition: all 0.5s linear;
+// }
+
+// /*Leave state*/
+// .slide-left-exit {
+//   opacity: 0;
+//   transform: translateX(-50px);
+// }
+
+// .slide-left-exit-active {
+//   opacity: 0;
+//   transition: all 0.5s linear;
+// }
+
+// .slide-left-exit-done {
+//   opacity: 0;
+// }
+
+// // -------------------
+// .slide-right-enter {
+//   opacity: 0;
+//   transform: translateX(50px);
+// }
+
+// .slide-right-enter-active {
+//   opacity: 1;
+//   transform: translateX(0);
+//   transition: all 0.5s linear;
+// }
+
+// /*Leave state*/
+// .slide-right-exit {
+//   opacity: 0;
+//   transform: translateX(50px);
+// }
+
+// .slide-right-exit-active {
+//   opacity: 0;
+//   transition: all 0.5s linear;
+// }
+
+// .slide-right-exit-done {
+//   opacity: 0;
+// }
 
 /*------------------------------------------------------------------*/
 /*---------Corona map and its summary sidebar custom styles---------*/
@@ -484,7 +520,7 @@ div.submit-wrapper {
 }
 
 .wide-border-left {
-  border-left: 7px solid var(--primary-color) !important;
+  border-left: 7px solid $primary-color !important;
 }
 
 .bg-shadow-container {

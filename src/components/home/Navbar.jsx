@@ -1,24 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "../common/Logo";
 
-const Navbar = props => {
+const Navbar = (props) => {
   return (
-    <div className="row mt-4 text-right">
-      <div className="col-5 offset-7">
-        <Link to="/" className="text-upper mr-4 nav-header-link">
-          Home
-        </Link>
-        <Link to="/about" className="text-upper mr-4 nav-header-link">
-          About
-        </Link>
-        <Link to="/login" className="text-upper mr-4 nav-header-link">
-          Sign In
-        </Link>
-        <Link to="/signup" className="btn bg-white text-upper mr-4">
-          Register
-        </Link>
+    <nav>
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <Link to="/">
+              <Logo />
+            </Link>
+          </div>
+          <div className="col text-right">
+            <ul className="mt-4">
+              <Link className="btn btn-light text-upper mr-2" to="/get-started">
+                Get Started
+              </Link>
+            </ul>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -2,18 +2,16 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { ValidatorForm } from "react-material-ui-form-validator";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import ButtonGroup from "../common/ButtonGroup";
-// import CustomButtonGroup from "../common/CustomButtonGroup";
 import FormPersonalInfo from "./FormPersonalInfo";
 import FormHealthInfo from "./FormHealthInfo";
 import FormDemographicsInfo from "./FormDemographicsInfo";
 import FormEmailInfo from "./FormEmailInfo";
-import ProgressBar from "../common/ProgressBar";
-import MaterialSpinner from "../common/MaterialSpinner";
+import ProgressBar from "../../common/ProgressBar";
+import MaterialSpinner from "../../common/MaterialSpinner";
 
-import userService from "../../services/UserService";
-import auth from "../../services/AuthService";
-import utils from "../../utils.js";
+import userService from "../../../services/UserService";
+import auth from "../../../services/AuthService";
+import utils from "../../../utils.js";
 
 class SignupBox extends React.Component {
   constructor(props) {
@@ -33,12 +31,11 @@ class SignupBox extends React.Component {
         gender: "M",
         birthdate: new Date(),
         phoneNum: "",
-        prevDiseases: "",
         smokingCheckBox: false,
         weight: 0,
         height: 0,
-        country: "",
-        city: "",
+        country: "Egypt",
+        city: "Alexandria",
       },
       isSubmitting: false,
       errors: {},
@@ -203,7 +200,7 @@ class SignupBox extends React.Component {
     const propertyName = event.target.name;
     const value = event.target.value;
 
-    // Check if the property is part of the profile data
+    // Check if the property is part of the profile data(obj)
     if (this.state.profile.hasOwnProperty([propertyName])) {
       const profile = { ...this.state.profile };
       profile[propertyName] = value;
@@ -269,53 +266,48 @@ class SignupBox extends React.Component {
     const { step, isSubmitting } = this.state;
 
     return (
-      <div className="box">
-        <div className="container d-flex justify-content-center">
-          <ButtonGroup signupSelected={true} signinSelected={false} />
-        </div>
-        <ValidatorForm
-          instantValidate
-          onSubmit={this.handleSubmit}
-          ref={(ele) => (this.form = ele)}
-          autoComplete="on"
-        >
-          <TransitionGroup component={null}>
-            <CSSTransition
-              key={step}
-              in={true}
-              timeout={500}
-              appear={true}
-              classNames="slide"
-            >
+      <ValidatorForm
+        instantValidate
+        onSubmit={this.handleSubmit}
+        ref={(ele) => (this.form = ele)}
+        autoComplete="on"
+      >
+        <TransitionGroup component={null}>
+          <CSSTransition
+            key={step}
+            in={true}
+            appear={true}
+            timeout={500}
+            classNames="appear"
+          >
+            <React.Fragment>
               {this.renderStep()}
-            </CSSTransition>
-          </TransitionGroup>
-          <div className="submit-wrapper">
-            <div className="container mt-4">
-              <ProgressBar
-                currentStep={step}
-                handleProgressChange={this.handleProgressChange}
-              />
-            </div>
-            <button
-              className="btn custom-submit-btn d-block mt-3 mx-auto"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
-                Sign up
-              </span>
-              <MaterialSpinner
-                size={20}
-                thickness={4}
-                className={`mx-3 ${
-                  isSubmitting ? "d-block" : "d-none"
-                } text-white`}
-              />
-            </button>
-          </div>
-        </ValidatorForm>
-      </div>
+              <div className="mt-5">
+                <ProgressBar
+                  currentStep={step}
+                  handleProgressChange={this.handleProgressChange}
+                />
+                <button
+                  className="btn custom-submit-btn d-block mt-3 mx-auto"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
+                    {step >= 4 ? "Sign up" : "Next"}
+                  </span>
+                  <MaterialSpinner
+                    size={20}
+                    thickness={4}
+                    className={`mx-3 ${
+                      isSubmitting ? "d-block" : "d-none"
+                    } text-white`}
+                  />
+                </button>
+              </div>
+            </React.Fragment>
+          </CSSTransition>
+        </TransitionGroup>
+      </ValidatorForm>
     );
   }
 }

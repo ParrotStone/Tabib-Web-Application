@@ -24,7 +24,7 @@ const MessageBox = (props) => {
     <Fragment>
       {isResultReady ? (
         <Fragment>
-          <div className="message-box mt-2" style={determineRadiusCorner(0)}>
+          <div className="message-box mt-3" style={determineRadiusCorner(0)}>
             {Array.isArray(resultMsg) ? (
               <Fragment>
                 <span className="d-block border-bottom py-2">

@@ -52,7 +52,12 @@ class DiagnosisBox extends React.Component {
 
   componentDidMount() {
     this.subscription = sympResultObservable.subscribe((result) => {
-      this.setState({ sympList: result, isFetching: false });
+      // Filter from the already selected symptoms(not appear again)
+      const { selectedSymptoms } = this.state;
+      const listOfSymptoms = result.filter(
+        (symp) => !selectedSymptoms.includes(selectedSymptoms)
+      );
+      this.setState({ sympList: listOfSymptoms, isFetching: false });
     });
   }
 
@@ -327,7 +332,11 @@ class DiagnosisBox extends React.Component {
             message={usrMsgs}
             showDiseaseInfo={this.showDiseaseInfo}
           />
-          <div className="conatiner mt-4 mx-2">
+          <MessageBox
+            message={usrMsgs}
+            showDiseaseInfo={this.showDiseaseInfo}
+          />
+          <div className="container mt-4 mx-2">
             {!isFetching &&
               sympList.map((symptom, index) => (
                 <button

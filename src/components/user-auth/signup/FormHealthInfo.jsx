@@ -1,7 +1,7 @@
 import React from "react";
 import { TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
-import AddIcon from "@material-ui/icons/Add";
+import PhoneIcon from "@material-ui/icons/Phone";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import FitnessCenterIcon from "@material-ui/icons/FitnessCenter";
@@ -10,41 +10,50 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 class FormHealthInfo extends React.Component {
   render() {
     const {
-      profile: { prevDiseases, smokingCheckBox, weight },
+      profile: { phoneNum, smokingCheckBox, weight },
     } = this.props.values;
 
     return (
       <React.Fragment>
         <div className="container-fluid mt-5">
-          <Grid container spacing={1} alignItems="flex-end">
+          <Grid container spacing={1} className="mt-4" alignItems="center">
             <Grid item className="w-100">
               <TextValidator
-                id="old-diseases"
-                label="Previous Diseases"
-                name="prevDiseases"
-                fullWidth
-                validators={["isString"]}
-                errorMessages={["Input must be a valid text"]}
+                id="phoneNum"
+                label="Phone Number"
+                name="phoneNum"
+                value={phoneNum}
                 onChange={this.props.handleChange}
-                value={prevDiseases}
+                type="tel"
+                validators={[
+                  "required",
+                  "isNumber",
+                  "matchRegexp:^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
+                ]}
+                errorMessages={[
+                  "This field is required",
+                  "Invalid input format",
+                  "Phone number must be in (xxx-xxx-xxxx) format",
+                ]}
+                fullWidth
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AddIcon color="primary" />
+                      <PhoneIcon color="primary" />
                     </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="start">(+20)</InputAdornment>
                   ),
                 }}
               />
             </Grid>
-            <small className="form-text text-muted input-info ml-2 w-100 text-left">
-              Add here previous diseases separated by commas
-            </small>
           </Grid>
           <Grid
             container
             spacing={1}
             alignItems="flex-end"
-            className="mt-4 ml-2"
+            className="mt-5 ml-2"
           >
             <FormControlLabel
               control={<Checkbox color="primary" />}
@@ -64,14 +73,14 @@ class FormHealthInfo extends React.Component {
                 validators={[
                   "required",
                   "isNumber",
-                  "minNumber:1",
-                  "maxNumber:130",
+                  "minNumber:3",
+                  "maxNumber:250",
                 ]}
                 errorMessages={[
                   "This field is required",
                   "Input must be a valid number",
-                  "Weight must be larger than 1Kg",
-                  "Weight must be less than 130Kg",
+                  "Weight must be larger than 3Kg",
+                  "Weight must be less than 250Kg",
                 ]}
                 onChange={this.props.handleChange}
                 value={weight ? weight : ""}
@@ -82,7 +91,7 @@ class FormHealthInfo extends React.Component {
                       <FitnessCenterIcon color="primary" />
                     </InputAdornment>
                   ),
-                  inputProps: { min: 1, max: 130 },
+                  inputProps: { min: 3, max: 250 },
                   endAdornment: (
                     <InputAdornment position="end">Kg</InputAdornment>
                   ),

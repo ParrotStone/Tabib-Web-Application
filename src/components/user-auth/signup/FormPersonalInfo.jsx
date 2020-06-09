@@ -8,7 +8,6 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import PhoneIcon from "@material-ui/icons/Phone";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -17,14 +16,14 @@ class FormPersonalInfo extends React.Component {
   render() {
     const {
       username,
-      profile: { gender, birthdate, phoneNum },
+      profile: { gender, birthdate },
     } = this.props.values;
 
     // const { maxDateToRegister } = this.props;
 
     return (
       <React.Fragment>
-        <div className="container-fluid d-flex flex-column align-items-center mt-3">
+        <div className="container-fluid d-flex flex-column align-items-center mt-4">
           <Grid container spacing={1} alignItems="center">
             <Grid item className="w-100">
               <TextValidator
@@ -55,7 +54,7 @@ class FormPersonalInfo extends React.Component {
             spacing={1}
             direction="row"
             alignItems="center"
-            className="mt-4"
+            className="mt-5"
           >
             <RadioGroup
               aria-label="gender"
@@ -80,7 +79,7 @@ class FormPersonalInfo extends React.Component {
             <Grid item className="w-100">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                  className="mt-3"
+                  className="mt-5"
                   format="MM/dd/yyyy"
                   margin="normal"
                   fullWidth
@@ -96,39 +95,6 @@ class FormPersonalInfo extends React.Component {
                   }}
                 />
               </MuiPickersUtilsProvider>
-            </Grid>
-          </Grid>
-          <Grid container spacing={1} className="mt-4" alignItems="center">
-            <Grid item className="w-100">
-              <TextValidator
-                id="phoneNum"
-                label="Phone Number"
-                name="phoneNum"
-                value={phoneNum}
-                onChange={this.props.handleChange}
-                type="tel"
-                validators={[
-                  "required",
-                  "isNumber",
-                  "matchRegexp:^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$",
-                ]}
-                errorMessages={[
-                  "This field is required",
-                  "Invalid input format",
-                  "Phone number must be in (xxx-xxx-xxxx) format",
-                ]}
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PhoneIcon color="primary" />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="start">(+20)</InputAdornment>
-                  ),
-                }}
-              />
             </Grid>
           </Grid>
         </div>
