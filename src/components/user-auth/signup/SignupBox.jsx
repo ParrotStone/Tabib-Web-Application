@@ -44,18 +44,13 @@ class SignupBox extends React.Component {
 
   // Handle the progress bar change event
   handleProgressChange = (ev) => {
-    // If the form is invalid show info msg and not proceed to the next step
-    // The handleSubmit method will handle the next step(not previous step)
+    // If the form is invalid show info msg and don't proceed to the next step
+    // The handleSubmit method will handle the next step(not previous step(s))
     if (ev.target.id > this.state.step) {
-      // Dispatching an event
-      // Hacky way to dispatch the event(changing its type since React relies on Synthetic events and not native events)
-      // Replace below code w/ a more robust one later -- The event dispatched/passed here is not really a form submission one and thus, this code is kinda obselete -- Figure it out quickly before release
-      ev.type = "submit";
-      this.form.submit(ev);
+      this.form.submit();
       return;
     }
 
-    // Getting the last num of the id to identify the steps
     const desiredStep = Number(ev.target.id);
     this.setState({ step: desiredStep });
   };
@@ -78,7 +73,6 @@ class SignupBox extends React.Component {
     } = this.state;
 
     dateOfBirth = utils.getDateFormat(dateOfBirth);
-    console.log(dateOfBirth);
     // Adding the Egypt country code for the phone number
     phone = "20" + phone;
 
@@ -101,9 +95,7 @@ class SignupBox extends React.Component {
   };
 
   handleSubmit = async (ev) => {
-    ev.preventDefault();
-
-    // Prevent proceeding to the next step -- unless there're no errors whatsoever in the current step
+    // Prevent proceeding to the next step -- unless there're no errors whatsoever in the current step(date input field)
     if (this.validateDate()) {
       utils.notify("info", "Please check your inputs again!");
       return;
@@ -264,7 +256,6 @@ class SignupBox extends React.Component {
     if (auth.getCurrentUser()) return <Redirect to="/" />;
 
     const { step, isSubmitting } = this.state;
-
     return (
       <ValidatorForm
         instantValidate
@@ -278,7 +269,7 @@ class SignupBox extends React.Component {
             in={true}
             appear={true}
             timeout={500}
-            classNames="appear"
+            classNames="fade-in"
           >
             <React.Fragment>
               {this.renderStep()}

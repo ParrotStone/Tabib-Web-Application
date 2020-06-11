@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 // const searchSubj = new BehaviorSubject("");
 // const searchResultObservable = searchSubj.pipe(
-//   debounceTime(300),
+//   debounceTime(250),
 //   distinctUntilChanged(),
 //   mergeMap((value) => from(searchDiseases(value)))
 // );

@@ -21,12 +21,8 @@ import { getCurrentUser } from "../../services/AuthService";
 import { searchSymptoms } from "../../services/BotService";
 import SearchDiseasePopup from "./SearchDiseasePopup";
 
-const searchSympSub = new BehaviorSubject("");
-const sympResultObservable = searchSympSub.pipe(
-  debounceTime(300),
-  distinctUntilChanged(),
-  mergeMap((value) => from(searchSymptoms(value)))
-);
+let searchSympSub = null;
+let sympResultObservable = null;
 
 class DiagnosisBox extends React.Component {
   constructor(props) {
@@ -48,14 +44,22 @@ class DiagnosisBox extends React.Component {
       show: false,
       requestedDiseaseInfo: "",
     };
+
+    searchSympSub = new BehaviorSubject("");
+    sympResultObservable = searchSympSub.pipe(
+      debounceTime(250),
+      distinctUntilChanged(),
+      mergeMap((value) => from(searchSymptoms(value)))
+    );
   }
 
   componentDidMount() {
+    this.setState({ isFetching: false });
     this.subscription = sympResultObservable.subscribe((result) => {
-      // Filter from the already selected symptoms(not appear again)
+      // Filter from the already selected symptoms(to not appear again)
       const { selectedSymptoms } = this.state;
       const listOfSymptoms = result.filter(
-        (symp) => !selectedSymptoms.includes(selectedSymptoms)
+        (symp) => !selectedSymptoms.includes(symp)
       );
       this.setState({ sympList: listOfSymptoms, isFetching: false });
     });
@@ -142,12 +146,7 @@ class DiagnosisBox extends React.Component {
     // Keep the UI state in sync
     const { value } = target;
     this.setState({ searchInput: value, usrMsgs: [""], isFetching: true });
-    searchSympSub.next(value);
-
-    if (!value.length) {
-      this.setState({ isFetching: false });
-      return;
-    }
+    searchSympSub.next(value.trim());
   };
 
   // Spinners + The part about the damn start http request every time starting again(what solution you could do here??) + the spaces thingie in the search bar
@@ -172,6 +171,7 @@ class DiagnosisBox extends React.Component {
     const choice = target.textContent.toLowerCase();
 
     this.setState({
+      usrMsgs: [""],
       showOptions: false,
       isSearchBoxShown: false,
       isFetching: true,
@@ -292,19 +292,6 @@ class DiagnosisBox extends React.Component {
     });
   };
 
-  /*
-    {isResultReady && (
-      <MessageBox
-        message={"Do you want to try again?"}
-        left={true}
-        bottom={false}
-        secondMsg={true}
-        result={usrMsgs}
-        showDiseaseInfo={null}
-      />
-    )}
-  */
-
   render() {
     const {
       searchInput,
@@ -322,7 +309,7 @@ class DiagnosisBox extends React.Component {
       <React.Fragment>
         <div className="diagnosis-box">
           <div
-            className={`text-right mt-4 mx-4 ${
+            className={`text-right mt-3 mx-3 ${
               isFetching ? "d-block" : "d-none"
             }`}
           >
@@ -332,11 +319,7 @@ class DiagnosisBox extends React.Component {
             message={usrMsgs}
             showDiseaseInfo={this.showDiseaseInfo}
           />
-          <MessageBox
-            message={usrMsgs}
-            showDiseaseInfo={this.showDiseaseInfo}
-          />
-          <div className="container mt-4 mx-2">
+          <div className="container mt-1 mx-2">
             {!isFetching &&
               sympList.map((symptom, index) => (
                 <button
@@ -347,7 +330,7 @@ class DiagnosisBox extends React.Component {
                   {symptom}
                 </button>
               ))}
-            {!sympList.length && !usrMsgs && !isFetching && (
+            {!sympList.length && !usrMsgs[0] && !isFetching && (
               <h1 className="text-primary">Not Matching Symptom</h1>
             )}
           </div>

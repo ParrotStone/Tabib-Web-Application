@@ -75,7 +75,7 @@ class Profile extends React.Component {
       <React.Fragment>
         <ThemeProvider theme={theme}>
           <Background />
-          <div className="box mt-4 main-diag">
+          <div className="box main-diag">
             <ArrowBackIcon
               color="primary"
               style={{

@@ -7,8 +7,7 @@ import LoginBox from "./login/index";
 import SignupBox from "./signup/index";
 
 const UsrAuth = (props) => {
-  const [isLoginSelected, setIsLoginSelected] = useState(false);
-
+  const [isLoginSelected, setIsLoginSelected] = useState(true);
   return (
     <>
       <Background />
@@ -27,7 +26,7 @@ const UsrAuth = (props) => {
             in={true}
             appear={true}
             timeout={500}
-            classNames="appear"
+            classNames="fade-in"
           >
             {isLoginSelected ? <LoginBox /> : <SignupBox />}
           </CSSTransition>

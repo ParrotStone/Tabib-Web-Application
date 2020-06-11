@@ -9,13 +9,13 @@ body {
   font-family: "JF Flat", Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
 
   height: 100vh;
   width: 100vw;
 
   /*What its use here?(the property)*/
-  /*position: relative;*/
+  position: relative;
   /*On the Y-axis to hide the scroll bar on animating the signup steps and on the X-axis to hide any overflows horizontally*/
   overflow: hidden;
 }
@@ -59,9 +59,6 @@ div#full-pg {
   height: 100vh;
 }
 
-div#main-content {
-}
-
 a {
   color: #222222;
   transition: all 0.4s;
@@ -91,6 +88,10 @@ a:hover {
 
 .sliders-container img {
   width: 400px;
+  height: 400px;
+}
+
+.sliders-container .h-400px {
   height: 400px;
 }
 
@@ -130,13 +131,13 @@ a:hover {
   position: absolute;
   top: 50vh;
   left: 50vw;
-  transform: translate(-50%, -43%);
+  transform: translate(-50%, -45%);
   height: 550px;
   width: 500px;
   background: #f8f8f8;
   padding: 10px 20px;
   border-radius: 10px;
-  box-shadow: 0px 7px 15px rgba(0, 0, 0, 0.25), 0px 7px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.25), 0px 5px 15px rgba(0, 0, 0, 0.25);
 }
 
 .btn-group-custom {
@@ -240,8 +241,8 @@ div.progress-wrapper {
 
 /*The main diagnosis area styles*/
 .main-diag {
-  /*padding: 0 15px;*/
-  width: 1200px;
+  padding: 0 15px;
+  width: 1170px;
   height: 500px;
   border-radius: 30px;
 }
@@ -257,15 +258,13 @@ div.progress-wrapper {
 }
 
 .usr-profile-img {
-  /*Write some fancy hover effect here...*/
-}
-
-.usr-profile-img:hover {
+  cursor: pointer;
 }
 
 .diagnosis-box {
   /*Exact width, change/refactor it later to use flexbox/grid system as they are more effective*/
-  width: 830px;
+  width: 800px;
+  padding-top: 10px;
   float: right;
 }
 
@@ -274,7 +273,6 @@ div.progress-wrapper {
   clear: both;
 }
 
-/*How it's stationed at the top left corner?! && how how fix the radius issues, and the when loading thing -- finally test with more than message for better modularity*/
 /*Fix the other issues, at last fix the loading(like facebook one) and add Pace.JS to have a better UI -- Also have the user profile image of a certain size so you can save space on the server and also have the user resize it if he wants -> Those are the final touches as to say beyond the basic ones(the responsiveness, and the other really important additional like performance, drug-alarm, etc) are to be added when you have a better understanding of React, Context API, Hooks, Redux, ...*/
 
 .message-box {
@@ -291,13 +289,12 @@ div.progress-wrapper {
   border-color: #d0d0d0 !important;
 }
 
-.message-box > span:last-child {
-  font-weight: bold;
+.message-box .more-info-span {
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
 
-.message-box > span:last-child:hover {
+.message-box .more-info-span:hover {
   color: #dddddd;
 }
 
@@ -354,88 +351,88 @@ div.progress-wrapper {
 /*----------------Animation Styles----------------*/
 /*------------------------------------------------*/
 /*Enter state*/
-.appear-enter {
+.fade-in-enter {
   opacity: 0;
   transform: scale(0.97) translateY(5px);
 }
 
-.appear-enter-active {
+.fade-in-enter-active {
   opacity: 1;
   transform: scale(1) translateY(0);
   transition: all 0.5s linear;
 }
 
 /*Leave state*/
-.appear-exit {
+.fade-in-exit {
   opacity: 0;
   transform: scale(1) translateY(0);
 }
 
-.appear-exit-active {
+.fade-in-exit-active {
   opacity: 0;
   transform: scale(0.97) translateY(5px);
   transition: all 0.5s linear;
 }
 
-.appear-exit-done {
+.fade-in-exit-done {
   opacity: 0;
 }
 
 // -------------------------------------------------
 // -----------------Slide Effect--------------------
 // -------------------------------------------------
-// .slide-left-enter {
-//   opacity: 0;
-//   transform: translateX(-50px);
-// }
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(-50px);
+}
 
-// .slide-left-enter-active {
-//   opacity: 1;
-//   transform: translateX(0);
-//   transition: all 0.5s linear;
-// }
+.slide-left-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.5s linear;
+}
 
-// /*Leave state*/
-// .slide-left-exit {
-//   opacity: 0;
-//   transform: translateX(-50px);
-// }
+/*Leave state*/
+.slide-left-exit {
+  opacity: 0;
+  transform: translateX(-50px);
+}
 
-// .slide-left-exit-active {
-//   opacity: 0;
-//   transition: all 0.5s linear;
-// }
+.slide-left-exit-active {
+  opacity: 0;
+  transition: all 0.5s linear;
+}
 
-// .slide-left-exit-done {
-//   opacity: 0;
-// }
+.slide-left-exit-done {
+  opacity: 0;
+}
 
-// // -------------------
-// .slide-right-enter {
-//   opacity: 0;
-//   transform: translateX(50px);
-// }
+// -------------------
+.slide-right-enter {
+  opacity: 0;
+  transform: translateX(50px);
+}
 
-// .slide-right-enter-active {
-//   opacity: 1;
-//   transform: translateX(0);
-//   transition: all 0.5s linear;
-// }
+.slide-right-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.5s linear;
+}
 
-// /*Leave state*/
-// .slide-right-exit {
-//   opacity: 0;
-//   transform: translateX(50px);
-// }
+/*Leave state*/
+.slide-right-exit {
+  opacity: 0;
+  transform: translateX(50px);
+}
 
-// .slide-right-exit-active {
-//   opacity: 0;
-//   transition: all 0.5s linear;
-// }
+.slide-right-exit-active {
+  opacity: 0;
+  transition: all 0.5s linear;
+}
 
-// .slide-right-exit-done {
-//   opacity: 0;
-// }
+.slide-right-exit-done {
+  opacity: 0;
+}
 
 /*------------------------------------------------------------------*/
 /*---------Corona map and its summary sidebar custom styles---------*/

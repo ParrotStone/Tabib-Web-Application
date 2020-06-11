@@ -38,12 +38,10 @@ const Alarms = ({ handleHideAlarms, values }) => {
     setNote,
     setEditStatus,
     setTimeBoxOpened,
-    setStatus,
   } = values;
 
   const fillFields = (targetAlarmData) => {
     setTimeBoxOpened(true);
-    setStatus("update");
     // The case where {One} time alarms is selected
     if (!Array.isArray(targetAlarmData["time"])) {
       setFirstSelected(true);
@@ -83,7 +81,6 @@ const Alarms = ({ handleHideAlarms, values }) => {
   };
 
   const handleDelete = ({ target }) => {
-    setStatus("delete");
     const targetAlarm = getCurrentAlarmItem(target);
     const filteredAlarmList = alarmsList.filter(
       (_, index) => !targetAlarm.id.includes(index)

@@ -45,17 +45,19 @@ class UserArea extends React.Component {
         <div className="container user-area-wrapper row justify-content-center">
           <div className="row">
             <div className="col-12 align-self-center">
-              <img
-                src={picture_url ? userProfilePic : defaultUsrImg}
-                alt="User Profile Pic"
-                style={{
-                  padding: "5px",
-                  width: "200px",
-                  background: "white",
-                  borderRadius: "50%",
-                }}
-                className="usr-profile-img"
-              />
+              <Link to="/profile">
+                <img
+                  src={picture_url ? userProfilePic : defaultUsrImg}
+                  alt="User Profile Pic"
+                  style={{
+                    padding: "5px",
+                    width: "200px",
+                    background: "white",
+                    borderRadius: "50%",
+                  }}
+                  className="usr-profile-img"
+                />
+              </Link>
             </div>
           </div>
           <div className="row mt-2">

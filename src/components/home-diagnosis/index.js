@@ -8,7 +8,7 @@ class HomeDiagnosis extends React.Component {
     return (
       <>
         <Background />
-        <div className="box mt-4 main-diag">
+        <div className="box main-diag">
           <UserArea />
           <DiagnosisBox />
         </div>
