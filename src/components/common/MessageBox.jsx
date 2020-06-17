@@ -2,16 +2,19 @@ import React, { Fragment } from "react";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 
 const MessageBox = (props) => {
-  const { message, showDiseaseInfo } = props;
+  const { message, isResultReady, showDiseaseInfo } = props;
   const isMsgEmpty = message.length === 1 && !message[0].length;
   let styles = {
     padding: `${isMsgEmpty ? "0px" : "10px"}`,
   };
 
-  const isResultReady =
-    Array.isArray(message[0]) || message[0].includes("couldn't find");
   const [resultMsg, otherMsgs] = message;
-  const [predictionName, treatment, otherPredictions] = resultMsg;
+  const [predictionName, treatment] = resultMsg;
+  const otherPredicts = resultMsg[resultMsg.length - 1];
+
+  const isSuccessfulSkin = predictionName && predictionName.includes("skin");
+  const isFailedSkin = predictionName && predictionName.includes("determine");
+  const isSkinResult = isSuccessfulSkin || isFailedSkin;
 
   const determineRadiusCorner = (msgIndex) => {
     return msgIndex % 2 === 0
@@ -27,31 +30,42 @@ const MessageBox = (props) => {
             {Array.isArray(resultMsg) ? (
               <Fragment>
                 <span className="d-block border-bottom py-2">
-                  <span className="font-weight-bold">Prediction: </span>
-                  {predictionName}
+                  <span className="font-weight-bold">{`${
+                    isSuccessfulSkin || !isSkinResult
+                      ? `Prediction: ${predictionName}`
+                      : predictionName
+                  }`}</span>
                 </span>
-                <span className="d-block border-bottom py-2">
-                  <span className="font-weight-bold">Treatment: </span>
-                  {treatment}
-                </span>
-                {otherPredictions && (
+                {!isSkinResult && (
                   <span className="d-block border-bottom py-2">
+                    <span className="font-weight-bold">Treatment: </span>
+                    {treatment}
+                  </span>
+                )}
+                {otherPredicts && otherPredicts.length > 0 && (
+                  <span
+                    className={`d-block py-2 ${
+                      !isSkinResult ? "border-bottom" : ""
+                    }`}
+                  >
                     <span className="font-weight-bold">
                       Other possible predictions:{" "}
                     </span>
-                    {otherPredictions.map((prediction, index) => (
+                    {otherPredicts.map((prediction, index) => (
                       <span key={index} className="d-block">
                         - {prediction}
                       </span>
                     ))}
                   </span>
                 )}
-                <span
-                  className="d-block w-50 ml-auto py-2 mt-2 text-right font-weight-bold more-info-span"
-                  onClick={() => showDiseaseInfo(true, resultMsg[0])}
-                >
-                  More info <KeyboardArrowRight />
-                </span>
+                {!isSkinResult && (
+                  <span
+                    className="d-block w-50 ml-auto py-2 mt-2 text-right font-weight-bold more-info-span"
+                    onClick={() => showDiseaseInfo(true, resultMsg[0])}
+                  >
+                    More info <KeyboardArrowRight />
+                  </span>
+                )}
               </Fragment>
             ) : (
               resultMsg
@@ -71,7 +85,7 @@ const MessageBox = (props) => {
         message.map((msg, index) => (
           <div
             key={index}
-            className="message-box mt-2"
+            className="message-box mt-3"
             style={determineRadiusCorner(index)}
           >
             {msg}

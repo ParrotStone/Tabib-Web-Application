@@ -6,6 +6,8 @@ import AccessAlarmIcon from "@material-ui/icons/AccessAlarm";
 import Alarms from "./Alarms";
 import AddDrugAlarm from "./AddDrugAlarm";
 
+const iconFontSize = { fontSize: "2.7rem" };
+
 const DrugAlarmPopUp = (props) => {
   const [firstSelected, setFirstSelected] = useState(true);
   const [time, setTime] = useState(new Date());
@@ -65,22 +67,16 @@ const DrugAlarmPopUp = (props) => {
           {showAlarms && (
             <Modal.Title className="text-primary text-center">
               <h1>
-                <AccessAlarmIcon
-                  style={{ fontSize: "2.7rem" }}
-                  className="mt-n2"
-                />{" "}
-                Drug Alarm
+                <AccessAlarmIcon style={iconFontSize} className="mt-n2" /> Drug
+                Alarm
               </h1>
             </Modal.Title>
           )}
           {!showAlarms && (
             <Modal.Title className="text-primary text-center">
               <h1>
-                <AddAlarmIcon
-                  style={{ fontSize: "2.7rem" }}
-                  className="mt-n2"
-                />{" "}
-                Add Alarm(s)
+                <AddAlarmIcon style={iconFontSize} className="mt-n2" /> Add
+                Alarm(s)
               </h1>
             </Modal.Title>
           )}

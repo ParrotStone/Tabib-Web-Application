@@ -1,5 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import ImageIcon from "@material-ui/icons/Image";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
@@ -7,7 +9,6 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { from, BehaviorSubject } from "rxjs";
 import { debounceTime, distinctUntilChanged, mergeMap } from "rxjs/operators";
 import MessageBox from "../common/MessageBox";
-import ImgUpload from "../../images/img-upload.png";
 import MaterialSpinner from "../common/MaterialSpinner";
 import http from "../../services/HttpService";
 import {
@@ -18,11 +19,15 @@ import {
 } from "../../config.json";
 import * as utils from "../../utils.js";
 import { getCurrentUser } from "../../services/AuthService";
-import { searchSymptoms } from "../../services/BotService";
+import { startSession, searchSymptoms } from "../../services/BotService";
 import SearchDiseasePopup from "./SearchDiseasePopup";
 
+let mySwal = withReactContent(Swal);
 let searchSympSub = null;
 let sympResultObservable = null;
+
+// Custom styles
+const iconFontSize = { fontSize: "15rem" };
 
 class DiagnosisBox extends React.Component {
   constructor(props) {
@@ -41,6 +46,7 @@ class DiagnosisBox extends React.Component {
       isFetching: false,
       selectedSymptoms: [],
       offerChoice: false,
+      isResultReady: false,
       show: false,
       requestedDiseaseInfo: "",
     };
@@ -70,75 +76,81 @@ class DiagnosisBox extends React.Component {
   }
 
   // TODO: Remember also to check the packages installed and remove the ones un-necessary especially to (sweetalert thingie) and any un-needed ones in general, also separate the devDependencies from the required ones
-
-  // The asynchronous part is to wait for the user until it uploads an image -- replace the ugly input field with a button(custom one, figure out how to make one -- later of course) + Resolve the padding thing that happen to the logo when the damn loading popup appear/show-up + See what the damn /upload/android doesn't wanna accept the base64 string(returns a 415 unsupported media error) =>> (with content-type already set to => applicatio/json; charset=UTF-8)
-  handleSkinClick = async () => {
-    const { value: file } = await Swal.fire({
-      title: "Select image",
-      input: "file",
-      width: 800,
+  handleSkinClick = () => {
+    mySwal.fire({
+      html: (
+        <Fragment>
+          <div className="text-primary">
+            <ImageIcon style={iconFontSize} />
+          </div>
+          <div className="mt-4">
+            <input
+              type="file"
+              onChange={this.handleUpload}
+              ref={(el) => (this.imageHolder = el)}
+              className="d-none"
+              accept="image/*"
+              aria-label="Upload your image"
+            />
+            <button
+              onClick={() => this.imageHolder.click()}
+              className="btn btn-primary"
+            >
+              Choose an image
+            </button>
+          </div>
+        </Fragment>
+      ),
+      showConfirmButton: false,
+      width: 700,
       scrollbarPadding: false,
-      imageUrl: ImgUpload,
-      imageWidth: 250,
-      imageHeight: 250,
       position: "center",
-      imageAlt: "Upload Image",
-      inputAttributes: {
-        accept: "image/*",
-        "aria-label": "Upload your image",
-      },
+    });
+  };
+
+  handleUpload = async () => {
+    mySwal.close();
+    this.setState({
+      usrMsgs: [""],
+      showOptions: false,
+      isFetching: true,
+      isResultReady: false,
     });
 
-    // This part is pretty much useless, but for now, it's okay for it to stay here :)
-    if (file) {
-      const reader = new FileReader();
+    const file = this.imageHolder.files[0];
+    const formData = new FormData();
+    formData.append("file", file);
 
-      reader.readAsDataURL(file);
+    const headers = {
+      "Content-Type": "multipart/form-data",
+    };
 
-      reader.onload = (e) => {
-        Swal.fire({
-          title: "Confirm Upload?",
-          scrollbarPadding: false,
-          imageUrl: e.target.result,
-          imageAlt: "The uploaded picture",
-          onAfterClose: () => {
-            Swal.showLoading();
-          },
-        }).then((result) => {
-          if (result) {
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-              const formData = new FormData();
-              formData.append("file", file);
-              // Do here the AJAX call to the back-end for image diagnosis
-              const headers = {
-                "Content-Type": "multipart/form-data",
-              };
+    try {
+      const { data } = await http.post(apiImgPred, formData, { headers });
 
-              const {
-                data: { ans },
-              } = await http.post(apiImgPred, formData, { headers });
-
-              let predResult = ans.split("is")[1];
-
-              Swal.fire({
-                scrollbarPadding: false,
-                icon: "info",
-                title: "Your results!",
-                text: `It is probably ${predResult} skin disease`,
-              });
-            };
-          }
-        });
-      };
+      this.setState({
+        usrMsgs: [
+          utils.getPredictionMsg(data),
+          ["Do you want to start a new session?"],
+        ],
+        showOptions: true,
+        isResultReady: true,
+        isFetching: false,
+      });
+    } catch (ex) {
+      utils.reportUserErrors(ex);
     }
   };
 
   handleBotClick = () => {
+    // Initialize the session on the backend API
+    startSession();
+
     this.setState({
       usrMsgs: ["What are you complaining about?"],
       showOptions: false,
       isSearchBoxShown: true,
+      isResultReady: false,
     });
   };
 
@@ -213,6 +225,7 @@ class DiagnosisBox extends React.Component {
             isSearchBoxShown: false,
             isFetching: false,
             offerChoice: false,
+            isResultReady: true,
           });
           return;
         }
@@ -231,8 +244,6 @@ class DiagnosisBox extends React.Component {
       }
 
       try {
-        // No need to start the session again - ASK AZ
-        // await http.get(apiStartBot);
         // Send the list of symptoms one-by-one(Network costly operation ahead!)
         for (let i = 0; i < selectedSymptoms.length; i++) {
           let symptom = selectedSymptoms[i].split(" ").join("_");
@@ -262,6 +273,7 @@ class DiagnosisBox extends React.Component {
             isFetching: false,
             selectedSymptoms: [],
             offerChoice: false,
+            isResultReady: true,
           });
           return;
         }
@@ -292,6 +304,22 @@ class DiagnosisBox extends React.Component {
     });
   };
 
+  resetUIToDefault = () => {
+    this.setState({
+      searchInput: "",
+      usrMsgs: [this.userWelcomeMsg],
+      showOptions: true,
+      isSearchBoxShown: false,
+      sympList: [],
+      isFetching: false,
+      selectedSymptoms: [],
+      offerChoice: false,
+      isResultReady: false,
+      show: false,
+      requestedDiseaseInfo: "",
+    });
+  };
+
   render() {
     const {
       searchInput,
@@ -301,6 +329,7 @@ class DiagnosisBox extends React.Component {
       sympList,
       isFetching,
       offerChoice,
+      isResultReady,
       show,
       requestedDiseaseInfo,
     } = this.state;
@@ -317,6 +346,7 @@ class DiagnosisBox extends React.Component {
           </div>
           <MessageBox
             message={usrMsgs}
+            isResultReady={isResultReady}
             showDiseaseInfo={this.showDiseaseInfo}
           />
           <div className="container mt-1 mx-2">
@@ -340,7 +370,7 @@ class DiagnosisBox extends React.Component {
                 className="btn btn-outline-primary pill-border d-block mb-2"
                 onClick={this.handleBotClick}
               >
-                Speak to Tabib Bot
+                Talk to Tabib Bot
               </button>
               <button
                 className="btn btn-outline-primary pill-border d-block mb-2"
@@ -396,18 +426,7 @@ class DiagnosisBox extends React.Component {
                   fontSize: "40px",
                   margin: "25px 0 0 30px",
                 }}
-                onClick={() =>
-                  this.setState({
-                    searchInput: "",
-                    usrMsgs: [this.userWelcomeMsg],
-                    showOptions: true,
-                    isSearchBoxShown: false,
-                    sympList: [],
-                    isFetching: false,
-                    selectedSymptoms: [],
-                    offerChoice: false,
-                  })
-                }
+                onClick={() => this.resetUIToDefault()}
               />
             </div>
           )}

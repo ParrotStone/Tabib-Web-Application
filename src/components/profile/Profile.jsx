@@ -21,14 +21,10 @@ class Profile extends React.Component {
       isUploading: false,
     };
   }
+
   // TODO: fix the data stored in the local storage thingie, security issues that come with it(how about the best way to store data locally!)
   // Probably using in-memory variable and sharing across components
-  // Extracts it through props, first way
-  // Use a local component state, and then extract it(when the component is mounted, the data will be filled automatically)
-  // THe props way is better since, it allow a single shared place to get data from(single source of truth)
-  // () => this.profilePicture.click() -> Down at the button, this form of call was used because the other is not valid since the input field hasn't been mounted yet, and there's no value in referencing it.
-  // Keep note here that the re-render process happen separately(gets called on its own) from the handleUpload() method, thus, it will continue to work properly -- case in point, the handleUpload method will continue to execute from it left on.
-
+  // TODO: See if there's a better way to check for empty files down here and also to take input instead of checking constantly for a change on the file input
   handleUpload = async () => {
     const file = this.profilePicture.files[0];
     if (!file) return;
@@ -38,11 +34,9 @@ class Profile extends React.Component {
     formData.append("profile_picture", file);
 
     const headers = {
-      Authorization: `Bearer ${localStorage.getItem("access-token")}`,
       "content-type": "multipart/formdata",
     };
 
-    // THe the try-catch block is here to account for un-expected errors(when the server crashes, db is down, etc) -- the generic message will be down from the httpService module, but the rejected returned promise value has to be catched somewhere so the app doesn't crash
     try {
       const {
         data: { detail: msg },
@@ -99,10 +93,11 @@ class Profile extends React.Component {
               <div className="col-12 offset-5 mt-3">
                 <input
                   type="file"
-                  accept="image/*"
                   onChange={this.handleUpload}
                   ref={(el) => (this.profilePicture = el)}
                   className="d-none"
+                  accept="image/*"
+                  aria-label="Upload your profile picture"
                 />
                 <button
                   onClick={() => this.profilePicture.click()}

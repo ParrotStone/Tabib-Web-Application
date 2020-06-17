@@ -5,11 +5,14 @@ import { getCurrentUser } from "./AuthService";
 
 const { apiStartBot, apiSearchBot, apiDiseaseSearch, apiDiseaseInfo } = config;
 
+export const startSession = async () => {
+  await http.get(apiStartBot);
+};
+
 export const searchSymptoms = async (symptomName) => {
   if (!symptomName) return [];
 
   try {
-    await http.get(apiStartBot);
     const { data } = await http.get(`${apiSearchBot}${symptomName}`);
 
     const { result } = data;
@@ -59,6 +62,7 @@ export const submitDiseaseName = async (diseaseName) => {
 };
 
 export default {
+  startSession,
   searchSymptoms,
   submitDiseaseName,
 };

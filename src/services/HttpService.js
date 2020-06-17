@@ -23,7 +23,7 @@ axios.interceptors.response.use(null, (error) => {
     console.error(`${error}`);
     // // Uncomment in production -- configure Sentry options before deployment
     // logger.log(error);
-    utils.notify("error", "Oops! Something went wrong :(");
+    utils.notify("error", "Oops! Something went wrong 😞");
   }
 
   return Promise.reject(error);

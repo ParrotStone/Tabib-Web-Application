@@ -72,6 +72,20 @@ export const sortStrArr = (strArr) => {
 };
 
 export const getPredictionMsg = (data) => {
+  if (data.ans) {
+    //  ["0", "lupus chronic cutaneous", "rosacea", "herpes type  primary", "distal subungual onychomycosis"]
+    const [predResult, ...otherPredicts] = data.ans;
+    const msg =
+      predResult === "0"
+        ? [
+            "Sorry, we couldn't determine the type of disease based on the input image",
+            otherPredicts,
+          ]
+        : [`It is probably ${predResult} skin disease`, otherPredicts];
+
+    return msg;
+  }
+
   const { mainPredict, otherPredicts } = data;
   const msg = mainPredict["name"]
     ? [mainPredict["name"], mainPredict["treatment"], otherPredicts]

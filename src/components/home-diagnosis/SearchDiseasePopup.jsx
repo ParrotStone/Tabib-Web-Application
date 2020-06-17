@@ -284,7 +284,7 @@ const SearchDiseasePopup = (props) => {
                 <h5 className="text-primary">Symptoms</h5>
                 <div className="wide-border-left bg-shadow-container disease-info-small-font p-3">
                   {symptoms.map((symptom, index) => (
-                    <p key={index}>- {symptom}</p>
+                    <p key={index}>- {symptom.split("_").join(" ")}</p>
                   ))}
                 </div>
               </div>
