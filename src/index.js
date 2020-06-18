@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 // import logger from "./services/logService";
+import "./pace.scss";
 import "./custom.scss";
 import "./main.scss";
 

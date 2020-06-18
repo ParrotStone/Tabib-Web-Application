@@ -7,7 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { from, BehaviorSubject } from "rxjs";
-import { debounceTime, distinctUntilChanged, mergeMap } from "rxjs/operators";
+import { debounceTime, mergeMap } from "rxjs/operators";
 import MessageBox from "../common/MessageBox";
 import MaterialSpinner from "../common/MaterialSpinner";
 import http from "../../services/HttpService";
@@ -54,7 +54,6 @@ class DiagnosisBox extends React.Component {
     searchSympSub = new BehaviorSubject("");
     sympResultObservable = searchSympSub.pipe(
       debounceTime(250),
-      distinctUntilChanged(),
       mergeMap((value) => from(searchSymptoms(value)))
     );
   }

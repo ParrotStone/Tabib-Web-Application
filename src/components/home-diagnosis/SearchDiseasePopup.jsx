@@ -7,8 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import SearchIcon from "@material-ui/icons/Search";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-// import { from, BehaviorSubject } from "rxjs";
-// import { debounceTime, distinctUntilChanged, mergeMap } from "rxjs/operators";
 import MaterialSpinner from "../common/MaterialSpinner";
 
 import { submitDiseaseName } from "../../services/BotService.js";
@@ -61,39 +59,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const searchSubj = new BehaviorSubject("");
-// const searchResultObservable = searchSubj.pipe(
-//   debounceTime(250),
-//   distinctUntilChanged(),
-//   mergeMap((value) => from(searchDiseases(value)))
-// );
-
-// const useObservable = (observable, setter, setIsFetching) => {
-//   React.useEffect(() => {
-//     const subscription = observable.subscribe((result) => {
-//       setter(result);
-//       setIsFetching(false);
-//     });
-//     return () => subscription.unsubscribe();
-//   }, [observable, setter, setIsFetching]);
-// };
-
-// const useDiseaseInfo = (requestedDiseaseInfo, setter) => {
-// // In order to handle the case where the 'more-info' label was clicked
-// useEffect(() => {
-//   if (requestedDiseaseInfo)
-//     setter({ target: { textContent: requestedDiseaseInfo } });
-// }, [requestedDiseaseInfo, setter]);
-// };
-
-// // In order to handle the reload/load times when the disease-list hasn't been loaded yet into the site
-// let diseaseList = [];
-// useEffect(() => {
-//   diseaseList = JSON.parse(localStorage.getItem("disease-list"));
-// });
-
-const diseaseList = JSON.parse(localStorage.getItem("disease-list"));
-
 const SearchDiseasePopup = (props) => {
   const {
     show,
@@ -124,7 +89,6 @@ const SearchDiseasePopup = (props) => {
     setHumanSys([]);
   };
 
-  // useObservable(searchResultObservable, setDiseases, setIsFetching);
   const filterThroughList = (value) => {
     if (!value.length) {
       setDiseases([]);
@@ -134,7 +98,7 @@ const SearchDiseasePopup = (props) => {
     resetUIToDefault();
 
     setDiseases(
-      diseaseList
+      JSON.parse(localStorage.getItem("disease-list"))
         .filter((disease) =>
           disease.toUpperCase().includes(value.toUpperCase())
         )
@@ -144,11 +108,11 @@ const SearchDiseasePopup = (props) => {
 
   const handleChosenDisease = async ({ target }) => {
     let { textContent: diseaseName } = target;
-    diseaseName = diseaseName ? diseaseName : searchVal;
-    // diseaseName = diseaseName.trim();
-    setSearchVal(diseaseName);
+
+    setSearchVal(diseaseName.trim());
     setDiseases([]);
     setIsFetching(true);
+
     try {
       const diseaseDetails = await submitDiseaseName(diseaseName);
       setIsFetching(false);
@@ -165,16 +129,17 @@ const SearchDiseasePopup = (props) => {
 
   const handleEnterPress = (ev) => {
     ev.preventDefault();
-    // Simulate a user click on the first auto-complete list item
-    handleChosenDisease({ target: { textContent: diseases[0] } });
+
+    if (diseases[0])
+      // Simulate a user click on the first auto-complete list item
+      handleChosenDisease({ target: { textContent: diseases[0] } });
   };
 
-  // In order to handle the case where the 'more-info' label was clicked
+  // In order to handle the case where the 'more-info' label is clicked
   useEffect(() => {
     if (requestedDiseaseInfo)
       handleChosenDisease({ target: { textContent: requestedDiseaseInfo } });
   }, [requestedDiseaseInfo]);
-  // useDiseaseInfo(requestedDiseaseInfo, handleChosenDisease);
 
   return (
     <>
