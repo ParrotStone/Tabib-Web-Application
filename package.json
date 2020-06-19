@@ -21,6 +21,7 @@
     "push.js": "^1.0.12",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-content-loader": "^5.0.4",
     "react-dom": "^16.13.1",
     "react-material-ui-form-validator": "^2.0.10",
     "react-router-dom": "^5.1.2",

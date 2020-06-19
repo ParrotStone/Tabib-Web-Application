@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-
 import Background from "../common/Background";
 import CustomButtonGroup from "../common/CustomButtonGroup";
-import LoginBox from "./login/index";
-import SignupBox from "./signup/index";
+import Login from "./login/index";
+import Signup from "./signup/index";
 
 const UsrAuth = (props) => {
   const [isLoginSelected, setIsLoginSelected] = useState(true);
@@ -28,7 +27,7 @@ const UsrAuth = (props) => {
             timeout={500}
             classNames="fade-in"
           >
-            {isLoginSelected ? <LoginBox /> : <SignupBox />}
+            {isLoginSelected ? <Login /> : <Signup />}
           </CSSTransition>
         </TransitionGroup>
       </div>

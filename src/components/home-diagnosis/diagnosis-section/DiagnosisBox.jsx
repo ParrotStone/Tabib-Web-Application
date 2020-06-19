@@ -8,18 +8,18 @@ import SearchIcon from "@material-ui/icons/Search";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { from, BehaviorSubject } from "rxjs";
 import { debounceTime, mergeMap } from "rxjs/operators";
-import MessageBox from "../common/MessageBox";
-import MaterialSpinner from "../common/MaterialSpinner";
-import http from "../../services/HttpService";
+import MessageBox from "../../common/MessageBox";
+import MaterialSpinner from "../../common/MaterialSpinner";
+import http from "../../../services/HttpService";
 import {
   apiImgPred,
   apiAppSelSymptom,
   apiGetSymptom,
   apiConfirmSubmitAns,
-} from "../../config.json";
-import * as utils from "../../utils.js";
-import { getCurrentUser } from "../../services/AuthService";
-import { startSession, searchSymptoms } from "../../services/BotService";
+} from "../../../config.json";
+import * as utils from "../../../utils.js";
+import { getCurrentUser } from "../../../services/AuthService";
+import { startSession, searchSymptoms } from "../../../services/BotService";
 import SearchDiseasePopup from "./SearchDiseasePopup";
 
 let mySwal = withReactContent(Swal);
@@ -138,6 +138,7 @@ class DiagnosisBox extends React.Component {
       });
     } catch (ex) {
       utils.reportUserErrors(ex);
+      this.resetUIToDefault();
     }
   };
 
@@ -335,7 +336,7 @@ class DiagnosisBox extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="diagnosis-box">
+        <div className="diagnosis-box h-100">
           <div
             className={`text-right mt-3 mx-3 ${
               isFetching ? "d-block" : "d-none"
@@ -402,7 +403,7 @@ class DiagnosisBox extends React.Component {
             </div>
           )}
           {isSearchBoxShown && (
-            <div className="conatiner-fluid search-container d-flex">
+            <div className="search-container d-flex">
               <TextField
                 id="searchbot-input"
                 label="Search Symptoms"
@@ -422,8 +423,8 @@ class DiagnosisBox extends React.Component {
                 color="primary"
                 style={{
                   cursor: "pointer",
-                  fontSize: "40px",
-                  margin: "25px 0 0 30px",
+                  fontSize: "35px",
+                  margin: "29px 0 0 20px",
                 }}
                 onClick={() => this.resetUIToDefault()}
               />

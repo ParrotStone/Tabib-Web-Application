@@ -3,11 +3,9 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
-import HomePg from "./components/home/index";
+import HomePg from "./components/home-landing-page/index";
 import NotFound from "./components/common/Notfound";
-import Profile from "./components/profile/Profile";
 import UsrAuth from "./components/user-auth/index";
-import ProtectedRoute from "./components/common/ProtectedRoute";
 import Logout from "./components/common/Logout";
 import ResetPassword from "./components/common/ResetPassword";
 import Map from "./components/density-map/index";
@@ -48,7 +46,6 @@ const App = () => {
           <Route path="/get-started" exact component={UsrAuth} />
           <Route path="/logout" exact component={Logout} />
           <Route path="/reset-password" exact component={ResetPassword} />
-          <ProtectedRoute path="/profile" exact component={Profile} />
           <Route path="/coronamap" exact component={Map} />
           <Route path="/privacy-policy" exact component={PrivacyPolicy} />
           <Route path="/terms-of-use" exact component={Terms} />

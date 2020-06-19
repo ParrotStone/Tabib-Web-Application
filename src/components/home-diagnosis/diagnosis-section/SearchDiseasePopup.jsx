@@ -7,10 +7,9 @@ import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 import SearchIcon from "@material-ui/icons/Search";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import MaterialSpinner from "../common/MaterialSpinner";
-
-import { submitDiseaseName } from "../../services/BotService.js";
-import { reportUserErrors } from "../../utils.js";
+import MaterialSpinner from "../../common/MaterialSpinner";
+import { submitDiseaseName } from "../../../services/BotService.js";
+import { reportUserErrors } from "../../../utils.js";
 
 const modalBodyStyles = {
   height: "500px",
@@ -124,6 +123,8 @@ const SearchDiseasePopup = (props) => {
       setHumanSys(diseaseDetails["humanSystems"]);
     } catch (ex) {
       reportUserErrors(ex);
+      // Review the line below, when un-commented, it showns error in the dependency array of the useEffect hook(figure out why!)
+      // resetUIToDefault();
     }
   };
 

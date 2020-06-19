@@ -39,17 +39,6 @@ nav {
   overflow: hidden;
 }
 
-div.overlay {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  width: 100vw;
-  background: $primary-color;
-  clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
-  z-index: -1;
-}
-
 img.logo {
   height: 135px;
   width: 135px;
@@ -64,11 +53,6 @@ a {
   transition: all 0.4s;
 }
 
-a.nav-header-link {
-  color: white;
-  transition: all 0.4s;
-}
-
 a.pass-reset-link {
   color: $primary-color;
   font-size: 1rem;
@@ -77,6 +61,36 @@ a.pass-reset-link {
 a:hover {
   color: #95caf7;
   text-decoration: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 100vw;
+  background: $primary-color;
+  clip-path: polygon(50% 0, 100% 0%, 100% 100%, 45% 100%);
+  z-index: -1;
+}
+
+.nav-header-link {
+  color: white;
+  transition: all 0.4s;
+}
+
+.wide-border {
+  &-right {
+    border-right: 7px solid $primary-color !important;
+  }
+
+  &-left {
+    border-left: 7px solid $primary-color !important;
+  }
+}
+
+.bg-shadow-container {
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25), 0px -1px 5px rgba(0, 0, 0, 0.25) !important;
 }
 
 .sliders-container {
@@ -128,10 +142,19 @@ a:hover {
 }
 
 .box {
-  position: absolute;
-  top: 50vh;
-  left: 50vw;
-  transform: translate(-50%, -45%);
+  // Original position(not working because the "position" property is not animatable in CSS)
+  // position: absolute;
+  // top: 50vh;
+  // left: 50vw;
+  // transform: translate(-50%, -45%);
+
+  // Centering the content in the middle(using the width of the box itself to align it correctly(it's reduced a bit for the logo to have a nice space(otherwise it would be complete equal top and bottom and this is not desired here)))
+  margin: calc(-50vh - 250px) auto;
+
+  // Together can do the animation as if the box is coming from bottom up
+  // transform: translateY(-40%);
+  // transition: all 0.3s linear;
+
   height: 550px;
   width: 500px;
   background: #f8f8f8;
@@ -240,11 +263,14 @@ div.progress-wrapper {
 }
 
 /*The main diagnosis area styles*/
-.main-diag {
+.whole-diag-box {
+  margin: calc((-50vh - 225px)) auto;
   padding: 0 15px;
   width: 1170px;
   height: 500px;
   border-radius: 30px;
+
+  position: relative;
 }
 
 .user-area-wrapper {
@@ -257,8 +283,16 @@ div.progress-wrapper {
   border-bottom-left-radius: 30px;
 }
 
+.profile-img-container {
+  height: 500px !important;
+}
+
 .usr-profile-img {
   cursor: pointer;
+}
+
+.usr-info {
+  margin-top: 70px;
 }
 
 .diagnosis-box {
@@ -298,15 +332,30 @@ div.progress-wrapper {
 }
 
 .btn-action {
+  // // height: 83%;
+  // // height: 52%;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: flex-end;
+  // justify-content: flex-end;
+
   position: absolute;
   top: 70%;
-  right: 3%;
+  right: 1%;
 }
 
 .btn-action-choice {
   position: absolute;
   top: 77%;
-  right: 3%;
+  right: 1%;
+
+  // // You can the below styles but you'd have to include a mechanism in the diagnosis-box to detect when the result show-up(already exist) and change the styles from height(83% to 52% depending on the state of the result(whether only on message is shown or not)) -- I chose the positioning styles as it is more reliable
+  // // height: 83%;
+  // // height: 52%;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: flex-end;
+  // justify-content: flex-end;
 }
 
 .pill-border {
@@ -316,8 +365,10 @@ div.progress-wrapper {
 .search-container {
   position: absolute;
   top: 77%;
-  right: 3%;
+  right: 2%;
   width: 65%;
+  // Same notes as the above with (btn-action) -> the main problem here is that margins of the input(dynamic) data make the design ugly/untenable and with positioning, this effect goes away and the thing stay as is. THis way is better as with position set to absolute and the parent(whole-diag-box) set to position relative, the position gonna always be the same regardless of the position of the box itself(middle of the screen or not)
+  // height: 83%;
 }
 
 .symptoms-list-container {
@@ -513,14 +564,6 @@ div.progress-wrapper {
 
 .disease-item:hover {
   background: #eeeeee;
-}
-
-.wide-border-left {
-  border-left: 7px solid $primary-color !important;
-}
-
-.bg-shadow-container {
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.25), 0px -1px 5px rgba(0, 0, 0, 0.25) !important;
 }
 
 .disease-info-small-font {

@@ -1,20 +1,31 @@
 import React from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Background from "../common/Background";
-import UserArea from "./UserArea";
-import DiagnosisBox from "./DiagnosisBox";
+import DiagnosisSection from "./diagnosis-section/index";
+import Profile from "./profile/Profile";
 
-class HomeDiagnosis extends React.Component {
-  render() {
-    return (
-      <>
-        <Background />
-        <div className="box main-diag">
-          <UserArea />
-          <DiagnosisBox />
-        </div>
-      </>
-    );
-  }
-}
+const HomeDiagnosis = (props) => {
+  const [isProfileShown, setIsProfileShown] = React.useState(false);
+  return (
+    <>
+      <Background />
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={isProfileShown}
+          in={true}
+          appear={true}
+          timeout={500}
+          classNames="fade-in"
+        >
+          {isProfileShown ? (
+            <Profile setIsProfileShown={setIsProfileShown} />
+          ) : (
+            <DiagnosisSection setIsProfileShown={setIsProfileShown} />
+          )}
+        </CSSTransition>
+      </TransitionGroup>
+    </>
+  );
+};
 
 export default HomeDiagnosis;
