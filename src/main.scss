@@ -340,13 +340,13 @@ div.progress-wrapper {
   // justify-content: flex-end;
 
   position: absolute;
-  top: 70%;
+  top: 79%;
   right: 1%;
 }
 
 .btn-action-choice {
   position: absolute;
-  top: 77%;
+  top: 79%;
   right: 1%;
 
   // // You can the below styles but you'd have to include a mechanism in the diagnosis-box to detect when the result show-up(already exist) and change the styles from height(83% to 52% depending on the state of the result(whether only on message is shown or not)) -- I chose the positioning styles as it is more reliable

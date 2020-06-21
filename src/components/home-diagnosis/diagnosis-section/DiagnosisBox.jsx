@@ -20,7 +20,6 @@ import {
 import * as utils from "../../../utils.js";
 import { getCurrentUser } from "../../../services/AuthService";
 import { startSession, searchSymptoms } from "../../../services/BotService";
-import SearchDiseasePopup from "./SearchDiseasePopup";
 
 let mySwal = withReactContent(Swal);
 let searchSympSub = null;
@@ -47,8 +46,6 @@ class DiagnosisBox extends React.Component {
       selectedSymptoms: [],
       offerChoice: false,
       isResultReady: false,
-      show: false,
-      requestedDiseaseInfo: "",
     };
 
     searchSympSub = new BehaviorSubject("");
@@ -289,21 +286,6 @@ class DiagnosisBox extends React.Component {
     }
   };
 
-  handleSearchClick = () => {
-    this.setState({ show: true });
-  };
-
-  handleClosePopup = () => {
-    this.setState({ show: false });
-  };
-
-  showDiseaseInfo = (showPopup, requestedDiseaseName) => {
-    this.setState({
-      show: showPopup,
-      requestedDiseaseInfo: requestedDiseaseName,
-    });
-  };
-
   resetUIToDefault = () => {
     this.setState({
       searchInput: "",
@@ -315,8 +297,6 @@ class DiagnosisBox extends React.Component {
       selectedSymptoms: [],
       offerChoice: false,
       isResultReady: false,
-      show: false,
-      requestedDiseaseInfo: "",
     });
   };
 
@@ -330,8 +310,6 @@ class DiagnosisBox extends React.Component {
       isFetching,
       offerChoice,
       isResultReady,
-      show,
-      requestedDiseaseInfo,
     } = this.state;
 
     return (
@@ -347,7 +325,7 @@ class DiagnosisBox extends React.Component {
           <MessageBox
             message={usrMsgs}
             isResultReady={isResultReady}
-            showDiseaseInfo={this.showDiseaseInfo}
+            showDiseaseInfo={this.props.showDiseaseInfo}
           />
           <div className="container mt-1 mx-2">
             {!isFetching &&
@@ -377,12 +355,6 @@ class DiagnosisBox extends React.Component {
                 onClick={this.handleSkinClick}
               >
                 Skin Detection
-              </button>
-              <button
-                className="btn btn-outline-primary pill-border d-block"
-                onClick={this.handleSearchClick}
-              >
-                Disease Search
               </button>
             </div>
           )}
@@ -431,13 +403,6 @@ class DiagnosisBox extends React.Component {
             </div>
           )}
         </div>
-
-        <SearchDiseasePopup
-          show={show}
-          handleClosePopup={this.handleClosePopup}
-          showDiseaseInfo={this.showDiseaseInfo}
-          requestedDiseaseInfo={requestedDiseaseInfo}
-        />
       </React.Fragment>
     );
   }

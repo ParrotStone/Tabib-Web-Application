@@ -5,6 +5,8 @@ import MapIcon from "@material-ui/icons/Map";
 import AccessAlarmsIcon from "@material-ui/icons/AccessAlarms";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import DrugAlarmPopUp from "../../drug-alarm/DrugAlarmPopup";
+import SearchDiseasePopup from "./SearchDiseasePopup";
+import SearchIcon from "@material-ui/icons/Search";
 import CircleContentPlaceholder from "../../common/CircleContentPlaceholder";
 import { apiDownloadProfileImg } from "../../../config.json";
 import defaultUsrImg from "../../../images/defaultUsrImg.png";
@@ -54,6 +56,13 @@ class SideOptions extends React.Component {
   render() {
     const { imgSrc, isLoading, show, showAlarms } = this.state;
 
+    const {
+      showDiseasePopup,
+      setShowDiseasePopup,
+      requestedDiseaseInfo,
+      showDiseaseInfo,
+    } = this.props;
+
     return (
       <>
         <div className="container user-area-wrapper row justify-content-center">
@@ -99,6 +108,16 @@ class SideOptions extends React.Component {
               </div>
               <div className="col-8">
                 <a
+                  href="#disease-search"
+                  className="d-block nav-header-link"
+                  onClick={() => setShowDiseasePopup(true)}
+                >
+                  <SearchIcon className="text-light mx-3" />
+                  Disease Search
+                </a>
+              </div>
+              <div className="col-8">
+                <a
                   href="#drug-alarm"
                   className="d-block nav-header-link"
                   onClick={this.handleShowPopup}
@@ -123,6 +142,13 @@ class SideOptions extends React.Component {
           showAlarms={showAlarms}
           handleHideAlarms={this.handleHideAlarms}
           handleShowPopup={this.handleShowPopup}
+        />
+
+        <SearchDiseasePopup
+          show={showDiseasePopup}
+          handleClosePopup={setShowDiseasePopup}
+          showDiseaseInfo={showDiseaseInfo}
+          requestedDiseaseInfo={requestedDiseaseInfo}
         />
       </>
     );
