@@ -34,7 +34,7 @@ class DiagnosisBox extends React.Component {
 
     this.userWelcomeMsg = `Hi ${utils.capitalizeFirstLetter(
       getCurrentUser().first_name
-    )}, I'm Tabib bot, What do you wanna do?`;
+    )}, I'm Tabib bot, How can I help you?`;
 
     this.state = {
       searchInput: "",

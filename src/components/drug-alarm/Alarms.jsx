@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Alarm from "./Alarm";
+import { initAlarmNotification } from "./DrugAlarmUtils.js";
 import { getCurrTimeInTwelveFormat } from "../../utils.js";
 
 const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -15,6 +16,8 @@ const getCurrentAlarmItem = (target) => {
 };
 
 const Alarms = ({ handleHideAlarms, values }) => {
+  // Initialize the alarms(after being upated(added))
+  initAlarmNotification();
   // Fetches the list from the local storage, and then represent using a single Alarm component
   const [alarmsList, setAlarmsList] = useState(
     JSON.parse(localStorage.getItem("alarms"))

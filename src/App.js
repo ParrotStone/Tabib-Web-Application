@@ -10,7 +10,6 @@ import Logout from "./components/common/Logout";
 import ResetPassword from "./components/common/ResetPassword";
 import Map from "./components/density-map/index";
 import { getCurrentUser } from "./services/AuthService.js";
-import { initAlarmNotification } from "./components/drug-alarm/DrugAlarmUtils.js";
 
 import PrivacyPolicy from "./components/common/PrivacyPolicy";
 import Terms from "./components/common/Terms";
@@ -33,7 +32,7 @@ const theme = createMuiTheme({
 // Initialize the app once the app is loaded into memory -> only once and so it doesn't consider/aware any updates to the state/UI/storage in case of an update or removal -> called only once!! which is bad
 // Only call if the user is signed in, otherwise, you'd get an error because there is no alarms set(deleted by default) and there no user data saved whatsoever in the local storage
 if (getCurrentUser()) {
-  initAlarmNotification();
+  // initAlarmNotification();
 }
 
 const App = () => {

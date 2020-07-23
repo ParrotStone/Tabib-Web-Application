@@ -3,7 +3,7 @@ import Carousel from "react-bootstrap/Carousel";
 
 const ContentSlider = (props) => {
   return (
-    <Carousel controls={false} indicators={false} pause={false} interval={4000}>
+    <Carousel controls={false} indicators={false} pause={false}>
       <Carousel.Item>
         <div className="h-400px d-flex flex-column justify-content-center px-4">
           <h1>Tabib Bot</h1>

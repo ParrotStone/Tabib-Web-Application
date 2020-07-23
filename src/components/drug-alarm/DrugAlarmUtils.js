@@ -17,11 +17,7 @@ import Push from "push.js";
 // - Same thing with many alarms thingie
 // - Mass test it
 
-export const initAlarmNotification = (status) => {
-  if (status === "read" || status === "create") {
-    // Do Something HERE...
-  }
-
+export const initAlarmNotification = () => {
   // Remove the old set timers in case of the update/delete only
   // in the other cases, you just update the state(to notice the damn changes(in case of update->adding new alarm))
 
@@ -30,14 +26,25 @@ export const initAlarmNotification = (status) => {
   alarms.forEach((alarm) => {
     // If one time alarm only, do the following
     if (!Array.isArray(alarm.time)) {
-      checkSingleAlarm(alarm);
+      if (alarm.isActive) {
+        console.log('This is a one time-alarm only!');
+        checkSingleAlarm(alarm);
+        alarm.isActive = false;
+        const alarmIdx = alarms.findIndex(modifiedAlarm => modifiedAlarm.id === alarm.id);
+        alarms[alarmIdx] = alarm;
+        localStorage.setItem('alarms', JSON.stringify(alarms));
+      }
     } else {
-      checkMultipleAlarms(alarm);
+      if (alarm.isActive) {
+        checkMultipleAlarms(alarm);
+      }
     }
   });
 };
 
 const checkSingleAlarm = (alarm) => {
+  console.log('Checking single alarm');
+
   const delay = new Date(alarm.time) - new Date();
   checkTimeAndNotify(alarm, delay);
 };
@@ -49,8 +56,8 @@ const checkMultipleAlarms = (alarm) => {
   });
 };
 
-const checkTimeAndNotify = ({ drugName, isActive, note }, delay) => {
-  if (isActive && delay > 0) {
+const checkTimeAndNotify = ({ drugName, note }, delay) => {
+  if (delay > 0) {
     setTimeout(() => {
       notifyDrugAlarm(drugName, note);
     }, delay);
