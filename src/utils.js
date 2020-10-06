@@ -75,7 +75,7 @@ export const getPredictionMsg = (data) => {
   if (data.ans) {
     //  ["0", "lupus chronic cutaneous", "rosacea", "herpes type  primary", "distal subungual onychomycosis"]
     let [predResult, ...otherPredicts] = data.ans;
-    otherPredicts = otherPredicts.map((prediction) => prediction === '0' ? 'No Skin Detected' : prediction);
+    otherPredicts = otherPredicts.map((prediction) => prediction === '0' ? 'No Skin detected in the image' : prediction);
     const msg =
       predResult === "0"
         ? [
