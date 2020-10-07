@@ -43,6 +43,9 @@ Tabib web app was designed to help users find reliable diagnosis to their querie
 
 The web app also provides a density map to COVID-19 cases in Egypt with its different governorates. It also provide a Drug Alarm feature that allows the users to set time(s) to take their medications.
 
+- The site is not responsive and was designed to work primarily on Desktop devices. There is a mobile version of the same app available at ...
+- You can checkout a high-quality video of the site [here](https://drive.google.com/file/d/1EmzyzufTUv0rPlFhklgs2Z9RnRQR3TND/view?usp=sharing) that shows the complete features of the site. Unfortunately, there is no way to host the back-end code online to make it available. However, here is its code for the curious. It's built with Django REST framekwork.
+
 ### Built With
 
 This app was built using the following technologies:
