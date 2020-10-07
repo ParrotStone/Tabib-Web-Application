@@ -1,68 +1,173 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-## Available Scripts
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/ParrotStone/Tabib-Website">
+    <img src="src/images/tabib-logo.png" alt="Logo" width="130" height="130">
+  </a>
 
-In the project directory, you can run:
+  <h2 align="center">Tabib Web Application</h2>
 
-### `yarn start`
+  <p align="center">
+    The front-end web application to the Tabib app where you can get your diagnosis :)
+  </p>
+</p>
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<!-- Table of content -->
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Table of Contents
 
-### `yarn test`
+- [About the Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Screenshots](#screenshots)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<!-- About the project -->
 
-### `yarn build`
+## About The Project
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Tabib Web App](Screenshots/Tabib-webapp.gif)
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Tabib web app was designed to help users find reliable diagnosis to their queries. It can also analyze images and predict the skin disease while also providing more info on the disease itself, its treatments, symptoms, etc. The web app user interface was designed to be accessible, easy to use, it emphasizes UX concepts in mind to provide an easy and beautiful experience to our users.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The web app also provides a density map to COVID-19 cases in Egypt with its different governorates. It also provide a Drug Alarm feature that allows the users to set time(s) to take their medications.
 
-### `yarn eject`
+### Built With
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This app was built using the following technologies:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [Bootstrap](https://getbootstrap.com)
+- [JQuery](https://jquery.com)
+- [Material-UI](https://material-ui.com/)
+- [React](https://reactjs.org)
+- [RxJS](https://rxjs.dev/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+It uses React state and prop drilling for app-level state with hooks. Axios for the data fetching. React Router for routing.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Getting-Started
 
-## Learn More
+The instructions below show how you can install and run the project
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Prerequisites
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+You need both [NodeJS](https://nodejs.org) and [NPM](https://npmjs.org) installed.
 
-### Code Splitting
+### Installation
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+1. Clone the repo
 
-### Analyzing the Bundle Size
+```sh
+  git clone https://github.com/ParrotStone/Tabib-Website.git
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+2. Install `Yarn` package manager
 
-### Making a Progressive Web App
+```sh
+  npm install -g yarn
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+3. Navigate to the project directory and type the following commands:
 
-### Advanced Configuration
+- Install the project dependencies
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```sh
+yarn install
+```
 
-### Deployment
+4. Edit the file `config.js` in the `src` folder and add their respective API urls
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+5. You can then either run the project or build it for deployment
 
-### `yarn build` fails to minify
+- Runs the app in the development mode - Open http://localhost:3000 to view it in the browser.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```sh
+  yarn start
+```
+
+- Builds the app for production to the build folder.
+
+```sh
+  yarn build
+```
+
+<!-- Screenshot examples -->
+
+## Screenshots
+
+![Landing-page-tabib-bot](Screenshots/landing-page-tabib-bot.png)
+
+![Landing-page-map](Screenshots/landing-page-map.png)
+
+![Sign-in-page](Screenshots/signin-page.png)
+
+![Register-page](Screenshots/register-page.png)
+
+![Homepage](Screenshots/homepage.png)
+
+![COVID-density-map](Screenshots/covid-19-density-map-egypt.png)
+
+![Disease-info-search](Screenshots/disease-info-search.png)
+
+![disesae-more-info](Screenshots/disease-more-info.png)
+
+![Skin detection demo-result](Screenshots/skin-result-example.png)
+
+![Set single alarm](Screenshots/set-single-alarm.png)
+
+![Set multiple alarm](Screenshots/set-multiple-alarms.png)
+
+<!-- Roadmap -->
+
+## Roadmap
+
+See the [open issues](https://github.com/parrotstone/tabib-website/issues) for a list of known bugs and suggested/intended-fixes and features.
+
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<!-- LICENSE -->
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<!-- CONTACT -->
+
+## Contact
+
+Abdulrahman Ali - [Twitter](https://twitter.com/abdoalihuss) - [Email](mailto:ParrotStone@gmail.com)
+
+Project Link: [https://github.com/parrotstone/tabib-website](https://github.com/parrotstone/tabib-website)
+
+[contributors-shield]: https://img.shields.io/github/contributors/parrotstone/tabib-website.svg?style=flat-square
+[contributors-url]: https://github.com/parrotstone/tabib-website/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/parrotstone/tabib-website.svg?style=flat-square
+[forks-url]: https://github.com/parrotstone/tabib-website/network/members
+[stars-shield]: https://img.shields.io/github/stars/parrotstone/tabib-website.svg?style=flat-square
+[stars-url]: https://github.com/parrotstone/tabib-website/stargazers
+[issues-shield]: https://img.shields.io/github/issues/parrotstone/tabib-website.svg?style=flat-square
+[issues-url]: https://github.com/parrotstone/tabib-website/issues
+[license-shield]: https://img.shields.io/github/license/parrotstone/tabib-website.svg?style=flat-square
+[license-url]: https://github.com/parrotstone/tabib-website/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/abdulrahman-ali
