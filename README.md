@@ -51,7 +51,6 @@ The web app also provides a density map to COVID-19 cases in Egypt with its diff
 This app was built using the following technologies:
 
 - [Bootstrap](https://getbootstrap.com)
-- [JQuery](https://jquery.com)
 - [Material-UI](https://material-ui.com/)
 - [React](https://reactjs.org)
 - [RxJS](https://rxjs.dev/)
@@ -171,6 +170,6 @@ Project Link: [https://github.com/parrotstone/tabib-website](https://github.com/
 [issues-shield]: https://img.shields.io/github/issues/parrotstone/tabib-website.svg?style=flat-square
 [issues-url]: https://github.com/parrotstone/tabib-website/issues
 [license-shield]: https://img.shields.io/github/license/parrotstone/tabib-website.svg?style=flat-square
-[license-url]: https://github.com/parrotstone/tabib-website/blob/master/LICENSE.txt
+[license-url]: https://github.com/parrotstone/tabib-website/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/abdulrahman-ali
