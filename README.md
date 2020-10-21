@@ -3,6 +3,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![Netlify Status](https://api.netlify.com/api/v1/badges/f9f904a1-c868-4f1b-8393-0beb4ec0516a/deploy-status)](https://app.netlify.com/sites/tabib/deploys)
 
 <!-- PROJECT LOGO -->
 <br />
