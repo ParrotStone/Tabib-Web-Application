@@ -38,20 +38,18 @@ if (getCurrentUser()) {
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <React.Fragment>
-        <Switch>
-          <Route path="/" exact component={HomePg} />
-          <Redirect from="/home" to="/" />
-          <Route path="/get-started" exact component={UsrAuth} />
-          <Route path="/logout" exact component={Logout} />
-          <Route path="/reset-password" exact component={ResetPassword} />
-          <Route path="/coronamap" exact component={Map} />
-          <Route path="/privacy-policy" exact component={PrivacyPolicy} />
-          <Route path="/terms-of-use" exact component={Terms} />
-          <Route path="/not-found" exact component={NotFound} />
-          <Redirect to="/not-found" />
-        </Switch>
-      </React.Fragment>
+      <Switch>
+        <Route path="/" exact component={HomePg} />
+        <Redirect from="/home" to="/" />
+        <Route path="/get-started" exact component={UsrAuth} />
+        <Route path="/logout" exact component={Logout} />
+        <Route path="/reset-password" exact component={ResetPassword} />
+        <Route path="/coronamap" exact component={Map} />
+        <Route path="/privacy-policy" exact component={PrivacyPolicy} />
+        <Route path="/terms-of-use" exact component={Terms} />
+        <Route path="/not-found" exact component={NotFound} />
+        <Redirect to="/not-found" />
+      </Switch>
     </ThemeProvider>
   );
 };
