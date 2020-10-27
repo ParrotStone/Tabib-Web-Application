@@ -1,17 +1,17 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import FormPersonalInfo from "./FormPersonalInfo";
-import FormHealthInfo from "./FormHealthInfo";
-import FormDemographicsInfo from "./FormDemographicsInfo";
-import FormEmailInfo from "./FormEmailInfo";
-import ProgressBar from "../../common/ProgressBar";
-import MaterialSpinner from "../../common/MaterialSpinner";
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { ValidatorForm } from 'react-material-ui-form-validator';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import FormPersonalInfo from './FormPersonalInfo';
+import FormHealthInfo from './FormHealthInfo';
+import FormDemographicsInfo from './FormDemographicsInfo';
+import FormEmailInfo from './FormEmailInfo';
+import ProgressBar from '../../common/ProgressBar';
+import MaterialSpinner from '../../common/MaterialSpinner';
 
-import userService from "../../../services/UserService";
-import auth from "../../../services/AuthService";
-import utils from "../../../utils.js";
+import userService from '../../../services/UserService';
+import auth from '../../../services/AuthService';
+import utils from '../../../utils.js';
 
 class SignupBox extends React.Component {
   constructor(props) {
@@ -23,19 +23,19 @@ class SignupBox extends React.Component {
 
     this.state = {
       step: 1,
-      email: "",
-      username: "",
-      password: "",
+      email: '',
+      username: '',
+      password: '',
       showPassword: false,
       profile: {
-        gender: "M",
+        gender: 'M',
         birthdate: new Date(),
-        phoneNum: "",
+        phoneNum: '',
         smokingCheckBox: false,
         weight: 0,
         height: 0,
-        country: "Egypt",
-        city: "Alexandria",
+        country: 'Egypt',
+        city: 'Alexandria',
       },
       isSubmitting: false,
       errors: {},
@@ -74,7 +74,7 @@ class SignupBox extends React.Component {
 
     dateOfBirth = utils.getDateFormat(dateOfBirth);
     // Adding the Egypt country code for the phone number
-    phone = "20" + phone;
+    phone = '20' + phone;
 
     return {
       email,
@@ -97,7 +97,7 @@ class SignupBox extends React.Component {
   handleSubmit = async (ev) => {
     // Prevent proceeding to the next step -- unless there're no errors whatsoever in the current step(date input field)
     if (this.validateDate()) {
-      utils.notify("info", "Please check your inputs again!");
+      utils.notify('info', 'Please check your inputs again!');
       return;
     }
 
@@ -126,7 +126,7 @@ class SignupBox extends React.Component {
       // Figure out how to add the message below correcly(commented because the damn waiting(after the submitting spinner icon disappear) will enter the main page instantly, thus, the alert below is absolete -- Solve it correctly(probably after the user has already arrived at the homepage))
       // utils.notify("success", "Registered Successfully!");
 
-      window.location = "/";
+      window.location = '/';
     } catch (ex) {
       // Revert the state to its original state.(Helps with whether the error was expected or not)
       this.setState({ isSubmitting: false });
@@ -160,46 +160,38 @@ class SignupBox extends React.Component {
       isNaN(birthdate.getFullYear()) ||
       birthdate.getFullYear() > new Date().getFullYear()
     ) {
-      errors["birthdate"] = true;
+      errors['birthdate'] = true;
       this.setState({ errors });
     } else {
-      delete errors["birthdate"];
+      delete errors['birthdate'];
       this.setState({ errors });
     }
 
-    return errors["birthdate"];
+    return errors['birthdate'];
   };
 
   handleDateChange = (date) => {
     // The date picker return the a date obj when a change event fires off(that what the Material Date Picker does, 3rd party library)
     // Sets it in the full format(time & date), and only extracts the date components when submitting the form to the back-end API
     const profile = { ...this.state.profile };
-    profile["birthdate"] = date;
+    profile['birthdate'] = date;
     this.setState({ profile });
   };
 
-  // When the user clicks on the next step except the current one(before it) OR the submit button(sign-up button in this case)
-
   // Handle fields change
-  handleChange = (event) => {
-    if (event.target.type === "checkbox") {
-      const profile = { ...this.state.profile };
-      profile["smokingCheckBox"] = event.target.checked;
+  handleChange = ({ target }) => {
+    const profile = { ...this.state.profile };
+    const propertyName = target.name;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+
+    // Check if the property is part of the profile data(obj)
+    if (this.state.profile.hasOwnProperty([propertyName])) {
+      profile[propertyName] = value;
       this.setState({ profile });
       return;
     }
 
-    const propertyName = event.target.name;
-    const value = event.target.value;
-
-    // Check if the property is part of the profile data(obj)
-    if (this.state.profile.hasOwnProperty([propertyName])) {
-      const profile = { ...this.state.profile };
-      profile[propertyName] = value;
-      this.setState({ profile });
-    } else {
-      this.setState({ [propertyName]: value });
-    }
+    this.setState({ [propertyName]: value });
   };
 
   // Handle the password visibility icon
@@ -253,7 +245,7 @@ class SignupBox extends React.Component {
   };
 
   render() {
-    if (auth.getCurrentUser()) return <Redirect to="/" />;
+    if (auth.getCurrentUser()) return <Redirect to='/' />;
 
     const { step, isSubmitting } = this.state;
     return (
@@ -261,7 +253,7 @@ class SignupBox extends React.Component {
         instantValidate
         onSubmit={this.handleSubmit}
         ref={(ele) => (this.form = ele)}
-        autoComplete="on"
+        autoComplete='on'
       >
         <TransitionGroup component={null}>
           <CSSTransition
@@ -269,28 +261,28 @@ class SignupBox extends React.Component {
             in={true}
             appear={true}
             timeout={500}
-            classNames="fade-in"
+            classNames='fade-in'
           >
             <React.Fragment>
               {this.renderStep()}
-              <div className="mt-5">
+              <div className='mt-5'>
                 <ProgressBar
                   currentStep={step}
                   handleProgressChange={this.handleProgressChange}
                 />
                 <button
-                  className="btn custom-submit-btn d-block mt-3 mx-auto"
-                  type="submit"
+                  className='btn custom-submit-btn d-block mt-3 mx-auto'
+                  type='submit'
                   disabled={isSubmitting}
                 >
-                  <span className={`${isSubmitting ? "d-none" : "d-block"}`}>
-                    {step >= 4 ? "Sign up" : "Next"}
+                  <span className={`${isSubmitting ? 'd-none' : 'd-block'}`}>
+                    {step >= 4 ? 'Sign up' : 'Next'}
                   </span>
                   <MaterialSpinner
                     size={20}
                     thickness={4}
                     className={`mx-3 ${
-                      isSubmitting ? "d-block" : "d-none"
+                      isSubmitting ? 'd-block' : 'd-none'
                     } text-white`}
                   />
                 </button>

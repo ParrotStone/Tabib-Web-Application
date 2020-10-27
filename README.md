@@ -8,7 +8,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/ParrotStone/Tabib-Website">
+  <a href="https://github.com/ParrotStone/Tabib-Web-Application">
     <img src="src/images/tabib-logo.png" alt="Logo" width="130" height="130">
   </a>
 
@@ -44,7 +44,7 @@ Tabib web app was designed to help users find reliable diagnosis to their querie
 
 The web app also provides a density map to COVID-19 cases in Egypt with its different governorates. It also provide a Drug Alarm feature that allows the users to set time(s) to take their medications.
 
-- The site is not responsive and was designed to work primarily on Desktop devices. There is a mobile version of the same app available at this [repo](https://github.com/Tabib-Team/Android-Repo)
+- The site is NOT responsive and was designed to work primarily on Desktop devices. There is a mobile version of the same app available at this [repo](https://github.com/Tabib-Team/Android-Repo)
 - You can checkout a high-quality video of the site [here](https://drive.google.com/file/d/1EmzyzufTUv0rPlFhklgs2Z9RnRQR3TND/view?usp=sharing) that shows the complete features of the site. Unfortunately, there is no way to host the back-end code online to make it available. However, here is its code for the curious. It's built with Django REST framekwork. The AI model code that predicts the disease is [here](https://github.com/Tabib-Team/AI-Repo)
 
 ### Built With
@@ -55,8 +55,9 @@ This app was built using the following technologies:
 - [Material-UI](https://material-ui.com/)
 - [React](https://reactjs.org)
 - [RxJS](https://rxjs.dev/)
+- [react-material-ui-form-validator](https://github.com/NewOldMax/react-material-ui-form-validator)
 
-It uses React state and prop drilling for app-level state with hooks. Axios for the data fetching. React Router for routing.
+It uses React state and prop drilling for app-level state with hooks. It uses a mix of class & functional comoponents. It uses `react-material-ui-form-validator` for form inputs and validation. `Axios` is used for the data fetching and `React Router DOM` for routing.
 
 ## Getting-Started
 
@@ -71,7 +72,7 @@ You need both [NodeJS](https://nodejs.org) and [NPM](https://npmjs.org) installe
 1. Clone the repo
 
 ```sh
-  git clone https://github.com/ParrotStone/Tabib-Website.git
+  git clone https://github.com/ParrotStone/Tabib-Web-Application.git
 ```
 
 2. Install `Yarn` package manager
@@ -134,7 +135,7 @@ yarn install
 
 ## Roadmap
 
-See the [open issues](https://github.com/parrotstone/tabib-website/issues) for a list of known bugs and suggested/intended-fixes and features.
+See the [open issues](https://github.com/ParrotStone/Tabib-Web-Application/issues) for a list of known bugs and suggested/intended-fixes and features.
 
 <!-- CONTRIBUTING -->
 
@@ -160,7 +161,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Abdulrahman Ali - [Twitter](https://twitter.com/abdoalihuss) - [Email](mailto:ParrotStone@gmail.com)
 
-Project Link: [https://github.com/parrotstone/tabib-website](https://github.com/parrotstone/tabib-website)
+Project Link: [https://github.com/ParrotStone/Tabib-Web-Application](https://github.com/parrotstone/tabib-website)
 
 [contributors-shield]: https://img.shields.io/github/contributors/parrotstone/tabib-website.svg?style=flat-square
 [contributors-url]: https://github.com/parrotstone/tabib-website/graphs/contributors
