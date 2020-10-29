@@ -52,12 +52,15 @@ The web app also provides a density map to COVID-19 cases in Egypt with its diff
 This app was built using the following technologies:
 
 - [Bootstrap](https://getbootstrap.com)
+- [React Bootstrap](https://react-bootstrap.github.io/)
 - [Material-UI](https://material-ui.com/)
 - [React](https://reactjs.org)
 - [RxJS](https://rxjs.dev/)
 - [react-material-ui-form-validator](https://github.com/NewOldMax/react-material-ui-form-validator)
+- [esri](https://developers.arcgis.com/)
 
-It uses React state and prop drilling for app-level state with hooks. It uses a mix of class & functional comoponents. It uses `react-material-ui-form-validator` for form inputs and validation. `Axios` is used for the data fetching and `React Router DOM` for routing.
+
+It uses React state and prop drilling for app-level state with hooks. It uses a mix of class & functional comoponents. It uses `react-material-ui-form-validator` for form inputs and validation. `Axios` is used for the data fetching and `React Router DOM` for routing. It uses `esri` API for web to integrate the COVID-19 density map into the app(you can view it at /coronamap). It also uses `React-Content-Loader` for loading content and `React-Toastify` for notifications.
 
 ## Getting-Started
 
