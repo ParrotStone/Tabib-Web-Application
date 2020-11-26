@@ -166,15 +166,15 @@ Abdulrahman Ali - [Twitter](https://twitter.com/abdoalihuss) - [Email](mailto:Pa
 
 Project Link: [https://github.com/ParrotStone/Tabib-Web-Application](https://github.com/parrotstone/tabib-website)
 
-[contributors-shield]: https://img.shields.io/github/contributors/parrotstone/tabib-website.svg?style=flat-square
-[contributors-url]: https://github.com/parrotstone/tabib-website/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/parrotstone/tabib-website.svg?style=flat-square
+[contributors-shield]: https://img.shields.io/github/contributors/parrotstone/tabib-web-application.svg?style=flat-square
+[contributors-url]: https://github.com/parrotstone/tabib-web-application/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/parrotstone/tabib-web-application.svg?style=flat-square
 [forks-url]: https://github.com/parrotstone/tabib-website/network/members
-[stars-shield]: https://img.shields.io/github/stars/parrotstone/tabib-website.svg?style=flat-square
+[stars-shield]: https://img.shields.io/github/stars/parrotstone/tabib-web-application.svg?style=flat-square
 [stars-url]: https://github.com/parrotstone/tabib-website/stargazers
-[issues-shield]: https://img.shields.io/github/issues/parrotstone/tabib-website.svg?style=flat-square
+[issues-shield]: https://img.shields.io/github/issues/parrotstone/tabib-web-application.svg?style=flat-square
 [issues-url]: https://github.com/parrotstone/tabib-website/issues
-[license-shield]: https://img.shields.io/github/license/parrotstone/tabib-website.svg?style=flat-square
-[license-url]: https://github.com/parrotstone/tabib-website/blob/master/LICENSE
+[license-shield]: https://img.shields.io/github/license/parrotstone/tabib-web-application.svg?style=flat-square
+[license-url]: https://github.com/parrotstone/tabib-web-application/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/abdulrahman-ali
