@@ -15,7 +15,7 @@
     "bootstrap": "^4.4.1",
     "date-fns": "^2.13.0",
     "esri-loader": "^2.14.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "prop-types": "^15.7.2",
     "push.js": "^1.0.12",
     "react": "^16.13.1",
